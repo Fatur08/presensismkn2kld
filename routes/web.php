@@ -24,6 +24,10 @@ use App\Http\Controllers\ChartController;
 |
 */
 
+Route::get('/', function () {
+    return view('welcome');
+})->name('welcome');
+
 Route::middleware(['guest:user'])->group(function() {
     Route::get('/panel', function () {
         return view('auth.loginadmin');
