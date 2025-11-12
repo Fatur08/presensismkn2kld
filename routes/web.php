@@ -36,7 +36,7 @@ Route::middleware(['guest:user'])->group(function() {
 });
 
 Route::middleware(['guest:murid'])->group(function() {
-    Route::get('/', function () {
+    Route::get('/murid', function () {
         return view('auth.login');
     })->name('login');
     Route::post('/proseslogin', [AuthController::class,'proseslogin']);
