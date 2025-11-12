@@ -24,9 +24,9 @@ use App\Http\Controllers\ChartController;
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('welcome');
-})->name('welcome');
+})->name('welcome');*/
 
 Route::middleware(['guest:user'])->group(function() {
     Route::get('/panel', function () {
@@ -36,7 +36,7 @@ Route::middleware(['guest:user'])->group(function() {
 });
 
 Route::middleware(['guest:murid'])->group(function() {
-    Route::get('/murid', function () {
+    Route::get('/', function () {
         return view('auth.login');
     })->name('login');
     Route::post('/proseslogin', [AuthController::class,'proseslogin']);

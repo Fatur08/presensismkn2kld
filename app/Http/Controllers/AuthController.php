@@ -32,7 +32,7 @@ class AuthController extends Controller
         } else {
             //$pass = 123;
             //echo Hash::make($pass);
-            return redirect('/murid')->with(['warning' => 'NISN / Password Salah!']);
+            return redirect('/')->with(['warning' => 'NISN / Password Salah!']);
         }
     }
 
@@ -55,7 +55,7 @@ class AuthController extends Controller
     {
         if(Auth::guard('murid')->check()){
             Auth::guard('murid')->logout();
-            return redirect('/murid');
+            return redirect('/');
         }
     }
 
