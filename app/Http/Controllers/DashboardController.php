@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
-require '/../vendor/autoload.php';// Autoload semua library composer
 use Carbon\Carbon;
 \Carbon\Carbon::setLocale('id');
 
