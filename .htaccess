@@ -3,6 +3,12 @@
         Options -MultiViews -Indexes
     </IfModule>
 
+    # === BATASAN UPLOAD DAN EKSEKUSI PHP ===
+    php_value upload_max_filesize 10M
+    php_value post_max_size 12M
+    php_value max_execution_time 300
+    php_value max_input_time 300
+
     RewriteEngine On
 
     # Handle Authorization Header
@@ -14,14 +20,11 @@
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # Send Requests To Front Controller...
+    # === Arahkan semua asset ke folder public ===
+    RewriteRule ^(assets|tabler|images|uploads|storage)/(.*)$ public/$1/$2 [L]
+
+    # === Kirim semua request ke index.php dalam folder public ===
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ index.php [L]
-</IfModule>
-
-<IfModule mod_headers.c>
-    Header set Access-Control-Allow-Origin "*"
-    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
-    Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+    RewriteRule ^(.*)$ index.php [L]
 </IfModule>
