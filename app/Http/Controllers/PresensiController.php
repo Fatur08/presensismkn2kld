@@ -310,9 +310,7 @@ class PresensiController extends Controller
     {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
-        $nisn = Auth::guard('murid')
-            ->user()
-            ->nisn;
+        $nisn = str_pad((string) Auth::guard('murid')->user()->nisn, 10, '0',STR_PAD_LEFT);
         
         // Ambil jam_masuk dari tabel jamsekolah
         $jamMasuk = DB::table('jamsekolah')->where('id', 1)->value('jam_masuk');
@@ -337,9 +335,7 @@ class PresensiController extends Controller
 
     public function izin()
     {
-        $nisn = Auth::guard('murid')
-            ->user()
-            ->nisn;
+        $nisn = str_pad((string) Auth::guard('murid')->user()->nisn, 10, '0',STR_PAD_LEFT);
         $dataizin = DB::table('pengajuan_izin')
             ->where('nisn',$nisn)
             ->get();
@@ -353,9 +349,7 @@ class PresensiController extends Controller
 
     public function storeizin(Request $request)
     {
-        $nisn = Auth::guard('murid')
-            ->user()
-            ->nisn;
+        $nisn = str_pad((string) Auth::guard('murid')->user()->nisn, 10, '0',STR_PAD_LEFT);
         $tgl_izin = $request->tgl_izin;
         $status = $request->status;
         $keterangan = $request->keterangan;
