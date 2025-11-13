@@ -67,11 +67,19 @@ class MuridController extends Controller
             ];
             $simpan = DB::table('murid')->insert($data);
             if ($simpan){
-                if($request->hasFile('foto')){
-                    $folderpath = "public/uploads/murid/";
-                    $request
+                if ($request->hasFile('foto')) {
+                    $foto = $nisn.".".$request
                         ->file('foto')
-                        ->storeAs($folderpath, $foto);
+                        ->getClientOriginalExtension();
+                    $storagePath = 'public/uploads/murid/';
+                    $request->file('foto')->storeAs($storagePath, $foto);
+                    $publicPath = public_path('storage/uploads/murid/');
+                    if (!is_dir($publicPath)) {
+                        mkdir($publicPath, 0777, true);
+                    }
+                    $sourceFile = storage_path('app/' . $storagePath . $foto);
+                    $destinationFile = public_path('storage/uploads/murid/' . $foto);
+                    copy($sourceFile, $destinationFile);
                 }
                 return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
             }
