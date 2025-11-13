@@ -1,8 +1,8 @@
 <?php
-require '../vendor/autoload.php';// Autoload semua library composer
+// require '../vendor/autoload.php';
 use Carbon\Carbon;
 \Carbon\Carbon::setLocale('id');
-$conn = new mysqli("localhost", "root", "", "presensigps");
+$conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld123*", "u859704623_presensigps");
 ?>
 
 <!DOCTYPE html>
