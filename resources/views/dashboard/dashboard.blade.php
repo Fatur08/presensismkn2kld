@@ -30,7 +30,7 @@ use Carbon\Carbon;
                     @php
                         $path = Storage::url('uploads/murid/'.Auth::guard('murid')->user()->foto);
                     @endphp
-                    <img src="{{ url($path) }}" alt="avatar" class="imaged" style="width: 2cm; height: 2cm; object-fit: cover; border-radius: 8px;">
+                    <img src="{{ url($path) }}?v={{ time() }}" alt="avatar" class="imaged" style="width: 2cm; height: 2cm; object-fit: cover; border-radius: 8px;">
                 @else
                     <img src="assets/img/sample/avatar/avatar1.jpg" alt="avatar" class="imaged w64 rounded">
                 @endif
