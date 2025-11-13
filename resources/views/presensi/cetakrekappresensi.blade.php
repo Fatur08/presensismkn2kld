@@ -247,7 +247,7 @@ use Carbon\Carbon;
                         $hari = $tanggal->translatedFormat('l'); // atau 'l' saja untuk bahasa Inggris
                     
                         $isLibur = false;
-                        $conn = new mysqli("localhost", "root", "", "presensigps");
+                        $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld123*", "u859704623_presensigps");
                     
                         if (!$conn->connect_error) {
                             $sql = "SELECT COUNT(*) as total FROM libur_sekolah WHERE tanggal = '" . $tanggal->format('Y-m-d') . "'";
@@ -412,7 +412,7 @@ use Carbon\Carbon;
                         $hari = $tanggal->translatedFormat('l'); // atau 'l' saja untuk bahasa Inggris
                     
                         $isLibur = false;
-                        $conn = new mysqli("localhost", "root", "", "presensigps");
+                        $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld123*", "u859704623_presensigps");
                     
                         if (!$conn->connect_error) {
                             $sql = "SELECT COUNT(*) as total FROM libur_sekolah WHERE tanggal = '" . $tanggal->format('Y-m-d') . "'";
