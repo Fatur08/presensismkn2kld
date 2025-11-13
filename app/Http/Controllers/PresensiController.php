@@ -123,7 +123,7 @@ class PresensiController extends Controller
         $cek = DB::table('presensi')->where('tgl_presensi', $tgl_presensi)->where('nisn', $nisn)->first();
 
         if($radius_siswa > $radius_sekolah) {
-            echo "error|Maaf Anda berada di luar radius, jarak anda " . $radius_siswa ." meter dari sekolah.|";
+            echo "error|Maaf Anda berada di luar radius, jarak anda " . $radius_siswa ." meter dari SMKN 2 Kalianda.|";
             //echo "error|Maaf Anda berada di luar sekolah.|";
         } else {
             if($absen === 'masuk') {
@@ -138,7 +138,7 @@ class PresensiController extends Controller
                     if($simpan){
                         // Kirim notifikasi WhatsApp untuk presensi masuk
                         //dd($this->sendWhatsAppNotification($noHpOrangTua, "Lemak Anda telah hadir di sekolah pada {$jam}. Selamat belajar!"));
-                        $this->sendWhatsAppNotification($noHpOrangTua, "Anak Anda telah hadir di sekolah pada pukul {$jam}. Terima Kasih!");
+                        $this->sendWhatsAppNotification($noHpOrangTua, "Anak Anda telah hadir di SMKN 2 Kalianda pada pukul {$jam}. Terima Kasih!");
                         echo "success|Terima Kasih, Selamat Belajar Di Kelas|in";
                     } else {
                         echo "error|Maaf Gagal Absen, Hubungi Petugas IT Sekolah|in";
@@ -168,7 +168,7 @@ class PresensiController extends Controller
                 
                 if($update){
                     // Kirim notifikasi WhatsApp untuk presensi pulang
-                    $this->sendWhatsAppNotification($noHpOrangTua, "Murid Anda telah pulang pada {$jam}. Terima kasih!");
+                    $this->sendWhatsAppNotification($noHpOrangTua, "Anak Anda telah pulang dari SMKN 2 Kalianda pada pukul {$jam}. Terima kasih!");
                     echo "success|Terima Kasih, Hati Hati Di Jalan Pulang|out";
                 } else {
                     echo "error|Maaf Gagal Absen, Hubungi Petugas IT Sekolah|out";
