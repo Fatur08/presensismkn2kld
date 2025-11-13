@@ -248,46 +248,21 @@ class PresensiController extends Controller
 
         $successUpdate = false;
 
-        if ($request->hasFile('foto')) {
-            $file = $request->file('foto');
-            $extension = $file->getClientOriginalExtension();
-            // Buat nama file unik: nisn_timestamp.ext
-            $foto = $nisn . '_' . time() . '.' . $extension;
-            $disk = Storage::disk('public'); // ini menulis ke storage/app/public
-                
-            // Hapus file lama jika ada
-            if (!empty($murid->foto)) {
-                $oldPath = 'uploads/murid/' . $murid->foto;
-                // Hapus di storage/app/public/uploads/murid/...
-                if ($disk->exists($oldPath)) {
-                    $disk->delete($oldPath);
-                }
-                // Hapus juga di public/storage/uploads/murid/... bila ada (untuk hosting tanpa symlink)
-                $oldPublic = public_path('storage/uploads/murid/' . $murid->foto);
-                if (file_exists($oldPublic)) {
-                    @unlink($oldPublic);
-                }
+        if($request->hasFile('foto')){
+            $foto = $nisn . '.' . $request->file('foto')->getClientOriginalExtension();
+            $folderpath = "public/uploads/murid/";
+            $folderpathold = $folderpath . $murid->foto;
+            if (Storage::exists($folderpathold)) {
+                Storage::delete($folderpathold);
             }
-        
-            // Simpan file baru ke storage/app/public/uploads/murid/
-            $file->storeAs('public/uploads/murid', $foto);
-        
-            // Jika tidak ada symlink public/storage -> storage/app/public, maka salin manual
-            $publicStorageLink = public_path('storage');
-            if (!is_link($publicStorageLink)) {
-                // pastikan folder tujuan ada
-                $publicPath = public_path('storage/uploads/murid');
-                if (!is_dir($publicPath)) {
-                    mkdir($publicPath, 0777, true);
-                }
-                // copy file dari storage ke public
-                copy(storage_path('app/public/uploads/murid/' . $foto), $publicPath . '/' . $foto);
+            $request->file('foto')->storeAs($folderpath, $foto);
+            $publicPath = public_path('storage/uploads/murid/');
+            if (!is_dir($publicPath)) {
+                mkdir($publicPath, 0777, true);
             }
-        
-            // Update DB
-            $murid->foto = $foto;
-            $murid->save();
-        
+            $sourceFile = storage_path('app/' . $folderpath . $foto);
+            $destinationFile = public_path('storage/uploads/murid/' . $foto);
+            copy($sourceFile, $destinationFile);
             $successUpdate = true;
         } else {
             $foto = $murid->foto;
