@@ -1,5 +1,5 @@
 <?php
-require '../vendor/autoload.php';// Autoload semua library composer
+// require '../vendor/autoload.php';
 use Carbon\Carbon;
 \Carbon\Carbon::setLocale('id');
 ?>
