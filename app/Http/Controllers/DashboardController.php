@@ -14,7 +14,7 @@ class DashboardController extends Controller
     {
         $hariini = date("Y-m-d");
         $bulanini = date("m") * 1; // 1 atau Januari
-        $tahunini = date("Y"); // 2024
+        $tahunini = date("Y");
         // Ambil jam_masuk dari tabel jamsekolah
         $jamMasuk = DB::table('jamsekolah')->where('id', 1)->value('jam_masuk');
 
@@ -26,9 +26,7 @@ class DashboardController extends Controller
         // Tambahkan 5 menit toleransi
         $jamPulangBatas = Carbon::parse($jamPulangAsli)->addMinutes(5)->format('H:i:s');
 
-        $nisn = Auth::guard('murid')
-            ->user()
-            ->nisn;
+        $nisn = str_pad((string) Auth::guard('murid')->user()->nisn, 10, '0',STR_PAD_LEFT);
 
         $murid = DB::table('murid')
             ->join('jurusan', 'murid.kode_jurusan', '=', 'jurusan.kode_jurusan')

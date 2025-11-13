@@ -86,7 +86,7 @@ class PresensiController extends Controller
 
     public function store(Request $request)
     {
-        $nisn = Auth::guard('murid')->user()->nisn;
+        $nisn = str_pad((string) Auth::guard('murid')->user()->nisn, 10, '0',STR_PAD_LEFT);
 
         $murid = DB::table('murid')->where('nisn', $nisn)->first(); // Ambil data murid berdasarkan NISN
 
