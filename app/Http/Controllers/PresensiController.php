@@ -249,15 +249,20 @@ class PresensiController extends Controller
         $successUpdate = false;
 
         if($request->hasFile('foto')){
-            $folderpath = 'public/uploads/murid/';
-            $files = Storage::files($folderpath);
-            foreach ($files as $file) {
-                if (strpos($file, $nisn . '.') !== false) {
-                    Storage::delete($file);
-                }
-            }
             $foto = $nisn . '.' . $request->file('foto')->getClientOriginalExtension();
+            $folderpath = "public/uploads/murid/";
+            $folderpathold = $folderpath . $murid->foto;
+            if (Storage::exists($folderpathold)) {
+                Storage::delete($folderpathold);
+            }
             $request->file('foto')->storeAs($folderpath, $foto);
+            $publicPath = public_path('storage/uploads/murid/');
+            if (!is_dir($publicPath)) {
+                mkdir($publicPath, 0777, true);
+            }
+            $sourceFile = storage_path('app/' . $folderpath . $foto);
+            $destinationFile = public_path('storage/uploads/murid/' . $foto);
+            copy($sourceFile, $destinationFile);
             $successUpdate = true;
         } else {
             $foto = $murid->foto;
