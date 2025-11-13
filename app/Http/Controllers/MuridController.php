@@ -139,13 +139,22 @@ class MuridController extends Controller
             $update = DB::table('murid')->where('nisn', $nisn_lama)->update($data);
         
             if ($update) {
-                if($request->hasFile('foto')){
+                if ($request->hasFile('foto')) {
+                    $foto = $nisn_baru.".".$request->file('foto')->getClientOriginalExtension();
                     $folderpath = "public/uploads/murid/";
                     $folderpathold = $folderpath . $old_foto;
-                    Storage::delete($folderpathold);
+                    if (Storage::exists($folderpathold)) {
+                        Storage::delete($folderpathold);
+                    }
                     $request->file('foto')->storeAs($folderpath, $foto);
+                    $publicPath = public_path('storage/uploads/murid/');
+                    if (!is_dir($publicPath)) {
+                        mkdir($publicPath, 0777, true);
+                    }
+                    $sourceFile = storage_path('app/' . $folderpath . $foto);
+                    $destinationFile = public_path('storage/uploads/murid/' . $foto);
+                    copy($sourceFile, $destinationFile);
                 }
-            
                 return Redirect::back()->with(['success' => 'Data Berhasil Diupdate']);
             } else {
                 return Redirect::back()->with(['error' => 'Data Gagal Diupdate (data tidak ditemukan)']);
