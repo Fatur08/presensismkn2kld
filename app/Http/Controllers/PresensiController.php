@@ -138,7 +138,8 @@ class PresensiController extends Controller
                     if($simpan){
                         // Kirim notifikasi WhatsApp untuk presensi masuk
                         //dd($this->sendWhatsAppNotification($noHpOrangTua, "Lemak Anda telah hadir di sekolah pada {$jam}. Selamat belajar!"));
-                        $this->sendWhatsAppNotification($noHpOrangTua, "Anak Anda telah hadir di SMKN 2 Kalianda pada pukul {$jam}. Terima Kasih!");
+                        //$this->sendWhatsAppNotification($noHpOrangTua, "Anak Anda telah hadir di SMKN 2 Kalianda pada pukul {$jam} Terima Kasih!");
+                        $this->sendWhatsAppNotification($noHpOrangTua, "Anak Anda telah hadir di SMKN 2 Kalianda pada pukul 07:28:15 Terima Kasih!");
                         echo "success|Terima Kasih, Selamat Belajar Di Kelas|in";
                     } else {
                         echo "error|Maaf Gagal Absen, Hubungi Petugas IT Sekolah|in";
@@ -168,7 +169,8 @@ class PresensiController extends Controller
                 
                 if($update){
                     // Kirim notifikasi WhatsApp untuk presensi pulang
-                    $this->sendWhatsAppNotification($noHpOrangTua, "Anak Anda telah pulang dari SMKN 2 Kalianda pada pukul {$jam}. Terima kasih!");
+                    //$this->sendWhatsAppNotification($noHpOrangTua, "Anak Anda telah pulang dari SMKN 2 Kalianda pada pukul {$jam}. Terima kasih!");
+                    $this->sendWhatsAppNotification($noHpOrangTua, "Anak Anda telah pulang dari SMKN 2 Kalianda pada pukul 15:31:15 Terima kasih!");
                     echo "success|Terima Kasih, Hati Hati Di Jalan Pulang|out";
                 } else {
                     echo "error|Maaf Gagal Absen, Hubungi Petugas IT Sekolah|out";
