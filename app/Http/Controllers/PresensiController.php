@@ -20,7 +20,7 @@ class PresensiController extends Controller
     public function create()
     {
         $harini = date("Y-m-d");
-        $nisn = Auth::guard('murid')->user()->nisn;
+        $nisn = str_pad((string) Auth::guard('murid')->user()->nisn, 10, '0',STR_PAD_LEFT);
         $cek = DB::table('presensi')->where('tgl_presensi', $harini)->where('nisn', $nisn)->count();
         $lok_kantor = DB::table('konfigurasi_lokasi')->where('id',1)->first();
         return view('presensi.create', compact('cek','lok_kantor'));
