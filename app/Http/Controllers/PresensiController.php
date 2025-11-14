@@ -100,9 +100,7 @@ class PresensiController extends Controller
         $noHpOrangTua = $murid->no_hp; // Nomor HP orang tua murid
 
         $tgl_presensi = date("Y-m-d");
-        //$jam = date("H:i:s");
-        $jam = date("15:31:15");
-        //$jam = date("07:28:15");
+        $jam = date("H:i:s");
         $lok_kantor = DB::table('konfigurasi_lokasi')->where('id',1)->first();
         $radius_sekolah = DB::table('konfigurasi_lokasi')->where('id', 1)->value('radius');
         //dd($radius_sekolah);
