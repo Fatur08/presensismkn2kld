@@ -152,7 +152,7 @@
         e.preventDefault(); // Hindari perilaku default
         
         const name = "{{ Auth::guard('murid')->user()->nama_lengkap }}";
-        const nisn = "{{ Auth::guard('murid')->user()->nisn }}";
+        const nisn = "{{ str_pad((string) Auth::guard('murid')->user()->nisn, 10, '0',STR_PAD_LEFT) }}";
         const photo = "{{ Auth::guard('murid')->user()->foto }}";
         var lokasi = $('#lokasi').val();
         
