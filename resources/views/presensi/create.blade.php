@@ -220,7 +220,7 @@
         const absen = urlParams.get('absen'); // Bisa "masuk" atau "pulang"
         const lokasi = urlParams.get('lokasi');
         
-        const trueNisn = "{{ Auth::guard('murid')->user()->nisn }}";
+        const trueNisn = "{{ str_pad((string) Auth::guard('murid')->user()->nisn, 10, '0', STR_PAD_LEFT) }}";
         
         console.log(trueNisn === nisn);
         console.log(absen === 'masuk' || absen === 'pulang');
