@@ -119,7 +119,7 @@
                                                     @if (empty($d->foto))
                                                     <img src="{{ asset('assets/img/nophoto.jpg') }}" class="avatar" alt="">
                                                     @else
-                                                    <img src="{{ url($path) }}" class="avatar" alt="">
+                                                    <img src="{{ url($path) }}?v={{ time() }}" class="avatar" alt="">
                                                     @endif
                                                 </td>
                                                 <td style='text-align: center;'>{{ $d->kode_jurusan }}</td>
