@@ -192,7 +192,7 @@ class PresensiController extends Controller
         $response = Http::withHeaders([
             'Authorization' => '2g56PZeupA8DcmPSMz2K',
         ])->withOptions([
-            'verify' => false, // Biar hosting tidak menolak request
+            'verify' => false, // Biar hosting tidak menolak
         ])->post('https://api.fonnte.com/send', [
             'target' => $target,
             'message' => $message,
