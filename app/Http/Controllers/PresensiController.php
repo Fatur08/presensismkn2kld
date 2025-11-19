@@ -186,9 +186,6 @@ class PresensiController extends Controller
      */
     function sendWhatsAppNotification($target, $message)
     {
-        // Pastikan format nomor 62
-        $target = preg_replace('/^0/', '62', $target);
-    
         $response = Http::withHeaders([
             'Authorization' => '2g56PZeupA8DcmPSMz2K',
         ])->withOptions([
@@ -197,12 +194,12 @@ class PresensiController extends Controller
             'target' => $target,
             'message' => $message,
         ]);
-    
+
         Log::info("Fonnte Response", [
             'target' => $target,
             'res' => $response->json()
         ]);
-    
+
         return $response->successful();
     }
 
