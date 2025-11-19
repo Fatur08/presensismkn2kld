@@ -186,15 +186,23 @@ class PresensiController extends Controller
      */
     function sendWhatsAppNotification($target, $message)
     {
+        // Pastikan format nomor 62
+        $target = preg_replace('/^0/', '62', $target);
+    
         $response = Http::withHeaders([
-            'Authorization' => '2g56PZeupA8DcmPSMz2K', // Token API Fonnte Anda
+            'Authorization' => '2g56PZeupA8DcmPSMz2K',
         ])->withOptions([
-            'verify' => base_path('storage/app/cacert.pem'), // Lokasi file cacert.pem
+            'verify' => false, // Biar hosting tidak menolak request
         ])->post('https://api.fonnte.com/send', [
-            'target' => $target, // Nomor HP tujuan
-            'message' => $message, // Pesan notifikasi
+            'target' => $target,
+            'message' => $message,
         ]);
-
+    
+        Log::info("Fonnte Response", [
+            'target' => $target,
+            'res' => $response->json()
+        ]);
+    
         return $response->successful();
     }
 
