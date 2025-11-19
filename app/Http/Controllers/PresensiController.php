@@ -186,9 +186,7 @@ class PresensiController extends Controller
      * Fungsi untuk mengirim notifikasi WhatsApp.
      */
     function sendWhatsAppNotification($target, $message)
-    {
-        $target = preg_replace('/^0/', '62', $target);
-        
+    {   
         $response = Http::withHeaders([
             'Authorization' => '2g56PZeupA8DcmPSMz2K',
         ])->withOptions([
