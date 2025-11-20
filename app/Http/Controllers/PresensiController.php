@@ -638,6 +638,8 @@ class PresensiController extends Controller
 
         $tanggalIndonesia = \Carbon\Carbon::parse($tanggalFix)
             ->translatedFormat('l, d F Y');
+        
+        $tanggalFormatted = \Carbon\Carbon::parse($tanggalFix)->translatedFormat('d F Y');
 
         // Ambil nama jurusan
         $jurusanData = DB::table('jurusan')
@@ -669,6 +671,7 @@ class PresensiController extends Controller
         return view('presensi.cetakrekapharian', compact(
             'tanggal',
             'tanggalIndonesia',
+            'tanggalFormatted',
             'kelas',
             'jurusan',
             'nama_jurusan',
