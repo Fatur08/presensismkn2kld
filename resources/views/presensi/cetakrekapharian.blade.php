@@ -263,7 +263,8 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                     NIP. 19680814 200012 1 002
                 </td>
                 <td style="width: 30%; text-align: justify; vertical-align: top; padding: 0px 5px 5px 20px; font-family: 'Times New Roman', Times, serif; font-size: 12px;">
-                    Kalianda, {{ $tanggalFormatted }}<br>
+                    Kalianda, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}<br>
+                    <!--Kalianda, {{ $tanggalFormatted }}<br>-->
                     Petugas Absensi,
                 </td>
             </tr>
