@@ -205,13 +205,13 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                     $pulang = $r->jam_out;
 
                     if (empty($masuk) && empty($pulang)) {
-                        $ket = 'A'; // Alfa
+                        $ket = 'Alfa'; // Alfa
                     } elseif (!empty($masuk) && empty($pulang)) {
-                        $ket = 'B'; // Bolos
+                        $ket = 'Bolos'; // Bolos
                     } elseif (!empty($masuk) && $masuk > $jamMasuk) {
-                        $ket = 'T'; // Terlambat
+                        $ket = 'Terlambat'; // Terlambat
                     } else {
-                        $ket = 'H'; // Hadir
+                        $ket = 'Hadir'; // Hadir
                     }
                 @endphp
                 
