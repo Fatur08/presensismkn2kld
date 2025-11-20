@@ -17,7 +17,7 @@
             <div class="col-6">
                 <div class="card">
                     <div class="card-body">
-                        <form action="/presensi/cetakrekapbulan" method="POST" target="_blank">
+                        <form action="/presensi/cetakrekapharian" method="POST" target="_blank">
                             @csrf
                             <div class="row">
                                 <div class="col-12">
