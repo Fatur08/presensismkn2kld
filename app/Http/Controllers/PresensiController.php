@@ -657,8 +657,7 @@ class PresensiController extends Controller
                 'murid.nisn',
                 'murid.nama_lengkap',
                 'murid.jenis_kelamin',
-                'presensi.jam_in',
-                'presensi.jam_out'
+                'presensi.*'
             )
             ->where('murid.kode_jurusan', $jurusan)
             ->where('murid.kelas', $kelas)
