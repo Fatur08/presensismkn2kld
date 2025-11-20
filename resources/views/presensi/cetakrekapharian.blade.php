@@ -178,9 +178,9 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
             </tr>
 
             <tr>
-                <th rowspan="2" style="width: 30px; text-align: center;">No</th>
-                <th rowspan="2" style="width: 120px; text-align: center;">NISN</th>
-                <th rowspan="2" style="width: 180px;">Nama Murid</th>
+                <th style="width: 30px; text-align: center;">No</th>
+                <th style="width: 120px; text-align: center;">NISN</th>
+                <th style="width: 180px;">Nama Murid</th>
             </tr>
             <tr>
                 <th style="text-align: center;">
