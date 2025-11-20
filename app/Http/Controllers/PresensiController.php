@@ -632,7 +632,7 @@ class PresensiController extends Controller
         $kelas   = $request->kelas;
         $jurusan = $request->kode_jurusan;
     
-        // Format tanggal ke format MySQL
+        // Format tanggal
         $tanggalFix = \Carbon\Carbon::parse($tanggal)->format('Y-m-d');
     
         // Ambil nama jurusan
@@ -647,18 +647,16 @@ class PresensiController extends Controller
         $jamPulangAsli = DB::table('jamsekolah')->where('id', 1)->value('jam_pulang') ?? '16:00';
         $jamPulangBatas = Carbon::parse($jamPulangAsli)->addMinutes(5)->format('H:i:s');
     
-        // Ambil data presensi harian
-        $rekap = DB::table('murid')
-            ->leftJoin('presensi', function($join) use ($tanggalFix) {
-                $join->on('presensi.nisn', '=', 'murid.nisn')
-                    ->where('tgl_presensi', $tanggalFix);
-            })
+        // PRESENSI sebagai tabel utama
+        $rekap = DB::table('presensi')
+            ->join('murid', 'presensi.nisn', '=', 'murid.nisn')
             ->select(
-                'murid.nisn',
+                'presensi.*',
                 'murid.nama_lengkap',
                 'murid.jenis_kelamin',
-                'presensi.*'
+                'murid.kelas'
             )
+            ->where('presensi.tgl_presensi', $tanggalFix)
             ->where('murid.kode_jurusan', $jurusan)
             ->where('murid.kelas', $kelas)
             ->orderBy('murid.nama_lengkap')
