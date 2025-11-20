@@ -190,20 +190,20 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                 $total_laki_laki = 0;
                 $total_perempuan = 0;
             @endphp
-                
+
             @foreach ($rekap as $r)
-                
+
                 {{-- Hitung total laki-laki & perempuan --}}
                 @if ($r->jenis_kelamin == 'L')
                     @php $total_laki_laki++; @endphp
                 @elseif ($r->jenis_kelamin == 'P')
                     @php $total_perempuan++; @endphp
                 @endif
-                
+
                 @php
                     $masuk  = $r->jam_in;
                     $pulang = $r->jam_out;
-                
+
                     if (empty($masuk) && empty($pulang)) {
                         $ket = 'A'; // Alfa
                     } elseif (!empty($masuk) && empty($pulang)) {
@@ -218,7 +218,13 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                 <tr>
                     <td style="text-align:center;">{{ $no++ }}</td>
                     <td style="text-align:center;">{{ $r->nisn }}</td>
-                    <td>{{ $r->nama_lengkap }}</td>
+                    <td>
+                        @if($r->jenis_kelamin === 'Perempuan')
+                            <b><i>{{ $r->nama_lengkap }}</i></b>
+                        @else
+                            {{ $r->nama_lengkap }}
+                        @endif
+                    </td>
                 
                     <td style="text-align:center;">{{ $masuk ?: '-' }}</td>
                     <td style="text-align:center;">{{ $pulang ?: '-' }}</td>
