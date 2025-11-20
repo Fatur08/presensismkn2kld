@@ -149,7 +149,7 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                 <td colspan="4" style="text-align: center;">
                     <div style="font-size: 18px; font-weight: bold;">
                         REKAPITULASI ABSEN SISWA HARIAN<br>
-                        TAHUN PELAJARAN {{ $tahun }}<br>
+                        TAHUN PELAJARAN<br>
                     </div>
                 </td>
             </tr>
