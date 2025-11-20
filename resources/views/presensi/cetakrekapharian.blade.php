@@ -172,7 +172,7 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
             ?>
 
             <tr>
-                <th colspan="2">BULAN {{ strtoupper($namabulan[$bulan]) }} {{ $tahun }}</th>
+                <th colspan="3">BULAN {{ strtoupper($namabulan[$bulan]) }} {{ $tahun }}</th>
                 <th colspan="2" rowspan="2">Jam</th>
                 <th rowspan="2" style="vertical-align: top;">K<br>e<br>t.</th>
             </tr>
