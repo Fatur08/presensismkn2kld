@@ -353,7 +353,7 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                     } elseif (($hari != 'Sunday' && $hari != 'Minggu') && !$isLibur && !$isIzin && !$isSakit && !$isTerlambat && empty($d->$tgl)) {
                         $totalalfa++;
                     }
-                    dd($d->$tgl, $jamMasuk, $jamPulangAsli, $jamPulangBatas);
+                    //dd($d->$tgl, $jamMasuk, $jamPulangAsli, $jamPulangBatas);
                 ?>
                 <td style="text-align: center;">
                     <?php if ($hari == 'Sunday' || $hari == 'Minggu'): ?>
