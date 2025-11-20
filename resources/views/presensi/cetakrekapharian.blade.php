@@ -194,9 +194,9 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
             @foreach ($rekap as $r)
 
                 {{-- Hitung total laki-laki & perempuan --}}
-                @if ($r->jenis_kelamin == 'L')
+                @if ($r->jenis_kelamin == 'Laki-laki')
                     @php $total_laki_laki++; @endphp
-                @elseif ($r->jenis_kelamin == 'P')
+                @elseif ($r->jenis_kelamin == 'Perempuan')
                     @php $total_perempuan++; @endphp
                 @endif
 
