@@ -203,7 +203,6 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                 @php
                     $masuk  = $r->jam_in;
                     $pulang = $r->jam_out;
-                    dd($masuk, $pulang, $jamMasuk, $jamPulangAsli, $jamPulangBatas);
 
                     if (empty($masuk) && empty($pulang)) {
                         $ket = 'A'; // Alfa
