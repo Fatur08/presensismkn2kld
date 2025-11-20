@@ -174,24 +174,6 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
             <tr>
                 <th colspan="3">BULAN {{ strtoupper($namabulan[$bulan]) }} {{ $tahun }}</th>
                 <th colspan="2" rowspan="2">Jam</th>
-                <th rowspan="3" style="vertical-align: top; background-color: green; color: white;">
-                    H<br>A<br>D<br>I<br>R
-                </th>
-                <th rowspan="3" style="vertical-align: top; background-color: saddlebrown; color: white;">
-                    T<br>E<br>R<br>L<br>A<br>M<br>B<br>A<br>T
-                </th>
-                <th rowspan="3" style="vertical-align: top; background-color: red; color: white;">
-                    A<br>L<br>F<br>A
-                </th>
-                <th rowspan="3" style="vertical-align: top; background-color: yellow; color: black;">
-                    I<br>Z<br>I<br>N
-                </th>
-                <th rowspan="3" style="vertical-align: top; background-color: blue; color: white;">
-                    S<br>A<br>K<br>I<br>T
-                </th>
-                <th rowspan="3" style="vertical-align: top; background-color: purple; color: white;">
-                    B<br>O<br>L<br>O<br>S
-                </th>
                 <th rowspan="3" style="vertical-align: top;">K<br>e<br>t.</th>
             </tr>
 
