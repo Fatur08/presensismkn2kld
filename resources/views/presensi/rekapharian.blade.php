@@ -21,6 +21,16 @@
                             @csrf
                             <div class="row">
                                 <div class="col-12">
+                                    <div class="input-icon">
+                                        <span class="input-icon-addon">
+                                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-event"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M16 3l0 4" /><path d="M8 3l0 4" /><path d="M4 11l16 0" /><path d="M8 15h2v2h-2z" /></svg>
+                                        </span>
+                                        <input type="text" value="" id="tanggal" name="tanggal" class="form-control" placeholder="Masukkan Tanggal" autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-12">
                                     <div class="form-group">
                                         <select name="kode_jurusan" id="kode_jurusan" class="form-select">
                                             <option value="">Pilih Jurusan</option>
@@ -89,3 +99,59 @@
     </div>
 </div>
 @endsection
+@push('myscript')
+<script>
+    $(function(){
+        $("#tanggal").datepicker({ 
+        autoclose: true, 
+        todayHighlight: true,
+        format:'yyyy-mm-dd'
+        });
+
+        $("#formcetakrekapharian").submit(function(){
+            var nama_supplier = $("#nama_supplier").val();
+            var alamat = $("#alamat").val();
+            var no_hp = $("#no_hp").val();
+            if(nama_supplier==""){
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'Nama Supplier Harus Diisi',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                  }).then(()=> {
+                      $("#nama_supplier").focus();
+                  });
+                return false;
+            } else if (alamat==""){
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'Alamat Harus Diisi',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                  }).then(()=> {
+                      $("#alamat").focus();
+                  });
+                return false;
+            } else if (no_hp==""){
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'No. HP Harus Diisi',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                  }).then(()=> {
+                      $("#no_hp").focus();
+                  });
+                return false;
+            }
+        });
+
+
+        flatpickr("#tanggal", {
+            dateFormat: "d F Y", // format tampilan: 15 September 2025
+            altInput: true,
+            altFormat: "d F Y",
+            locale: "id" // biar bulan pakai bahasa Indonesia
+        });
+    });
+</script>
+@endpush
