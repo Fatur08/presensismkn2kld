@@ -99,6 +99,11 @@ Route::middleware(['auth:user'])->group(function(){
     Route::post('/peta_jam_pulang',[PresensiController::class,'peta_jam_pulang']);
     Route::get('/presensi/rekappresensi',[PresensiController::class,'rekappresensi']);
     Route::post('/presensi/cetakrekappresensi',[PresensiController::class,'cetakrekappresensi']);
+
+    Route::get('/presensi/rekapharian',[PresensiController::class,'rekapharian']);
+    Route::post('/presensi/cetakrekapharian',[PresensiController::class,'cetakrekapharian']);
+
+
     Route::get('/presensi/rekapbulan',[PresensiController::class,'rekapbulan']);
     Route::post('/presensi/cetakrekapbulan',[PresensiController::class,'cetakrekapbulan']);
     Route::get('/presensi/rekapsemester',[PresensiController::class,'rekapsemester']);
