@@ -645,6 +645,7 @@ class PresensiController extends Controller
         // Ambil jam sekolah
         $jamMasuk = DB::table('jamsekolah')->where('id', 1)->value('jam_masuk') ?? '07:00';
         $jamPulangAsli = DB::table('jamsekolah')->where('id', 1)->value('jam_pulang') ?? '16:00';
+        $jamPulangBatas = Carbon::parse($jamPulangAsli)->addMinutes(5)->format('H:i:s');
     
         // Ambil data presensi harian
         $rekap = DB::table('murid')
@@ -671,7 +672,8 @@ class PresensiController extends Controller
             'nama_jurusan',
             'rekap',
             'jamMasuk',
-            'jamPulangAsli'
+            'jamPulangAsli',
+            'jamPulangBatas'
         ));
     }
     
