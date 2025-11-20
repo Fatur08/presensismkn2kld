@@ -628,73 +628,43 @@ class PresensiController extends Controller
 
     public function cetakrekapharian(Request $request)
     {
-        $jamMasuk = DB::table('jamsekolah')->where('id', 1)->value('jam_masuk');
-
-        // Jika tidak ada data jam_masuk, gunakan default "07:00"
-        $jamMasuk = $jamMasuk ?? '07:00';
-
-        $jamPulangAsli = DB::table('jamsekolah')->where('id', 1)->value('jam_pulang') ?? '16:00';
-
-        // Tambahkan 5 menit toleransi
-        $jamPulangBatas = Carbon::parse($jamPulangAsli)->addMinutes(5)->format('H:i:s');
-        
+        $tanggal = $request->tanggal;
+        $kelas   = $request->kelas;
         $jurusan = $request->kode_jurusan;
-        // Ambil nama jurusan berdasarkan kode_jurusan
+    
+        // Ambil nama jurusan
         $jurusanData = DB::table('jurusan')
-        ->where('kode_jurusan', $jurusan)
-        ->first();
-
+            ->where('kode_jurusan', $jurusan)
+            ->first();
+    
         $nama_jurusan = $jurusanData ? $jurusanData->nama_jurusan : '-';
-
-        $kelas = $request->kelas;
-        $bulan = $request->bulan;
-        $tahun = $request->tahun;
-        $namabulan = ["","Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+    
+        // Ambil jam masuk & jam pulang
+        $jamMasuk = DB::table('jamsekolah')->where('id', 1)->value('jam_masuk') ?? '07:00';
+        $jamPulangAsli = DB::table('jamsekolah')->where('id', 1)->value('jam_pulang') ?? '16:00';
+        $jamPulangBatas = Carbon::parse($jamPulangAsli)->addMinutes(5)->format('H:i:s');
+    
+        // Ambil data siswa + presensi hari itu (1 hari saja)
         $rekap = DB::table('murid')
-            ->leftJoin('presensi', function($join) use ($bulan, $tahun) {
+            ->leftJoin('presensi', function($join) use ($tanggal) {
                 $join->on('presensi.nisn', '=', 'murid.nisn')
-                    ->whereMonth('tgl_presensi', $bulan)  // Menyesuaikan dengan bulan saja
-                    ->whereYear('tgl_presensi', $tahun);
+                     ->where('tgl_presensi', $tanggal);  // FILTER PER TANGGAL SAJA
             })
-            ->selectRaw('murid.nisn, nama_lengkap, murid.jenis_kelamin,
-                MAX(IF(DAY(tgl_presensi) = 1,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_1,
-                MAX(IF(DAY(tgl_presensi) = 2,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_2,
-                MAX(IF(DAY(tgl_presensi) = 3,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_3,
-                MAX(IF(DAY(tgl_presensi) = 4,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_4,
-                MAX(IF(DAY(tgl_presensi) = 5,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_5,
-                MAX(IF(DAY(tgl_presensi) = 6,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_6,
-                MAX(IF(DAY(tgl_presensi) = 7,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_7,
-                MAX(IF(DAY(tgl_presensi) = 8,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_8,
-                MAX(IF(DAY(tgl_presensi) = 9,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_9,
-                MAX(IF(DAY(tgl_presensi) = 10,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_10,
-                MAX(IF(DAY(tgl_presensi) = 11,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_11,
-                MAX(IF(DAY(tgl_presensi) = 12,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_12,
-                MAX(IF(DAY(tgl_presensi) = 13,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_13,
-                MAX(IF(DAY(tgl_presensi) = 14,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_14,
-                MAX(IF(DAY(tgl_presensi) = 15,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_15,
-                MAX(IF(DAY(tgl_presensi) = 16,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_16,
-                MAX(IF(DAY(tgl_presensi) = 17,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_17,
-                MAX(IF(DAY(tgl_presensi) = 18,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_18,
-                MAX(IF(DAY(tgl_presensi) = 19,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_19,
-                MAX(IF(DAY(tgl_presensi) = 20,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_20,
-                MAX(IF(DAY(tgl_presensi) = 21,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_21,
-                MAX(IF(DAY(tgl_presensi) = 22,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_22,
-                MAX(IF(DAY(tgl_presensi) = 23,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_23,
-                MAX(IF(DAY(tgl_presensi) = 24,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_24,
-                MAX(IF(DAY(tgl_presensi) = 25,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_25,
-                MAX(IF(DAY(tgl_presensi) = 26,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_26,
-                MAX(IF(DAY(tgl_presensi) = 27,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_27,
-                MAX(IF(DAY(tgl_presensi) = 28,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_28,
-                MAX(IF(DAY(tgl_presensi) = 29,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_29,
-                MAX(IF(DAY(tgl_presensi) = 30,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_30,
-                MAX(IF(DAY(tgl_presensi) = 31,CONCAT(jam_in,"-",IFNULL(jam_out,"00:00:00")),"")) as tgl_31
-            ')
+            ->selectRaw("
+                murid.nisn,
+                murid.nama_lengkap,
+                murid.jenis_kelamin,
+                CONCAT(IFNULL(jam_in, ''), '-', IFNULL(jam_out, '')) as data_hari
+            ")
             ->where('murid.kode_jurusan', $jurusan)
             ->where('murid.kelas', $kelas)
-            ->groupBy('murid.nisn', 'nama_lengkap', 'murid.jenis_kelamin')
+            ->groupBy('murid.nisn', 'murid.nama_lengkap', 'murid.jenis_kelamin','jam_in','jam_out')
             ->get();
-
-            return view('presensi.cetakrekapharian', compact('jurusan', 'nama_jurusan','kelas','bulan','tahun','namabulan','rekap', 'jamMasuk', 'jamPulangAsli', 'jamPulangBatas'));
+        
+        return view('presensi.cetakrekapharian', compact(
+            'tanggal', 'jurusan', 'nama_jurusan', 'kelas',
+            'rekap', 'jamMasuk', 'jamPulangAsli', 'jamPulangBatas'
+        ));
     }
     
     
