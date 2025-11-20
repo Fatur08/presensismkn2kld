@@ -631,22 +631,26 @@ class PresensiController extends Controller
         $tanggal = $request->tanggal;
         $kelas   = $request->kelas;
         $jurusan = $request->kode_jurusan;
-    
+
         // Format tanggal
         $tanggalFix = \Carbon\Carbon::parse($tanggal)->format('Y-m-d');
-    
+        setlocale(LC_TIME, 'id_ID.utf8');
+
+        $tanggalIndonesia = \Carbon\Carbon::parse($tanggalFix)
+            ->translatedFormat('l, d F Y');
+
         // Ambil nama jurusan
         $jurusanData = DB::table('jurusan')
             ->where('kode_jurusan', $jurusan)
             ->first();
-    
+
         $nama_jurusan = $jurusanData ? $jurusanData->nama_jurusan : '-';
-    
+
         // Ambil jam sekolah
         $jamMasuk = DB::table('jamsekolah')->where('id', 1)->value('jam_masuk') ?? '07:00';
         $jamPulangAsli = DB::table('jamsekolah')->where('id', 1)->value('jam_pulang') ?? '16:00';
         $jamPulangBatas = Carbon::parse($jamPulangAsli)->addMinutes(5)->format('H:i:s');
-    
+
         // PRESENSI sebagai tabel utama
         $rekap = DB::table('presensi')
             ->join('murid', 'presensi.nisn', '=', 'murid.nisn')
@@ -661,9 +665,10 @@ class PresensiController extends Controller
             ->where('murid.kelas', $kelas)
             ->orderBy('murid.nama_lengkap')
             ->get();
-            
+
         return view('presensi.cetakrekapharian', compact(
             'tanggal',
+            'tanggalIndonesia',
             'kelas',
             'jurusan',
             'nama_jurusan',

@@ -168,7 +168,7 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
         <table class="tabelpresensi">
 
             <tr>
-                <th colspan="3">BULAN</th>
+                <th colspan="3">{{ $tanggalIndonesia }}</th>
                 <th colspan="2">Jam</th>
                 <th rowspan="2" style="vertical-align: top;">K<br>e<br>t.</th>
             </tr>
