@@ -199,46 +199,6 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                 <th rowspan="2" style="width: 30px; text-align: center;">No</th>
                 <th rowspan="2" style="width: 120px; text-align: center;">NISN</th>
                 <th rowspan="2" style="width: 180px;">Nama Murid</th>
-                <?php
-                $jumlahHari = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
-                    for($i = 1; $i <= $jumlahHari; $i++) {
-                ?>
-                <th>{{ $i }}</th>
-                <?php } ?>
-            </tr>
-            <tr>
-                <?php
-                    setlocale(LC_TIME, 'id_ID.utf8'); // Mengatur lokal ke Bahasa Indonesia
-
-                    // Gunakan bulan dan tahun dari input form, bukan bulan sekarang
-                    $jumlahHari = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
-
-                    // Hari dalam bahasa Indonesia
-                    $hariIndonesia = [
-                        'Sunday' => 'Minggu',
-                        'Monday' => 'Senin',
-                        'Tuesday' => 'Selasa',
-                        'Wednesday' => 'Rabu',
-                        'Thursday' => 'Kamis',
-                        'Friday' => 'Jumat',
-                        'Saturday' => 'Sabtu',
-                    ];
-                
-                    for ($i = 1; $i <= $jumlahHari; $i++) {
-                        $tanggal = $tahun . '-' . $bulan . '-' . str_pad($i, 2, '0', STR_PAD_LEFT);
-                        $hariInggris = date('l', strtotime($tanggal));
-                        $hari = $hariIndonesia[$hariInggris];
-                    
-                        // Pecah huruf satu per satu dan gabungkan dengan <br>
-                        $hurufHari = '';
-                        foreach (mb_str_split($hari) as $huruf) {
-                            $hurufHari .= $huruf . '<br>';
-                        }
-                ?>
-                    <th style="text-align: center; vertical-align: top; line-height: 1;">
-                        {!! $hurufHari !!}
-                    </th>
-                <?php } ?>
             </tr>
 
             @php
