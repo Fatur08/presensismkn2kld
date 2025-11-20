@@ -650,17 +650,18 @@ class PresensiController extends Controller
                 $join->on('presensi.nisn', '=', 'murid.nisn')
                      ->where('tgl_presensi', $tanggal);  // FILTER PER TANGGAL SAJA
             })
-            ->selectRaw("
-                murid.nisn,
-                murid.nama_lengkap,
-                murid.jenis_kelamin,
-                CONCAT(IFNULL(jam_in, ''), '-', IFNULL(jam_out, '')) as data_hari
-            ")
+            ->select(
+                'murid.nisn',
+                'murid.nama_lengkap',
+                'murid.jenis_kelamin',
+                'presensi.jam_in',
+                'presensi.jam_out'
+            )
             ->where('murid.kode_jurusan', $jurusan)
             ->where('murid.kelas', $kelas)
-            ->groupBy('murid.nisn', 'murid.nama_lengkap', 'murid.jenis_kelamin','jam_in','jam_out')
+            ->orderBy('murid.nama_lengkap')
             ->get();
-        
+            
         return view('presensi.cetakrekapharian', compact(
             'tanggal', 'jurusan', 'nama_jurusan', 'kelas',
             'rekap', 'jamMasuk', 'jamPulangAsli', 'jamPulangBatas'

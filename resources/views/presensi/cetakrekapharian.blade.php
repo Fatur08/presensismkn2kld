@@ -190,21 +190,28 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                 $total_laki_laki = 0;
                 $total_perempuan = 0;
             @endphp
-            
+                
             @foreach ($rekap as $r)
+                
+                {{-- Hitung total laki-laki & perempuan --}}
+                @if ($r->jenis_kelamin == 'L')
+                    @php $total_laki_laki++; @endphp
+                @elseif ($r->jenis_kelamin == 'P')
+                    @php $total_perempuan++; @endphp
+                @endif
+                
                 @php
-                    // Tentukan Keterangan
                     $masuk  = $r->jam_in;
                     $pulang = $r->jam_out;
-            
-                    if (!$masuk && !$pulang) {
+                
+                    if (empty($masuk) && empty($pulang)) {
                         $ket = 'A'; // Alfa
-                    } elseif ($masuk && !$pulang && $masuk < $jamMasuk) {
-                        $ket = 'B'; // Bolos (tidak pulang)
-                    } elseif ($masuk && $masuk > $jamMasuk) {
+                    } elseif (!empty($masuk) && empty($pulang)) {
+                        $ket = 'B'; // Bolos
+                    } elseif (!empty($masuk) && $masuk > $jamMasuk) {
                         $ket = 'T'; // Terlambat
                     } else {
-                        $ket = 'H'; // Hadir normal
+                        $ket = 'H'; // Hadir
                     }
                 @endphp
                 
@@ -213,17 +220,8 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                     <td style="text-align:center;">{{ $r->nisn }}</td>
                     <td>{{ $r->nama_lengkap }}</td>
                 
-                    {{-- Jam Masuk --}}
-                    <td style="text-align:center;">
-                        {{ $masuk ?: '-' }}
-                    </td>
-                
-                    {{-- Jam Pulang --}}
-                    <td style="text-align:center;">
-                        {{ $pulang ?: '-' }}
-                    </td>
-                
-                    {{-- Keterangan --}}
+                    <td style="text-align:center;">{{ $masuk ?: '-' }}</td>
+                    <td style="text-align:center;">{{ $pulang ?: '-' }}</td>
                     <td style="text-align:center;">{{ $ket }}</td>
                 </tr>
             @endforeach
