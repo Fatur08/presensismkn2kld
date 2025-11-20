@@ -148,7 +148,7 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
             <tr>
                 <td colspan="4" style="text-align: center;">
                     <div style="font-size: 18px; font-weight: bold;">
-                        REKAPITULASI ABSEN SISWA BULANAN<br>
+                        REKAPITULASI ABSEN SISWA HARIAN<br>
                         TAHUN PELAJARAN {{ $tahun }}<br>
                     </div>
                 </td>
@@ -248,7 +248,7 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                 $rekap = $rekap->sortBy('nama_lengkap');
             @endphp
 
-            @foreach ($rekap as $d)
+            <!--@foreach ($rekap as $d)
             <tr>
                 <td style='text-align: center; width: 30px;'>{{ $no++ }}</td>    
                 <td style="width: 120px;">{{ $d->nisn }}</td>
@@ -376,7 +376,6 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                         <?php if($jam_masuk <= $jamMasuk && $jam_pulang >= $jamPulangAsli && $jam_pulang <= $jamPulangBatas): ?>
                             <div style="width: 10px; height: 10px; background-color: green; margin: auto;"></div>
                         <?php elseif($jam_masuk > $jamMasuk && $jam_pulang >= $jamPulangAsli && $jam_pulang <= $jamPulangBatas): ?>
-                            <!--<div style="width: 10px; height: 10px; background-color: green; margin: auto;"></div>-->
                             <div style="width: 10px; height: 10px; background-color: saddlebrown; margin: auto;"></div>
                         <?php else: ?>
                             <div style="width: 10px; height: 10px; background-color: red; margin: auto;"></div>
@@ -404,7 +403,7 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                     @endif
                 </td>
             </tr>
-            @endforeach
+            @endforeach-->
         </table>
 
         <table width="100%" style="margin-top: 20px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
