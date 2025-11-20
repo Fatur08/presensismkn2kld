@@ -632,6 +632,9 @@ class PresensiController extends Controller
         $kelas   = $request->kelas;
         $jurusan = $request->kode_jurusan;
     
+        // Format tanggal ke format MySQL
+        $tanggalFix = \Carbon\Carbon::parse($tanggal)->format('Y-m-d');
+    
         // Ambil nama jurusan
         $jurusanData = DB::table('jurusan')
             ->where('kode_jurusan', $jurusan)
@@ -639,16 +642,15 @@ class PresensiController extends Controller
     
         $nama_jurusan = $jurusanData ? $jurusanData->nama_jurusan : '-';
     
-        // Ambil jam masuk & jam pulang
+        // Ambil jam sekolah
         $jamMasuk = DB::table('jamsekolah')->where('id', 1)->value('jam_masuk') ?? '07:00';
         $jamPulangAsli = DB::table('jamsekolah')->where('id', 1)->value('jam_pulang') ?? '16:00';
-        $jamPulangBatas = Carbon::parse($jamPulangAsli)->addMinutes(5)->format('H:i:s');
     
-        // Ambil data siswa + presensi hari itu (1 hari saja)
+        // Ambil data presensi harian
         $rekap = DB::table('murid')
-            ->leftJoin('presensi', function($join) use ($tanggal) {
+            ->leftJoin('presensi', function($join) use ($tanggalFix) {
                 $join->on('presensi.nisn', '=', 'murid.nisn')
-                     ->where('tgl_presensi', $tanggal);  // FILTER PER TANGGAL SAJA
+                    ->where('tgl_presensi', $tanggalFix);
             })
             ->select(
                 'murid.nisn',
@@ -663,8 +665,13 @@ class PresensiController extends Controller
             ->get();
             
         return view('presensi.cetakrekapharian', compact(
-            'tanggal', 'jurusan', 'nama_jurusan', 'kelas',
-            'rekap', 'jamMasuk', 'jamPulangAsli', 'jamPulangBatas'
+            'tanggal',
+            'kelas',
+            'jurusan',
+            'nama_jurusan',
+            'rekap',
+            'jamMasuk',
+            'jamPulangAsli'
         ));
     }
     
