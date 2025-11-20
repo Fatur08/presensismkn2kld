@@ -166,13 +166,9 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
         </table>
         
         <table class="tabelpresensi">
-            <?php
-                // Ganti supaya jumlah hari sesuai bulan & tahun yang dikirim
-                $jumlahHari = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
-            ?>
 
             <tr>
-                <th colspan="3">BULAN {{ strtoupper($namabulan[$bulan]) }} {{ $tahun }}</th>
+                <th colspan="3">BULAN</th>
                 <th colspan="2">Jam</th>
                 <th rowspan="2" style="vertical-align: top;">K<br>e<br>t.</th>
             </tr>
