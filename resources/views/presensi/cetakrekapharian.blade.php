@@ -237,24 +237,6 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
             <tr>
                 <td style="width: 40%; vertical-align: top;">
                     <b>Keterangan :</b><br><br>
-                    <table style="font-family: Arial, Helvetica, sans-serif; font-size: 10px;">
-                        <tr>
-                            <td><div style="width: 12px; height: 12px; background-color: green; display: inline-block;"></div></td>
-                            <td style="padding-right: 5px;">Hadir</td>
-                            <td><div style="width: 12px; height: 12px; background-color: brown; display: inline-block;"></div></td>
-                            <td style="padding-right: 5px;">Terlambat</td>
-                            <td><div style="width: 12px; height: 12px; background-color: red; display: inline-block;"></div></td>
-                            <td style="padding-right: 5px;">Alfa</td>
-                            <td><div style="width: 12px; height: 12px; background-color: yellow; display: inline-block;"></div></td>
-                            <td style="padding-right: 5px;">Izin</td>
-                            <td><div style="width: 12px; height: 12px; background-color: blue; display: inline-block;"></div></td>
-                            <td style="padding-right: 5px;">Sakit</td>
-                            <td><div style="width: 12px; height: 12px; background-color: purple; display: inline-block;"></div></td>
-                            <td style="padding-right: 5px;">Bolos</td>
-                        </tr>
-                    </table>
-
-                    <br><br>
                     <table style="width: 50%;">
                         <tr>
                             <td style="width: 30%; font-size: 11px;">Laki-laki</td>
