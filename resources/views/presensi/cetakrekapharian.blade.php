@@ -190,14 +190,43 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                 $total_laki_laki = 0;
                 $total_perempuan = 0;
             @endphp
-
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
+            
+            @foreach ($rekap as $r)
+                @php
+                    // Tentukan Keterangan
+                    $masuk  = $r->jam_in;
+                    $pulang = $r->jam_out;
+            
+                    if (!$masuk && !$pulang) {
+                        $ket = 'A'; // Alfa
+                    } elseif ($masuk && !$pulang && $masuk < $jamMasuk) {
+                        $ket = 'B'; // Bolos (tidak pulang)
+                    } elseif ($masuk && $masuk > $jamMasuk) {
+                        $ket = 'T'; // Terlambat
+                    } else {
+                        $ket = 'H'; // Hadir normal
+                    }
+                @endphp
+                
+                <tr>
+                    <td style="text-align:center;">{{ $no++ }}</td>
+                    <td style="text-align:center;">{{ $r->nisn }}</td>
+                    <td>{{ $r->nama_lengkap }}</td>
+                
+                    {{-- Jam Masuk --}}
+                    <td style="text-align:center;">
+                        {{ $masuk ?: '-' }}
+                    </td>
+                
+                    {{-- Jam Pulang --}}
+                    <td style="text-align:center;">
+                        {{ $pulang ?: '-' }}
+                    </td>
+                
+                    {{-- Keterangan --}}
+                    <td style="text-align:center;">{{ $ket }}</td>
+                </tr>
+            @endforeach
         </table>
 
         <table width="100%" style="margin-top: 20px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
