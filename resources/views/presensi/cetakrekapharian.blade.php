@@ -173,7 +173,7 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
 
             <tr>
                 <th colspan="3">BULAN {{ strtoupper($namabulan[$bulan]) }} {{ $tahun }}</th>
-                <th colspan="<?= $jumlahHari ?>">Tanggal</th>
+                <th colspan="2">Jam</th>
                 <th rowspan="3" style="vertical-align: top; background-color: green; color: white;">
                     H<br>A<br>D<br>I<br>R
                 </th>
@@ -199,13 +199,12 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                 <th rowspan="2" style="width: 30px; text-align: center;">No</th>
                 <th rowspan="2" style="width: 120px; text-align: center;">NISN</th>
                 <th rowspan="2" style="width: 180px;">Nama Murid</th>
-                <th colspan="2" style="text-align: center;">Jam</th>
             </tr>
             <tr>
-                <th style="text-align: center;">
+                <th rowspan="2" style="text-align: center;">
                     Masuk
                 </th>
-                <th style="text-align: center;">
+                <th rowspan="2" style="text-align: center;">
                     Pulang
                 </th>
             </tr>
