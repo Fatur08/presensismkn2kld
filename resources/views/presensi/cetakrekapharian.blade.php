@@ -184,6 +184,13 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                     Pulang
                 </th>
             </tr>
+
+            @php
+                $no = 1;
+                $total_laki_laki = 0;
+                $total_perempuan = 0;
+            @endphp
+
             <tr>
                 <th></th>
                 <th></th>
