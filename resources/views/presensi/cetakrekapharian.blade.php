@@ -64,7 +64,7 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
 
         .tabeldatamurid tr td {
             padding: 5px;
-            font-size: 11px;
+            font-size: 12px;
             word-break: break-word;
         }
 
@@ -80,14 +80,14 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
             border: 1px solid #131212;
             padding: 3px;
             background-color: #dbdbdb;
-            font-size: 11px;
+            font-size: 12px;
             word-break: break-word;
         }
 
         .tabelpresensi tr td {
             border: 1px solid #131212;
             padding: 1px;
-            font-size: 11px;
+            font-size: 12px;
             word-break: break-word;
         }
 
@@ -96,25 +96,6 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
             transform: rotate(180deg);
             white-space: nowrap;
         }
-
-
-        .badge-ket {
-            padding: 3px 10px; 
-            font-size: 11px;
-            font-weight: bold;
-            border-radius: 6px;
-            color: white;
-            display: inline-block;
-            margin: 2px 4px; /* memberi jarak antar badge atau dari border */
-        }
-
-        .hadir      { background-color: #28a745; } /* hijau */
-        .alfa       { background-color: #dc3545; } /* merah */
-        .izin       { background-color: #ffc107; color: #000; } /* kuning */
-        .sakit      { background-color: #0d6efd; } /* biru */
-        .terlambat  { background-color: #795548; } /* coklat */
-        .bolos      { background-color: #6f42c1; } /* ungu */
-
 
         @media print {
             body {
@@ -209,27 +190,27 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                 $total_laki_laki = 0;
                 $total_perempuan = 0;
             @endphp
-
+                
             @foreach ($rekapGabungan as $r)
-
+                
                 {{-- Hitung total laki-perempuan --}}
                 @if ($r->jenis_kelamin == 'Laki-laki')
                     @php $total_laki_laki++; @endphp
                 @else
                     @php $total_perempuan++; @endphp
                 @endif
-
+                
                 {{-- Tentukan keterangan presensi --}}
                 @php
                     $masuk  = $r->jam_in;
                     $pulang = $r->jam_out;
                     $ket    = $r->keterangan;  // langsung dari controller
                 @endphp
-
+                
                 <tr>
                     <td style="text-align:center;">{{ $no++ }}</td>
                     <td style="text-align:center;">{{ $r->nisn }}</td>
-
+                
                     <td>
                         @if ($r->jenis_kelamin === 'Perempuan')
                             <b><i>{{ $r->nama_lengkap }}</i></b>
@@ -237,24 +218,13 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                             {{ $r->nama_lengkap }}
                         @endif
                     </td>
-
+                
                     <td style="text-align:center;">{{ $masuk ?: '-' }}</td>
                     <td style="text-align:center;">{{ $pulang ?: '-' }}</td>
-
-                    <td style="text-align:center;">
-                        <span class="badge-ket 
-                            {{ strtolower($ket) == 'hadir' ? 'hadir' : '' }}
-                            {{ strtolower($ket) == 'alfa' ? 'alfa' : '' }}
-                            {{ strtolower($ket) == 'izin' ? 'izin' : '' }}
-                            {{ strtolower($ket) == 'sakit' ? 'sakit' : '' }}
-                            {{ strtolower($ket) == 'terlambat' ? 'terlambat' : '' }}
-                            {{ strtolower($ket) == 'bolos' ? 'bolos' : '' }}"
-                        >
-                            {{ $ket }}
-                        </span>
-                    </td>
+                
+                    <td style="text-align:center;">{{ $ket }}</td>
                 </tr>
-
+                
             @endforeach
         </table>
 
@@ -264,30 +234,30 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                     <b>Keterangan :</b><br><br>
                     <table style="width: 50%;">
                         <tr>
-                            <td style="width: 30%; font-size: 11px;">Laki-laki</td>
-                            <td style="width: 5%; text-align: center; font-size: 11px;">:</td>
-                            <td style="font-size: 11px;">{{ $total_laki_laki }}</td>
+                            <td style="width: 30%; font-size: 14px;">Laki-laki</td>
+                            <td style="width: 5%; text-align: center; font-size: 14px;">:</td>
+                            <td style="font-size: 14px;">{{ $total_laki_laki }}</td>
                         </tr>
                         <tr>
-                            <td style="font-size: 11px;">Perempuan</td>
-                            <td style="text-align: center; font-size: 11px;">:</td>
-                            <td style="font-size: 11px;">{{ $total_perempuan }}</td>
+                            <td style="font-size: 14px;">Perempuan</td>
+                            <td style="text-align: center; font-size: 14px;">:</td>
+                            <td style="font-size: 14px;">{{ $total_perempuan }}</td>
                         </tr>
                         <tr>
-                            <td style="font-size: 11px;">Jumlah</td>
-                            <td style="text-align: center; font-size: 11px;">:</td>
-                            <td style="font-size: 11px;">{{ $total_laki_laki + $total_perempuan }}</td>
+                            <td style="font-size: 14px;">Jumlah</td>
+                            <td style="text-align: center; font-size: 14px;">:</td>
+                            <td style="font-size: 14px;">{{ $total_laki_laki + $total_perempuan }}</td>
                         </tr>
                     </table>
                 </td>
-                <td style="width: 30%; text-align: justify; vertical-align: top; padding: 0px 5px 5px 20px; font-family: 'Times New Roman', Times, serif; font-size: 11px;">
+                <td style="width: 30%; text-align: justify; vertical-align: top; padding: 0px 5px 5px 20px; font-family: 'Times New Roman', Times, serif; font-size: 14px;">
                     Kepala Sekolah <br>
                     SMK Negeri 2 Kalianda,<br><br><br><br><br><br><br>
                     <u><b>NYOMAN MISTER, M.Pd</b></u><br>
                     Pembina<br>
                     NIP. 19680814 200012 1 002
                 </td>
-                <td style="width: 30%; text-align: justify; vertical-align: top; padding: 0px 5px 5px 20px; font-family: 'Times New Roman', Times, serif; font-size: 11px;">
+                <td style="width: 30%; text-align: justify; vertical-align: top; padding: 0px 5px 5px 20px; font-family: 'Times New Roman', Times, serif; font-size: 14px;">
                     Kalianda, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}<br>
                     <!--Kalianda, {{ $tanggalFormatted }}<br>-->
                     Petugas Absensi,
