@@ -64,7 +64,7 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
 
         .tabeldatamurid tr td {
             padding: 5px;
-            font-size: 12px;
+            font-size: 11px;
             word-break: break-word;
         }
 
@@ -80,14 +80,14 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
             border: 1px solid #131212;
             padding: 3px;
             background-color: #dbdbdb;
-            font-size: 12px;
+            font-size: 11px;
             word-break: break-word;
         }
 
         .tabelpresensi tr td {
             border: 1px solid #131212;
             padding: 1px;
-            font-size: 12px;
+            font-size: 11px;
             word-break: break-word;
         }
 
@@ -264,30 +264,30 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                     <b>Keterangan :</b><br><br>
                     <table style="width: 50%;">
                         <tr>
-                            <td style="width: 30%; font-size: 14px;">Laki-laki</td>
-                            <td style="width: 5%; text-align: center; font-size: 14px;">:</td>
-                            <td style="font-size: 14px;">{{ $total_laki_laki }}</td>
+                            <td style="width: 30%; font-size: 11px;">Laki-laki</td>
+                            <td style="width: 5%; text-align: center; font-size: 11px;">:</td>
+                            <td style="font-size: 11px;">{{ $total_laki_laki }}</td>
                         </tr>
                         <tr>
-                            <td style="font-size: 14px;">Perempuan</td>
-                            <td style="text-align: center; font-size: 14px;">:</td>
-                            <td style="font-size: 14px;">{{ $total_perempuan }}</td>
+                            <td style="font-size: 11px;">Perempuan</td>
+                            <td style="text-align: center; font-size: 11px;">:</td>
+                            <td style="font-size: 11px;">{{ $total_perempuan }}</td>
                         </tr>
                         <tr>
-                            <td style="font-size: 14px;">Jumlah</td>
-                            <td style="text-align: center; font-size: 14px;">:</td>
-                            <td style="font-size: 14px;">{{ $total_laki_laki + $total_perempuan }}</td>
+                            <td style="font-size: 11px;">Jumlah</td>
+                            <td style="text-align: center; font-size: 11px;">:</td>
+                            <td style="font-size: 11px;">{{ $total_laki_laki + $total_perempuan }}</td>
                         </tr>
                     </table>
                 </td>
-                <td style="width: 30%; text-align: justify; vertical-align: top; padding: 0px 5px 5px 20px; font-family: 'Times New Roman', Times, serif; font-size: 14px;">
+                <td style="width: 30%; text-align: justify; vertical-align: top; padding: 0px 5px 5px 20px; font-family: 'Times New Roman', Times, serif; font-size: 11px;">
                     Kepala Sekolah <br>
                     SMK Negeri 2 Kalianda,<br><br><br><br><br><br><br>
                     <u><b>NYOMAN MISTER, M.Pd</b></u><br>
                     Pembina<br>
                     NIP. 19680814 200012 1 002
                 </td>
-                <td style="width: 30%; text-align: justify; vertical-align: top; padding: 0px 5px 5px 20px; font-family: 'Times New Roman', Times, serif; font-size: 14px;">
+                <td style="width: 30%; text-align: justify; vertical-align: top; padding: 0px 5px 5px 20px; font-family: 'Times New Roman', Times, serif; font-size: 11px;">
                     Kalianda, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}<br>
                     <!--Kalianda, {{ $tanggalFormatted }}<br>-->
                     Petugas Absensi,
