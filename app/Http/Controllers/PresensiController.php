@@ -631,52 +631,52 @@ class PresensiController extends Controller
         $tanggal = $request->tanggal;
         $kelas   = $request->kelas;
         $jurusan = $request->kode_jurusan;
-    
+
         // Format tanggal
         $tanggalFix = Carbon::parse($tanggal)->format('Y-m-d');
         setlocale(LC_TIME, 'id_ID.utf8');
-    
+
         $tanggalIndonesia = Carbon::parse($tanggalFix)->translatedFormat('l, d F Y');
         $tanggalFormatted = Carbon::parse($tanggalFix)->translatedFormat('d F Y');
-    
+
         // Ambil nama jurusan
         $jurusanData = DB::table('jurusan')
             ->where('kode_jurusan', $jurusan)
             ->first();
-    
+
         $nama_jurusan = $jurusanData ? $jurusanData->nama_jurusan : '-';
-    
+
         // Ambil jam sekolah
         $jamMasuk = DB::table('jamsekolah')->where('id', 1)->value('jam_masuk') ?? '07:00';
         $jamPulangAsli = DB::table('jamsekolah')->where('id', 1)->value('jam_pulang') ?? '16:00';
         $jamPulangBatas = Carbon::parse($jamPulangAsli)->addMinutes(5)->format('H:i:s');
-    
+
         // Ambil semua murid kelas + jurusan hari ini
         $murid = DB::table('murid')
             ->where('kelas', $kelas)
             ->where('kode_jurusan', $jurusan)
             ->orderBy('nama_lengkap')
             ->get();
-    
+
         // Ambil presensi
         $presensi = DB::table('presensi')
             ->where('tgl_presensi', $tanggalFix)
             ->get()
             ->keyBy('nisn');
-    
+
         // Ambil izin & sakit
         $izin = DB::table('pengajuan_izin')
             ->where('tgl_izin', $tanggalFix)
             ->where('status_approved', 1)
             ->get()
             ->keyBy('nisn');
-    
+
         // Gabungkan menjadi satu rekap
         $rekapGabungan = [];
-    
+
         foreach ($murid as $m) {
             $nisn = $m->nisn;
-        
+
             $item = (object)[
                 'nisn'            => $nisn,
                 'nama_lengkap'    => $m->nama_lengkap,
@@ -686,28 +686,43 @@ class PresensiController extends Controller
                 'jam_out'         => null,
                 'keterangan'      => 'Alfa' // default alfa
             ];
-        
+
             if ($presensi->has($nisn)) {
                 $p = $presensi[$nisn];
-            
+                        
                 $item->jam_in  = $p->jam_in;
                 $item->jam_out = $p->jam_out;
+                        
+                // Default hadir dulu
                 $item->keterangan = 'Hadir';
+                        
+                // Cek bolos (ada jam_in tapi tidak ada jam_out)
+                if (!empty($p->jam_in) && empty($p->jam_out)) {
+                    $item->keterangan = 'Bolos';
+                }
+            
+                // Cek terlambat
+                if (!empty($p->jam_in) && $p->jam_in > $jamMasuk) {
+                    // Jika sebelumnya bolos, tetap bolos
+                    if ($item->keterangan !== 'Bolos') {
+                        $item->keterangan = 'Terlambat';
+                    }
+                }
             }
-        
+
             if ($izin->has($nisn)) {
                 $i = $izin[$nisn];
-            
+
                 if ($i->status == 'i') {
                     $item->keterangan = 'Izin';
                 } elseif ($i->status == 's') {
                     $item->keterangan = 'Sakit';
                 }
             }
-        
+
             $rekapGabungan[] = $item;
         }
-    
+
         return view('presensi.cetakrekapharian', compact(
             'tanggal',
             'tanggalIndonesia',
