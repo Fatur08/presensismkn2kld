@@ -190,28 +190,44 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                 $total_laki_laki = 0;
                 $total_perempuan = 0;
             @endphp
-
+                
             @foreach ($rekap as $r)
-
+                
                 {{-- Hitung total laki-laki & perempuan --}}
                 @if ($r->jenis_kelamin == 'Laki-laki')
                     @php $total_laki_laki++; @endphp
                 @elseif ($r->jenis_kelamin == 'Perempuan')
                     @php $total_perempuan++; @endphp
                 @endif
-
+                
                 @php
                     $masuk  = $r->jam_in;
                     $pulang = $r->jam_out;
-
-                    if (empty($masuk) && empty($pulang)) {
-                        $ket = 'Alfa'; // Alfa
-                    } elseif (!empty($masuk) && empty($pulang)) {
-                        $ket = 'Bolos'; // Bolos
-                    } elseif (!empty($masuk) && $masuk > $jamMasuk) {
-                        $ket = 'Terlambat'; // Terlambat
-                    } else {
-                        $ket = 'Hadir'; // Hadir
+                
+                    // Cek izin / sakit
+                    $ket = null;
+                
+                    if (isset($izin[$r->nisn])) {
+                        $izinData = $izin[$r->nisn]->first();
+                    
+                        if ($izinData->status == 'i') {
+                            $ket = 'Izin';
+                        } elseif ($izinData->status == 's') {
+                            $ket = 'Sakit';
+                        }
+                    }
+                
+                    // Jika belum ada keterangan dari tabel izin
+                    if ($ket === null) {
+                        if (empty($masuk) && empty($pulang)) {
+                            $ket = 'Alfa';
+                        } elseif (!empty($masuk) && empty($pulang)) {
+                            $ket = 'Bolos';
+                        } elseif (!empty($masuk) && $masuk > $jamMasuk) {
+                            $ket = 'Terlambat';
+                        } else {
+                            $ket = 'Hadir';
+                        }
                     }
                 @endphp
                 
@@ -228,7 +244,11 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                 
                     <td style="text-align:center;">{{ $masuk ?: '-' }}</td>
                     <td style="text-align:center;">{{ $pulang ?: '-' }}</td>
-                    <td style="text-align:center;">{{ $ket }}</td>
+                
+                    {{-- Keterangan --}}
+                    <td style="text-align:center;">
+                        {{ $ket }}
+                    </td>
                 </tr>
             @endforeach
         </table>

@@ -668,6 +668,13 @@ class PresensiController extends Controller
             ->orderBy('murid.nama_lengkap')
             ->get();
 
+
+        $izin = DB::table('pengajuan_izin')
+            ->where('tgl_izin', $tanggalFix)
+            ->where('status_approved', 1)
+            ->get()
+            ->groupBy('nisn');
+
         return view('presensi.cetakrekapharian', compact(
             'tanggal',
             'tanggalIndonesia',
@@ -676,6 +683,7 @@ class PresensiController extends Controller
             'jurusan',
             'nama_jurusan',
             'rekap',
+            'izin',
             'jamMasuk',
             'jamPulangAsli',
             'jamPulangBatas'
