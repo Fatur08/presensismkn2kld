@@ -190,27 +190,27 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                 $total_laki_laki = 0;
                 $total_perempuan = 0;
             @endphp
-                
+
             @foreach ($rekapGabungan as $r)
-                
+
                 {{-- Hitung total laki-perempuan --}}
                 @if ($r->jenis_kelamin == 'Laki-laki')
                     @php $total_laki_laki++; @endphp
                 @else
                     @php $total_perempuan++; @endphp
                 @endif
-                
+
                 {{-- Tentukan keterangan presensi --}}
                 @php
                     $masuk  = $r->jam_in;
                     $pulang = $r->jam_out;
                     $ket    = $r->keterangan;  // langsung dari controller
                 @endphp
-                
+
                 <tr>
                     <td style="text-align:center;">{{ $no++ }}</td>
                     <td style="text-align:center;">{{ $r->nisn }}</td>
-                
+
                     <td>
                         @if ($r->jenis_kelamin === 'Perempuan')
                             <b><i>{{ $r->nama_lengkap }}</i></b>
@@ -218,13 +218,29 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                             {{ $r->nama_lengkap }}
                         @endif
                     </td>
-                
+
                     <td style="text-align:center;">{{ $masuk ?: '-' }}</td>
                     <td style="text-align:center;">{{ $pulang ?: '-' }}</td>
-                
-                    <td style="text-align:center;">{{ $ket }}</td>
+
+                    <td style="text-align:center;">
+                        @php
+                            $warna = match($ket) {
+                                'Hadir'      => 'background: #28a745; color: white;',    // Hijau
+                                'Alfa'       => 'background: #dc3545; color: white;',    // Merah
+                                'Izin'       => 'background: #ffc107; color: black;',    // Kuning
+                                'Sakit'      => 'background: #0d6efd; color: white;',    // Biru
+                                'Terlambat'  => 'background: #8B4513; color: white;',    // Coklat
+                                'Bolos'      => 'background: #6f42c1; color: white;',    // Ungu
+                                default      => 'background: gray; color: white;',
+                            };
+                        @endphp
+                        
+                        <span style="padding: 3px 8px; border-radius: 4px; font-size: 11px; {{ $warna }}">
+                            {{ $ket }}
+                        </span>
+                    </td>
                 </tr>
-                
+
             @endforeach
         </table>
 
