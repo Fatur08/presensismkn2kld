@@ -97,6 +97,16 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
             white-space: nowrap;
         }
 
+
+        .txt-hadir { color: #28a745; font-weight: bold; }      /* hijau */
+        .txt-alfa { color: #dc3545; font-weight: bold; }       /* merah */
+        .txt-izin { color: #ffc107; font-weight: bold; }       /* kuning */
+        .txt-sakit { color: #0d6efd; font-weight: bold; }      /* biru */
+        .txt-terlambat { color: #795548; font-weight: bold; }  /* coklat */
+        .txt-bolos { color: #6f42c1; font-weight: bold; }      /* ungu */
+
+
+
         @media print {
             body {
                 background: none;
@@ -222,7 +232,18 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                     <td style="text-align:center;">{{ $masuk ?: '-' }}</td>
                     <td style="text-align:center;">{{ $pulang ?: '-' }}</td>
                 
-                    <td style="text-align:center;">{{ $ket }}</td>
+                    <td style="text-align:center;">
+                        <span class="
+                            {{ strtolower($ket) == 'hadir' ? 'txt-hadir' : '' }}
+                            {{ strtolower($ket) == 'alfa' ? 'txt-alfa' : '' }}
+                            {{ strtolower($ket) == 'izin' ? 'txt-izin' : '' }}
+                            {{ strtolower($ket) == 'sakit' ? 'txt-sakit' : '' }}
+                            {{ strtolower($ket) == 'terlambat' ? 'txt-terlambat' : '' }}
+                            {{ strtolower($ket) == 'bolos' ? 'txt-bolos' : '' }}
+                        ">
+                            {{ $ket }}
+                        </span>
+                    </td>
                 </tr>
                 
             @endforeach
