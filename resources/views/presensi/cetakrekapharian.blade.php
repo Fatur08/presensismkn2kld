@@ -64,7 +64,7 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
 
         .tabeldatamurid tr td {
             padding: 5px;
-            font-size: 8px;
+            font-size: 12px;
             word-break: break-word;
         }
 
@@ -80,14 +80,14 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
             border: 1px solid #131212;
             padding: 3px;
             background-color: #dbdbdb;
-            font-size: 8px;
+            font-size: 12px;
             word-break: break-word;
         }
 
         .tabelpresensi tr td {
             border: 1px solid #131212;
             padding: 1px;
-            font-size: 8px;
+            font-size: 12px;
             word-break: break-word;
         }
 
