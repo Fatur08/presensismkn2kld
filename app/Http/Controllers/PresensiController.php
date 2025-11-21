@@ -631,50 +631,83 @@ class PresensiController extends Controller
         $tanggal = $request->tanggal;
         $kelas   = $request->kelas;
         $jurusan = $request->kode_jurusan;
-
+    
         // Format tanggal
-        $tanggalFix = \Carbon\Carbon::parse($tanggal)->format('Y-m-d');
+        $tanggalFix = Carbon::parse($tanggal)->format('Y-m-d');
         setlocale(LC_TIME, 'id_ID.utf8');
-
-        $tanggalIndonesia = \Carbon\Carbon::parse($tanggalFix)
-            ->translatedFormat('l, d F Y');
-        
-        $tanggalFormatted = \Carbon\Carbon::parse($tanggalFix)->translatedFormat('d F Y');
-
+    
+        $tanggalIndonesia = Carbon::parse($tanggalFix)->translatedFormat('l, d F Y');
+        $tanggalFormatted = Carbon::parse($tanggalFix)->translatedFormat('d F Y');
+    
         // Ambil nama jurusan
         $jurusanData = DB::table('jurusan')
             ->where('kode_jurusan', $jurusan)
             ->first();
-
+    
         $nama_jurusan = $jurusanData ? $jurusanData->nama_jurusan : '-';
-
+    
         // Ambil jam sekolah
         $jamMasuk = DB::table('jamsekolah')->where('id', 1)->value('jam_masuk') ?? '07:00';
         $jamPulangAsli = DB::table('jamsekolah')->where('id', 1)->value('jam_pulang') ?? '16:00';
         $jamPulangBatas = Carbon::parse($jamPulangAsli)->addMinutes(5)->format('H:i:s');
-
-        // PRESENSI sebagai tabel utama
-        $rekap = DB::table('presensi')
-            ->join('murid', 'presensi.nisn', '=', 'murid.nisn')
-            ->select(
-                'presensi.*',
-                'murid.nama_lengkap',
-                'murid.jenis_kelamin',
-                'murid.kelas'
-            )
-            ->where('presensi.tgl_presensi', $tanggalFix)
-            ->where('murid.kode_jurusan', $jurusan)
-            ->where('murid.kelas', $kelas)
-            ->orderBy('murid.nama_lengkap')
+    
+        // Ambil semua murid kelas + jurusan hari ini
+        $murid = DB::table('murid')
+            ->where('kelas', $kelas)
+            ->where('kode_jurusan', $jurusan)
+            ->orderBy('nama_lengkap')
             ->get();
-
-
+    
+        // Ambil presensi
+        $presensi = DB::table('presensi')
+            ->where('tgl_presensi', $tanggalFix)
+            ->get()
+            ->keyBy('nisn');
+    
+        // Ambil izin & sakit
         $izin = DB::table('pengajuan_izin')
             ->where('tgl_izin', $tanggalFix)
             ->where('status_approved', 1)
             ->get()
-            ->groupBy('nisn');
-
+            ->keyBy('nisn');
+    
+        // Gabungkan menjadi satu rekap
+        $rekapGabungan = [];
+    
+        foreach ($murid as $m) {
+            $nisn = $m->nisn;
+        
+            $item = (object)[
+                'nisn'            => $nisn,
+                'nama_lengkap'    => $m->nama_lengkap,
+                'jenis_kelamin'   => $m->jenis_kelamin,
+                'kelas'           => $m->kelas,
+                'jam_in'          => null,
+                'jam_out'         => null,
+                'keterangan'      => 'Alfa' // default alfa
+            ];
+        
+            if ($presensi->has($nisn)) {
+                $p = $presensi[$nisn];
+            
+                $item->jam_in  = $p->jam_in;
+                $item->jam_out = $p->jam_out;
+                $item->keterangan = 'Hadir';
+            }
+        
+            if ($izin->has($nisn)) {
+                $i = $izin[$nisn];
+            
+                if ($i->status == 'i') {
+                    $item->keterangan = 'Izin';
+                } elseif ($i->status == 's') {
+                    $item->keterangan = 'Sakit';
+                }
+            }
+        
+            $rekapGabungan[] = $item;
+        }
+    
         return view('presensi.cetakrekapharian', compact(
             'tanggal',
             'tanggalIndonesia',
@@ -682,8 +715,7 @@ class PresensiController extends Controller
             'kelas',
             'jurusan',
             'nama_jurusan',
-            'rekap',
-            'izin',
+            'rekapGabungan',
             'jamMasuk',
             'jamPulangAsli',
             'jamPulangBatas'
