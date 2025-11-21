@@ -97,6 +97,25 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
             white-space: nowrap;
         }
 
+
+        .badge-ket {
+            padding: 3px 10px; 
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 6px;
+            color: white;
+            display: inline-block;
+            margin: 2px 4px; /* memberi jarak antar badge atau dari border */
+        }
+
+        .hadir      { background-color: #28a745; } /* hijau */
+        .alfa       { background-color: #dc3545; } /* merah */
+        .izin       { background-color: #ffc107; color: #000; } /* kuning */
+        .sakit      { background-color: #0d6efd; } /* biru */
+        .terlambat  { background-color: #795548; } /* coklat */
+        .bolos      { background-color: #6f42c1; } /* ungu */
+
+
         @media print {
             body {
                 background: none;
@@ -223,19 +242,14 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                     <td style="text-align:center;">{{ $pulang ?: '-' }}</td>
 
                     <td style="text-align:center;">
-                        @php
-                            $warna = match($ket) {
-                                'Hadir'      => 'background: #28a745; color: white;',    // Hijau
-                                'Alfa'       => 'background: #dc3545; color: white;',    // Merah
-                                'Izin'       => 'background: #ffc107; color: black;',    // Kuning
-                                'Sakit'      => 'background: #0d6efd; color: white;',    // Biru
-                                'Terlambat'  => 'background: #8B4513; color: white;',    // Coklat
-                                'Bolos'      => 'background: #6f42c1; color: white;',    // Ungu
-                                default      => 'background: gray; color: white;',
-                            };
-                        @endphp
-                        
-                        <span style="padding: 3px 8px; border-radius: 4px; font-size: 11px; {{ $warna }}">
+                        <span class="badge-ket 
+                            {{ strtolower($ket) == 'hadir' ? 'hadir' : '' }}
+                            {{ strtolower($ket) == 'alfa' ? 'alfa' : '' }}
+                            {{ strtolower($ket) == 'izin' ? 'izin' : '' }}
+                            {{ strtolower($ket) == 'sakit' ? 'sakit' : '' }}
+                            {{ strtolower($ket) == 'terlambat' ? 'terlambat' : '' }}
+                            {{ strtolower($ket) == 'bolos' ? 'bolos' : '' }}"
+                        >
                             {{ $ket }}
                         </span>
                     </td>
