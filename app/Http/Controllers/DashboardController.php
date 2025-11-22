@@ -51,8 +51,8 @@ class DashboardController extends Controller
         $rekappresensi = DB::table('presensi')
             ->selectRaw("
                 SUM(IF(jam_in IS NOT NULL AND jam_out IS NOT NULL AND jam_out >= ? AND jam_out <= ?, 1, 0)) as jmlhadir,
-                SUM(IF(jam_in > ?, 1, 0)) as jmlterlambat
-            ", [$jamPulangAsli, $jamPulangBatas, $jamMasuk])
+                SUM(IF(jam_in IS NOT NULL AND jam_in > ? AND jam_out IS NOT NULL AND jam_out >= ? AND jam_out <= ?, 1, 0)) as jmlterlambat
+            ", [$jamPulangAsli, $jamPulangBatas, $jamMasuk, $jamPulangAsli, $jamPulangBatas])
             ->where('nisn', $nisn)
             ->whereMonth('tgl_presensi', $bulanini)
             ->whereYear('tgl_presensi', $tahunini)
