@@ -49,7 +49,25 @@ class DashboardController extends Controller
 
         // Ambil rekap presensi berdasarkan jam_masuk dari database
         $rekappresensi = DB::table('presensi')
-            ->selectRaw('COUNT(nisn) as jmlhadir, SUM(IF(jam_in > ?, 1, 0)) as jmlterlambat', [$jamMasuk])
+            ->selectRaw("
+                SUM(
+                    IF(
+                        jam_in IS NOT NULL 
+                        AND jam_out IS NOT NULL 
+                        AND jam_out >= ?, 
+                        1, 
+                        0
+                    )
+                ) as jmlhadir,
+            
+                SUM(
+                    IF(
+                        jam_in > ?, 
+                        1, 
+                        0
+                    )
+                ) as jmlterlambat
+            ", [$jamPulangBatas, $jamMasuk])
             ->where('nisn', $nisn)
             ->whereMonth('tgl_presensi', $bulanini)
             ->whereYear('tgl_presensi', $tahunini)
