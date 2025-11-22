@@ -50,23 +50,8 @@ class DashboardController extends Controller
         // Ambil rekap presensi berdasarkan jam_masuk dari database
         $rekappresensi = DB::table('presensi')
             ->selectRaw("
-                SUM(
-                    IF(
-                        jam_in IS NOT NULL 
-                        AND jam_out IS NOT NULL 
-                        AND jam_out >= ?, 
-                        1, 
-                        0
-                    )
-                ) as jmlhadir,
-            
-                SUM(
-                    IF(
-                        jam_in > ?, 
-                        1, 
-                        0
-                    )
-                ) as jmlterlambat
+                SUM(IF(jam_in IS NOT NULL AND jam_out IS NOT NULL AND jam_out >= ?, 1, 0)) as jmlhadir,
+                SUM(IF(jam_in > ?, 1, 0)) as jmlterlambat
             ", [$jamPulangBatas, $jamMasuk])
             ->where('nisn', $nisn)
             ->whereMonth('tgl_presensi', $bulanini)
