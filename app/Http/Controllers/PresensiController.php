@@ -689,23 +689,41 @@ class PresensiController extends Controller
 
             if ($presensi->has($nisn)) {
                 $p = $presensi[$nisn];
-                        
+
                 $item->jam_in  = $p->jam_in;
                 $item->jam_out = $p->jam_out;
-                        
-                // Default hadir dulu
-                $item->keterangan = 'Hadir';
-                        
-                // Cek bolos (ada jam_in tapi tidak ada jam_out)
+
+                // Default status
+                $item->keterangan = 'Alfa';
+
+                // Jika ada jam_in tetapi tidak ada jam_out → BOLOS
                 if (!empty($p->jam_in) && empty($p->jam_out)) {
                     $item->keterangan = 'Bolos';
                 }
-            
-                // Cek terlambat
-                if (!empty($p->jam_in) && $p->jam_in > $jamMasuk) {
-                    // Jika sebelumnya bolos, tetap bolos
-                    if ($item->keterangan !== 'Bolos') {
+                // Jika jam_in & jam_out ada → cek HADIR atau TERLAMBAT
+                elseif (!empty($p->jam_in) && !empty($p->jam_out)) {
+                
+                    // CEK HADIR
+                    if (
+                        $p->jam_in <= $jamMasuk &&
+                        $p->jam_out >= $jamPulangAsli &&
+                        $p->jam_out <= $jamPulangBatas
+                    ) {
+                        $item->keterangan = 'Hadir';
+                    }
+                
+                    // CEK TERLAMBAT
+                    elseif (
+                        $p->jam_in > $jamMasuk &&
+                        $p->jam_out >= $jamPulangAsli &&
+                        $p->jam_out <= $jamPulangBatas
+                    ) {
                         $item->keterangan = 'Terlambat';
+                    }
+                
+                    // Jika jam_out ada tapi tidak sesuai jam pulang → tidak sah
+                    else {
+                        $item->keterangan = 'Bolos';
                     }
                 }
             }
