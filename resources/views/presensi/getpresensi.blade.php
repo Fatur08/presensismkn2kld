@@ -28,7 +28,7 @@ function selisih($jam_batas, $jam_masuk)
         <td>{{ $d->nisn }}</td>
         <td>{{ $d->nama_lengkap }}</td>
         <td style='text-align: center;'>{{ $d->kelas }}</td>
-        <td>{{ $d->nama_jurusan }}</td>
+        <td>{{ $d->kode_jurusan }}</td>
         <td style='text-align: center;'>
             {{ $d->jam_in ?? 'Kosong' }}
         </td>
@@ -55,6 +55,12 @@ function selisih($jam_batas, $jam_masuk)
             <a href="#" class="btn btn-primary peta_jam_pulang" id="{{ $d->id }}" style="font-size:8pt; padding:2px 6px; height:auto; line-height:1;">
                 <svg  xmlns="http://www.w3.org/2000/svg"  width="16"  height="16"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-map-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 18.5l-3 -1.5l-6 3v-13l6 -3l6 3l6 -3v7.5" /><path d="M9 4v13" /><path d="M15 7v5.5" /><path d="M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879z" /><path d="M19 18v.01" /></svg>
                 Pulang
+            </a>
+        </td>
+        <td>
+            <a href="#" class="btn btn-secondary peta_jam_pulang" id="{{ $d->id }}" style="font-size:8pt; padding:2px 6px; height:auto; line-height:1;">
+                <svg  xmlns="http://www.w3.org/2000/svg"  width="16"  height="16"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-map-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 18.5l-3 -1.5l-6 3v-13l6 -3l6 3l6 -3v7.5" /><path d="M9 4v13" /><path d="M15 7v5.5" /><path d="M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879z" /><path d="M19 18v.01" /></svg>
+                Edit
             </a>
         </td>
     </tr>

@@ -416,7 +416,8 @@ class PresensiController extends Controller
                 'presensi.*',
                 'murid.nama_lengkap',
                 'murid.kelas',
-                'jurusan.nama_jurusan'
+                'jurusan.nama_jurusan',
+                'jurusan.kode_jurusan'
             )
             ->leftJoin('murid', 'presensi.nisn', '=', 'murid.nisn')
             ->leftJoin('jurusan', 'murid.kode_jurusan', '=', 'jurusan.kode_jurusan')

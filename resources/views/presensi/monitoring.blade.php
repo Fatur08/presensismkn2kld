@@ -71,6 +71,7 @@
                                             <th>Jam Pulang</th>
                                             <th>keterangan</th>
                                             <th>Koordinat</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody id="loadpresensi"></tbody>
@@ -118,25 +119,25 @@
 <script>
     function loadpresensi() {
         // Ambil nilai input dan rapikan spasi
-        let tanggal = $("#tanggal").val()?.trim() || '';
-        let nama_lengkap = $("#nama_lengkap").val()?.trim();
-        let kelas = $("#kelas").val()?.trim();
-        let kode_jurusan = $("#kode_jurusan").val()?.trim();
+        let tanggal         = $("#tanggal").val()?.trim() || '';
+        let nama_lengkap    = $("#nama_lengkap").val()?.trim();
+        let kelas           = $("#kelas").val()?.trim();
+        let kode_jurusan    = $("#kode_jurusan").val()?.trim();
 
         // Kosongkan parameter jika tidak ada input (agar tidak ikut menyaring)
-        nama_lengkap = nama_lengkap === '' ? null : nama_lengkap;
-        kelas = kelas === '' ? null : kelas;
-        kode_jurusan = kode_jurusan === '' ? null : kode_jurusan;
+        nama_lengkap    = nama_lengkap  === '' ? null : nama_lengkap;
+        kelas           = kelas         === '' ? null : kelas;
+        kode_jurusan    = kode_jurusan  === '' ? null : kode_jurusan;
 
         $.ajax({
             type: 'POST',
             url: '/getpresensi',
             data: {
-                _token: "{{ csrf_token() }}",
-                tanggal: tanggal,
-                nama_lengkap: nama_lengkap,
-                kelas: kelas,
-                kode_jurusan: kode_jurusan
+                _token          : "{{ csrf_token() }}",
+                tanggal         : tanggal,
+                nama_lengkap    : nama_lengkap,
+                kelas           : kelas,
+                kode_jurusan    : kode_jurusan
             },
             cache: false,
             success: function(respond) {
@@ -156,9 +157,9 @@
 
     // Inisialisasi datepicker
     $("#tanggal").datepicker({ 
-        autoclose: true, 
-        todayHighlight: true,
-        format: 'yyyy-mm-dd'
+        autoclose       : true, 
+        todayHighlight  : true,
+        format          : 'yyyy-mm-dd'
     });
 
     // Panggil saat pertama kali halaman dibuka
