@@ -1,6 +1,6 @@
 <form action="/presensi/approveizinsakit" method="post">
     @csrf
-    <input type="text" value="{{ $presensi->id }}" id="presensi_id" name="presensi_id">
+    <input type="hidden" value="{{ $presensi->id }}" id="presensi_id" name="presensi_id">
     <div class="row">
         <div class="col-12">
             <div class="form-group">
