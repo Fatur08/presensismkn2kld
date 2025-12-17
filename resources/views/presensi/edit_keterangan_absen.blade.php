@@ -1,12 +1,12 @@
 <form action="/presensi/approveizinsakit" method="post">
     @csrf
-    <input type="hidden" id="id_izinsakit_form" name="id_izinsakit_form">
+    <input type="text" value="{{ $presensi->id }}" id="presensi_id" name="presensi_id">
     <div class="row">
         <div class="col-12">
             <div class="form-group">
-                <select name="status_approved" id="status_approved" class="form-select">
-                    <option value="1">Disetujui</option>
-                    <option value="2">Ditolak</option>
+                <select name="status_absen" id="status_absen" class="form-select">
+                    <option value="Izin">Izin</option>
+                    <option value="Sakit">Sakit</option>
                 </select>
             </div>
         </div>
