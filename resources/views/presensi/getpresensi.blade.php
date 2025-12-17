@@ -113,7 +113,7 @@ function selisih($jam_batas, $jam_masuk)
                     $("#modal_edit_keterangan_absen").html(respond);
                 }
             });
-            $("#modal-peta_jam_pulang").modal("show");
+            $("#modal-edit_keterangan_absen").modal("show");
         });
 
         $('#modal-peta_jam_masuk').on('hidden.bs.modal', function () {
