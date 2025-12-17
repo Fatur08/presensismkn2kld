@@ -103,7 +103,7 @@ function selisih($jam_batas, $jam_masuk)
             var id = $(this).attr("id");
             $.ajax({
                 type:'POST',
-                url:'/peta_jam_pulang',
+                url:'/edit_keterangan_absen',
                 data:{
                     _token:"{{ csrf_token() }}",
                     id: id

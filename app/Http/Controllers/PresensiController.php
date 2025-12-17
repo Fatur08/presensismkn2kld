@@ -461,6 +461,19 @@ class PresensiController extends Controller
         return view('presensi.showmap_jam_pulang', compact('presensi'));
     }
 
+
+    public function edit_keterangan_absen(Request $request)
+    {
+        $id = $request->id;
+        $presensi = DB::table('presensi')
+            ->join('murid','presensi.nisn','=','murid.nisn')
+            ->where('id', $id)
+            ->first();
+
+        return view('presensi.edit_keterangan_absen', compact('presensi'));
+    }
+
+
     public function rekappresensi()
     {
         $namabulan = ["","Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
