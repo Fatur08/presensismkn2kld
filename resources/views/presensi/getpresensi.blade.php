@@ -31,17 +31,20 @@ function selisih($jam_batas, $jam_masuk)
             <td style="text-align:center;">{{ $d->kelas }}</td>
             <td>{{ $d->kode_jurusan }}</td>
             <td style="text-align:center;">
-                {{ $d->jam_in ?? 'Kosong' }}
+                {!! $d->jam_in 
+                    ? $d->jam_in 
+                    : '<span class="badge bg-danger">Kosong</span>' 
+                !!}
             </td>
             <td style="text-align:center;">
                 {!! $d->jam_out 
                     ? $d->jam_out 
-                    : '<span class="badge bg-danger">Belum Absen</span>' 
+                    : '<span class="badge bg-danger">Kosong</span>' 
                 !!}
             </td>
             <td style="text-align:center;">
                 @if(!$d->jam_out)
-                    <span class="badge bg-warning">Alfa</span>
+                    <span class="badge bg-danger">Alfa</span>
                 @else
                     @if($d->jam_in && $d->jam_in >= $jamMasuk)
                         @php $jamterlambat = selisih($jamMasuk, $d->jam_in); @endphp
