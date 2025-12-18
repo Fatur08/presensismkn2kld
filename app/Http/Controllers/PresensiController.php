@@ -410,18 +410,25 @@ class PresensiController extends Controller
             ->exists();
         $presensi       = collect();
         if ($hari != 0 && !$isLibur) {
-            $presensi = DB::table('presensi')
+            $presensi = DB::table('murid')
                 ->select(
-                    'presensi.*',
+                    'murid.nisn',
                     'murid.nama_lengkap',
                     'murid.kelas',
+                    'murid.kode_jurusan',
                     'jurusan.nama_jurusan',
-                    'jurusan.kode_jurusan'
+                    'presensi.id',
+                    'presensi.jam_in',
+                    'presensi.jam_out',
+                    'presensi.lokasi_in',
+                    'presensi.lokasi_out'
                 )
-                ->leftJoin('murid', 'presensi.nisn', '=', 'murid.nisn')
                 ->leftJoin('jurusan', 'murid.kode_jurusan', '=', 'jurusan.kode_jurusan')
-                ->where('presensi.tgl_presensi', $tanggal)
-                ->when($request->nama_lengkap, function ($query, $nama_lengkap) {
+                ->leftJoin('presensi', function ($join) use ($tanggal) {
+                    $join->on('murid.nisn', '=', 'presensi.nisn')
+                         ->where('presensi.tgl_presensi', $tanggal);
+                })
+                ->when($nama_lengkap, function ($query, $nama_lengkap) {
                     $query->where('murid.nama_lengkap', 'like', '%' . $nama_lengkap . '%');
                 })
                 ->when($request->kelas, function ($query, $kelas) {
