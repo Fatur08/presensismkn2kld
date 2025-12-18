@@ -383,60 +383,66 @@ class PresensiController extends Controller
 
     public function monitoring()
     {
-        $jurusan = DB::table('jurusan')->get();
-        return view('presensi.monitoring', compact('jurusan'));
+        $jurusan        = DB::table('jurusan')->get();
+        $tanggal        = date('Y-m-d');
+        $hari           = Carbon::parse($tanggal)->dayOfWeek; // 0 = Minggu
+        $isLibur        = DB::table('libur_sekolah')
+            ->where('tanggal', $tanggal)
+            ->exists();
+        return view('presensi.monitoring', compact(
+            'jurusan',
+            'hari',
+            'isLibur'
+        ));
     }
 
     public function getpresensi(Request $request)
     {
-        // Ambil jam_masuk dari tabel jamsekolah
-        $jamMasuk = DB::table('jamsekolah')->where('id', 1)->value('jam_masuk');
-
-        // Jika tidak ada data jam_masuk, gunakan default "07:00"
-        $jamMasuk = $jamMasuk ?? '07:00:00';
-
-        $jamPulangAsli = DB::table('jamsekolah')->where('id', 1)->value('jam_pulang') ?? '16:00:00';
-
-        // Tambahkan 5 menit toleransi
+        $nisn           = trim($request->nisn)         ?: null;
+        $nama_lengkap   = trim($request->nama_lengkap) ?: null;
+        $jamMasuk       = DB::table('jamsekolah')->where('id', 1)->value('jam_masuk')  ?? '07:00:00';
+        $jamPulangAsli  = DB::table('jamsekolah')->where('id', 1)->value('jam_pulang') ?? '16:00:00';
         $jamPulangBatas = Carbon::parse($jamPulangAsli)->addMinutes(5)->format('H:i:s');
-        
-        $tanggal = $request->tanggal;
-        if ($tanggal) {
-            try {
-                $tanggal = Carbon::parse($tanggal)->format('Y-m-d');
-            } catch (\Exception $e) {
-                $tanggal = null;
-            }
+        $tanggal        = $request->tanggal ?? date('Y-m-d');
+        $hari           = Carbon::parse($tanggal)->dayOfWeek; // 0 = Minggu
+        $isLibur        = DB::table('libur_sekolah')
+            ->where('tanggal', $tanggal)
+            ->exists();
+        $presensi       = collect();
+        if ($hari != 0 && !$isLibur) {
+            $presensi = DB::table('presensi')
+                ->select(
+                    'presensi.*',
+                    'murid.nama_lengkap',
+                    'murid.kelas',
+                    'jurusan.nama_jurusan',
+                    'jurusan.kode_jurusan'
+                )
+                ->leftJoin('murid', 'presensi.nisn', '=', 'murid.nisn')
+                ->leftJoin('jurusan', 'murid.kode_jurusan', '=', 'jurusan.kode_jurusan')
+                ->where('presensi.tgl_presensi', $tanggal)
+                ->when($request->nama_lengkap, function ($query, $nama_lengkap) {
+                    $query->where('murid.nama_lengkap', 'like', '%' . $nama_lengkap . '%');
+                })
+                ->when($request->kelas, function ($query, $kelas) {
+                    $query->where('murid.kelas', $kelas);
+                })
+                ->when($request->kode_jurusan, function ($query, $kode_jurusan) {
+                    $query->where('murid.kode_jurusan', $kode_jurusan);
+                })
+                ->orderBy('murid.nama_lengkap')
+                ->get();
         }
-        $nisn = trim($request->nisn) ?: null;
-        $nama_lengkap = trim($request->nama_lengkap) ?: null;
 
-        $presensi = DB::table('presensi')
-            ->select(
-                'presensi.*',
-                'murid.nama_lengkap',
-                'murid.kelas',
-                'jurusan.nama_jurusan',
-                'jurusan.kode_jurusan'
-            )
-            ->leftJoin('murid', 'presensi.nisn', '=', 'murid.nisn')
-            ->leftJoin('jurusan', 'murid.kode_jurusan', '=', 'jurusan.kode_jurusan')
-            ->when($request->tanggal, function ($query, $tanggal) {
-                return $query->where('presensi.tgl_presensi', $tanggal);
-            })
-            ->when($request->nama_lengkap, function ($query, $nama_lengkap) {
-                return $query->where('murid.nama_lengkap', 'like', '%' . $nama_lengkap . '%');
-            })
-            ->when($request->kelas, function ($query, $kelas) {
-                return $query->where('murid.kelas', $kelas);
-            })
-            ->when($request->kode_jurusan, function ($query, $kode_jurusan) {
-                return $query->where('murid.kode_jurusan', $kode_jurusan);
-            })
-            ->orderBy('murid.nama_lengkap')
-            ->get();
-
-        return view('presensi.getpresensi', compact('presensi', 'jamMasuk', 'jamPulangAsli', 'jamPulangBatas'));
+        return view('presensi.getpresensi', compact(
+            'presensi',
+            'jamMasuk',
+            'jamPulangAsli',
+            'jamPulangBatas',
+            'tanggal',
+            'hari',
+            'isLibur'
+        ));
     }
 
     public function peta_jam_masuk(Request $request)
@@ -472,6 +478,14 @@ class PresensiController extends Controller
 
         return view('presensi.edit_keterangan_absen', compact('presensi'));
     }
+
+
+
+    public function update_keterangan_absen(Request $request) // BELUM LENGKAP / JADI
+    {
+        $id = $request->presensi_id;
+    }
+
 
 
     public function rekappresensi()

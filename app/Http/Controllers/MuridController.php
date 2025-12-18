@@ -160,7 +160,7 @@ class MuridController extends Controller
                 return Redirect::back()->with(['error' => 'Data Gagal Diupdate (data tidak ditemukan)']);
             }
         } catch (\Exception $e) {
-            dd($e);
+            //dd($e);
         }
     }
 

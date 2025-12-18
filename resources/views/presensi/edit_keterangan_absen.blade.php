@@ -1,4 +1,4 @@
-<form action="/presensi/approveizinsakit" method="post">
+<form action="/update_keterangan_absen" method="post">
     @csrf
     <input type="hidden" value="{{ $presensi->id }}" id="presensi_id" name="presensi_id">
     <div class="row">

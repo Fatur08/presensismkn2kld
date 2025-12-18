@@ -59,6 +59,16 @@
                         </div>
                         <div class="row">
                             <div class="col-12">
+                                {{-- ALERT HARI --}}
+                                @if ($hari == 0)
+                                    <div class="alert alert-warning text-center">
+                                        <strong>Hari Minggu</strong> – Tidak ada kegiatan presensi
+                                    </div>
+                                @elseif ($isLibur)
+                                    <div class="alert alert-info text-center">
+                                        <strong>Hari Libur Sekolah</strong> – Presensi ditiadakan
+                                    </div>
+                                @endif
                                 <table class="table table-striped table-hover">
                                     <thead>
                                         <tr>
