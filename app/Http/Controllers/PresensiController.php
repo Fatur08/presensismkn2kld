@@ -507,16 +507,13 @@ class PresensiController extends Controller
 
     public function update_keterangan_absen(Request $request)
     {
-        $nisn       = $request->nisn;
-        $tanggal    = $request->tanggal;
-        
         DB::beginTransaction();
 
         try {
             // pastikan presensi hari ini ada
             $presensi = DB::table('presensi')
                 ->where('id', $request->presensi_id)
-                ->where('tgl_presensi', $request->tgl_presensi)
+                ->where('tgl_presensi', $request->tanggal)
                 ->first();
 
             if (!$presensi) {
@@ -536,8 +533,8 @@ class PresensiController extends Controller
 
             // simpan izin / sakit
             DB::table('pengajuan_izin')->insert([
-                'nisn'            => $request->presensi_nisn,
-                'tgl_izin'        => $request->tgl_presensi,
+                'nisn'            => $request->nisn,
+                'tgl_izin'        => $request->tanggal,
                 'status'          => $request->status_absen, // i / s
                 'keterangan'      => $request->keterangan_absen,
                 'status_approved' => 1,
