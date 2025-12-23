@@ -493,12 +493,10 @@ class PresensiController extends Controller
         DB::beginTransaction();
 
         try {
-            $tanggal    = date('Y-m-d');
-
             // pastikan presensi hari ini ada
             $presensi = DB::table('presensi')
                 ->where('id', $request->presensi_id)
-                ->where('tgl_presensi', $tanggal)
+                ->where('tgl_presensi', $request->tgl_presensi)
                 ->first();
 
             if (!$presensi) {
@@ -519,7 +517,7 @@ class PresensiController extends Controller
             // simpan izin / sakit
             DB::table('pengajuan_izin')->insert([
                 'nisn'            => $request->nisn,
-                'tgl_izin'        => $tanggal,
+                'tgl_izin'        => $request->tgl_presensi,
                 'status'          => $request->status_absen, // i / s
                 'keterangan'      => $request->keterangan_absen,
                 'status_approved' => 1,
