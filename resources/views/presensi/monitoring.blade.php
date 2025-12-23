@@ -53,7 +53,7 @@
                             <div class="col-2">
                                 <div class="input-icon mb-3">
                                     <select name="kelas" id="kelas" class="form-select">
-                                        <option value="">Kelas</option>
+                                        <option value="">Pilih Kelas</option>
                                         <option value="X" {{ request('kelas') == 'X' ? 'selected' : '' }}>Kelas X</option>
                                         <option value="XI" {{ request('kelas') == 'XI' ? 'selected' : '' }}>Kelas XI</option>
                                         <option value="XII" {{ request('kelas') == 'XII' ? 'selected' : '' }}>Kelas XII</option>
@@ -63,7 +63,7 @@
                             <div class="col-4">
                                 <div class="input-icon mb-3">
                                     <select name="kode_jurusan" id="kode_jurusan" class="form-select">
-                                        <option value="">Jurusan</option>
+                                        <option value="">Pilih Jurusan</option>
                                         @foreach ($jurusan as $d)
                                             <option {{ Request('kode_jurusan')==$d->kode_jurusan ? 'selected' : '' }} value="{{ $d->kode_jurusan }}">{{ $d->nama_jurusan }}</option>
                                         @endforeach
