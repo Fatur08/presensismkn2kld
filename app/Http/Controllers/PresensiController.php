@@ -510,27 +510,6 @@ class PresensiController extends Controller
         DB::beginTransaction();
 
         try {
-            // pastikan presensi hari ini ada
-            $presensi = DB::table('presensi')
-                ->where('id', $request->presensi_id)
-                ->where('tgl_presensi', $request->tanggal)
-                ->first();
-
-            if (!$presensi) {
-                return response()->json([
-                    'status'  => false,
-                    'message' => 'Data presensi tidak ditemukan'
-                ], 404);
-            }
-
-            // CEK: murid sudah absen masuk
-            if (!$presensi->jam_in) {
-                return response()->json([
-                    'status'  => false,
-                    'message' => 'Anda belum melakukan absen masuk'
-                ], 400);
-            }
-
             // simpan izin / sakit
             DB::table('pengajuan_izin')->insert([
                 'nisn'            => $request->nisn,
