@@ -46,7 +46,7 @@ function selisih($jam_batas, $jam_masuk)
                 @if(!$d->jam_out)
 
                     @if($d->status_izin == 'i')
-                        <span class="badge bg-warning">Izin</span>
+                        <span class="badge" style="background:#e0a800;color:white;">Izin</span>
 
                     @elseif($d->status_izin == 's')
                         <span class="badge bg-info">Sakit</span>
