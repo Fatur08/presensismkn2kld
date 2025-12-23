@@ -44,24 +44,35 @@ function selisih($jam_batas, $jam_masuk)
             </td>
             <td style="text-align:center;">
                 @if(!$d->jam_out)
+
                     @if($d->status_izin == 'i')
                         <span class="badge bg-warning">Izin</span>
+
                     @elseif($d->status_izin == 's')
                         <span class="badge bg-info">Sakit</span>
+
+                    @elseif(!$d->jam_in && !$d->jam_out)
+                        <span class="badge bg-danger">Alfa</span>
+
                     @else
-                        <span class="badge bg-danger">Bolos</span>
+                        <span class="badge bg-purple" style="background:#6f42c1;">Bolos</span>
                     @endif
+
                 @else
+
                     @if($d->jam_in && $d->jam_in >= $jamMasuk)
                         @php $jamterlambat = selisih($jamMasuk, $d->jam_in); @endphp
-                        <span class="badge bg-danger">
+                        <span class="badge" style="background:#fd7e14;color:white;">
                             Terlambat<br>{{ $jamterlambat }}
                         </span>
+
                     @elseif($d->jam_in)
                         <span class="badge bg-success">Tepat Waktu</span>
+
                     @else
                         <span class="badge bg-purple" style="background:#6f42c1;">Belum Absen</span>
                     @endif
+
                 @endif
             </td>
             <td>
