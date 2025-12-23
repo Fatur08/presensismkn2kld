@@ -488,11 +488,63 @@ class PresensiController extends Controller
 
 
 
-    public function update_keterangan_absen(Request $request) // BELUM LENGKAP / JADI
+    public function update_keterangan_absen(Request $request)
     {
-        $id                 = $request->presensi_id;
-        $status_absen       = $request->status_absen;
-        $keterangan_absen   = $request->keterangan_absen;
+        DB::beginTransaction();
+
+        try {
+            $tanggal = date('Y-m-d');
+            $nisn    = Auth::user()->nisn; // asumsi login sebagai murid
+
+            // pastikan presensi hari ini ada
+            $presensi = DB::table('presensi')
+                ->where('id', $request->presensi_id)
+                ->where('nisn', $nisn)
+                ->where('tgl_presensi', $tanggal)
+                ->first();
+
+            if (!$presensi) {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'Data presensi tidak ditemukan'
+                ], 404);
+            }
+
+            // CEK: murid sudah absen masuk
+            if (!$presensi->jam_in) {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'Anda belum melakukan absen masuk'
+                ], 400);
+            }
+
+            // simpan izin / sakit
+            DB::table('pengajuan_izin')->insert([
+                'nisn'            => $nisn,
+                'tgl_izin'        => $tanggal,
+                'status'          => $request->status_absen, // i / s
+                'keterangan'      => $request->keterangan_absen,
+                'status_approved' => 1,
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'status'  => true,
+                'message' => $request->status_absen == 'izin'
+                    ? 'Izin berhasil dicatat'
+                    : 'Sakit berhasil dicatat'
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'status'  => false,
+                'message' => 'Terjadi kesalahan',
+                'error'   => $e->getMessage()
+            ], 500);
+        }
     }
 
 
