@@ -7,8 +7,8 @@
         <div class="col-12">
             <div class="form-group">
                 <select name="status_absen" id="status_absen" class="form-select">
-                    <option value="izin">Izin</option>
-                    <option value="sakit">Sakit</option>
+                    <option value="i">Izin</option>
+                    <option value="s">Sakit</option>
                 </select>
             </div>
         </div>
