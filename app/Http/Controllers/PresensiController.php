@@ -525,21 +525,16 @@ class PresensiController extends Controller
 
             DB::commit();
 
-            return response()->json([
-                'status'  => true,
-                'message' => $request->status_absen == 'izin'
+            return Redirect::back()
+                ->with('success', $request->status_absen == 'i'
                     ? 'Izin berhasil dicatat'
                     : 'Sakit berhasil dicatat'
-            ]);
+                );
 
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return response()->json([
-                'status'  => false,
-                'message' => 'Terjadi kesalahan',
-                'error'   => $e->getMessage()
-            ], 500);
+            return Redirect::back()->with('error', 'Terjadi kesalahan saat menyimpan data');
         }
     }
 
