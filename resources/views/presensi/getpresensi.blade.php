@@ -150,7 +150,7 @@ function selisih($jam_batas, $jam_masuk)
             $("#modal-peta_jam_pulang").modal("show");
         });
         $(".edit_keterangan_absen").click(function(e){
-            var id      = $(this).attr("id");
+            var id      = $(this).attr("id") ?? null;
             var nisn    = $(this).attr("nisn");
             var tanggal = $(this).attr("tanggal");
             $.ajax({
