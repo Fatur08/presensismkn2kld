@@ -86,16 +86,16 @@
                                 <table class="table table-striped table-hover">
                                     <thead>
                                         <tr>
-                                            <th>No.</th>
-                                            <th>NISN</th>
-                                            <th>Nama Murid</th>
-                                            <th>Kelas</th>
-                                            <th>Jurusan</th>
-                                            <th>Jam Masuk</th>
-                                            <th>Jam Pulang</th>
-                                            <th>keterangan</th>
-                                            <th>Koordinat</th>
-                                            <th>Aksi</th>
+                                            <th style="text-align:center;">No.</th>
+                                            <th style="text-align:center;">NISN</th>
+                                            <th style="text-align:center;">Nama Murid</th>
+                                            <th style="text-align:center;">Kelas</th>
+                                            <th style="text-align:center;">Jurusan</th>
+                                            <th style="text-align:center;">Jam Masuk</th>
+                                            <th style="text-align:center;">Jam Pulang</th>
+                                            <th style="text-align:center;">keterangan</th>
+                                            <th style="text-align:center;">Koordinat</th>
+                                            <th style="text-align:center;">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody id="loadpresensi"></tbody>
