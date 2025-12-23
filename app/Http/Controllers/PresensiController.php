@@ -493,8 +493,8 @@ class PresensiController extends Controller
         DB::beginTransaction();
 
         try {
-            $tanggal = date('Y-m-d');
-            $nisn    = Auth::user()->nisn; // asumsi login sebagai murid
+            $tanggal    = date('Y-m-d');
+            $nisn       = str_pad((string) Auth::guard('murid')->user()->nisn, 10, '0',STR_PAD_LEFT);
 
             // pastikan presensi hari ini ada
             $presensi = DB::table('presensi')
