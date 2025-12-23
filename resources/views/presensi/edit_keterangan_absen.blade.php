@@ -1,6 +1,7 @@
 <form action="/update_keterangan_absen" method="post">
     @csrf
     <input type="hidden" value="{{ $presensi->id }}" id="presensi_id" name="presensi_id">
+    <input type="hidden" value="{{ $presensi->nisn }}" id="nisn" name="nisn">
     <div class="row">
         <div class="col-12">
             <div class="form-group">

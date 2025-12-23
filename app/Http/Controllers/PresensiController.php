@@ -494,12 +494,10 @@ class PresensiController extends Controller
 
         try {
             $tanggal    = date('Y-m-d');
-            $nisn       = str_pad((string) Auth::guard('murid')->user()->nisn, 10, '0',STR_PAD_LEFT);
 
             // pastikan presensi hari ini ada
             $presensi = DB::table('presensi')
                 ->where('id', $request->presensi_id)
-                ->where('nisn', $nisn)
                 ->where('tgl_presensi', $tanggal)
                 ->first();
 
@@ -520,7 +518,7 @@ class PresensiController extends Controller
 
             // simpan izin / sakit
             DB::table('pengajuan_izin')->insert([
-                'nisn'            => $nisn,
+                'nisn'            => $request->nisn,
                 'tgl_izin'        => $tanggal,
                 'status'          => $request->status_absen, // i / s
                 'keterangan'      => $request->keterangan_absen,
