@@ -90,11 +90,11 @@ function selisih($jam_batas, $jam_masuk)
         $(".peta_jam_masuk").click(function(e){
             var id = $(this).attr("id");
             $.ajax({
-                type:'POST',
-                url:'/peta_jam_masuk',
-                data:{
-                    _token:"{{ csrf_token() }}",
-                    id: id
+                type    :'POST',
+                url     :'/peta_jam_masuk',
+                data    :{
+                    _token  :"{{ csrf_token() }}",
+                    id      : id
                 },
                 cache:false,
                 success:function(respond){
@@ -106,11 +106,11 @@ function selisih($jam_batas, $jam_masuk)
         $(".peta_jam_pulang").click(function(e){
             var id = $(this).attr("id");
             $.ajax({
-                type:'POST',
-                url:'/peta_jam_pulang',
-                data:{
-                    _token:"{{ csrf_token() }}",
-                    id: id
+                type    :'POST',
+                url     :'/peta_jam_pulang',
+                data    :{
+                    _token  :"{{ csrf_token() }}",
+                    id      : id
                 },
                 cache:false,
                 success:function(respond){
@@ -122,11 +122,11 @@ function selisih($jam_batas, $jam_masuk)
         $(".edit_keterangan_absen").click(function(e){
             var id = $(this).attr("id");
             $.ajax({
-                type:'POST',
-                url:'/edit_keterangan_absen',
-                data:{
-                    _token:"{{ csrf_token() }}",
-                    id: id
+                type    :'POST',
+                url     :'/edit_keterangan_absen',
+                data    :{
+                    _token  :"{{ csrf_token() }}",
+                    id      : id
                 },
                 cache:false,
                 success:function(respond){

@@ -5,9 +5,26 @@
         <div class="col-12">
             <div class="form-group">
                 <select name="status_absen" id="status_absen" class="form-select">
-                    <option value="Izin">Izin</option>
-                    <option value="Sakit">Sakit</option>
+                    <option value="izin">Izin</option>
+                    <option value="sakit">Sakit</option>
                 </select>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="input-icon">
+                <span class="input-icon-addon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+                        class="icon icon-tabler icon-tabler-note">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M13 20h-7a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h8l6 6v8a2 2 0 0 1 -2 2h-3" />
+                        <path d="M13 4v6h6" />
+                    </svg>
+                </span>
+                <textarea id="keterangan_absen" name="keterangan_absen" class="form-control" rows="1" placeholder="Tuliskan keterangan di sini..."></textarea>
             </div>
         </div>
     </div>

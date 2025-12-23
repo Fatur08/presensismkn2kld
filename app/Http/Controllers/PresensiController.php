@@ -490,7 +490,9 @@ class PresensiController extends Controller
 
     public function update_keterangan_absen(Request $request) // BELUM LENGKAP / JADI
     {
-        $id = $request->presensi_id;
+        $id                 = $request->presensi_id;
+        $status_absen       = $request->status_absen;
+        $keterangan_absen   = $request->keterangan_absen;
     }
 
 
