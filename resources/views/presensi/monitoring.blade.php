@@ -18,6 +18,20 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
+                            <div class="col-12">
+                                @if (Session::get('success'))
+                                    <div class="alert alert-success">
+                                        {{ Session::get('success') }}
+                                    </div>
+                                @endif
+                                @if (Session::get('error'))
+                                    <div class="alert alert-warning">
+                                        {{ Session::get('error') }}
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-2">
                                 <div class="input-icon mb-3">
                                     <span class="input-icon-addon">
