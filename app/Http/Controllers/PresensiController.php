@@ -417,17 +417,32 @@ class PresensiController extends Controller
                     'murid.kelas',
                     'murid.kode_jurusan',
                     'jurusan.nama_jurusan',
+                
                     'presensi.id',
+                    'presensi.tgl_presensi',
                     'presensi.jam_in',
                     'presensi.jam_out',
                     'presensi.lokasi_in',
-                    'presensi.lokasi_out'
+                    'presensi.lokasi_out',
+                
+                    // 👉 STATUS IZIN / SAKIT
+                    'pengajuan_izin.status as status_izin'
                 )
                 ->leftJoin('jurusan', 'murid.kode_jurusan', '=', 'jurusan.kode_jurusan')
+                
+                // join presensi HARI INI
                 ->leftJoin('presensi', function ($join) use ($tanggal) {
                     $join->on('murid.nisn', '=', 'presensi.nisn')
                          ->where('presensi.tgl_presensi', $tanggal);
                 })
+            
+                // join izin/sakit HARI INI & approved
+                ->leftJoin('pengajuan_izin', function ($join) use ($tanggal) {
+                    $join->on('murid.nisn', '=', 'pengajuan_izin.nisn')
+                         ->where('pengajuan_izin.tgl_izin', $tanggal)
+                         ->where('pengajuan_izin.status_approved', 1);
+                })
+            
                 ->when($nama_lengkap, function ($query, $nama_lengkap) {
                     $query->where('murid.nama_lengkap', 'like', '%' . $nama_lengkap . '%');
                 })

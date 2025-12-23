@@ -44,7 +44,13 @@ function selisih($jam_batas, $jam_masuk)
             </td>
             <td style="text-align:center;">
                 @if(!$d->jam_out)
-                    <span class="badge bg-warning">Bolos</span>
+                    @if($d->status_izin == 'i')
+                        <span class="badge bg-warning">Izin</span>
+                    @elseif($d->status_izin == 's')
+                        <span class="badge bg-info">Sakit</span>
+                    @else
+                        <span class="badge bg-danger">Bolos</span>
+                    @endif
                 @else
                     @if($d->jam_in && $d->jam_in >= $jamMasuk)
                         @php $jamterlambat = selisih($jamMasuk, $d->jam_in); @endphp
