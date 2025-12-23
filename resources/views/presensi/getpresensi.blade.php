@@ -92,7 +92,9 @@ function selisih($jam_batas, $jam_masuk)
                 )
                     <a href="#"
                        class="btn btn-secondary edit_keterangan_absen"
-                       id="{{ $d->id }}"
+                       id       = "{{ $d->id }}"
+                       nisn     = "{{ $d->nisn }}"
+                       tanggal  = "{{ $tanggal }}"
                        style="font-size:8pt; padding:2px 6px; height:auto; line-height:1;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit-circle">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
@@ -148,13 +150,17 @@ function selisih($jam_batas, $jam_masuk)
             $("#modal-peta_jam_pulang").modal("show");
         });
         $(".edit_keterangan_absen").click(function(e){
-            var id = $(this).attr("id");
+            var id      = $(this).attr("id");
+            var nisn    = $(this).attr("nisn");
+            var tanggal = $(this).attr("tanggal");
             $.ajax({
                 type    :'POST',
                 url     :'/edit_keterangan_absen',
                 data    :{
                     _token  :"{{ csrf_token() }}",
-                    id      : id
+                    id      : id,
+                    nisn    : nisn,
+                    tanggal : tanggal
                 },
                 cache:false,
                 success:function(respond){

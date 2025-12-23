@@ -492,19 +492,24 @@ class PresensiController extends Controller
 
     public function edit_keterangan_absen(Request $request)
     {
-        $id = $request->id;
-        $presensi = DB::table('presensi')
+        $id         = $request->id;
+        $nisn       = $request->nisn;
+        $tanggal    = $request->tanggal;
+        $presensi   = DB::table('presensi')
             ->join('murid','presensi.nisn','=','murid.nisn')
             ->where('id', $id)
             ->first();
 
-        return view('presensi.edit_keterangan_absen', compact('presensi'));
+        return view('presensi.edit_keterangan_absen', compact('presensi', 'nisn', 'tanggal'));
     }
 
 
 
     public function update_keterangan_absen(Request $request)
     {
+        $nisn       = $request->nisn;
+        $tanggal    = $request->tanggal;
+        
         DB::beginTransaction();
 
         try {
@@ -531,7 +536,7 @@ class PresensiController extends Controller
 
             // simpan izin / sakit
             DB::table('pengajuan_izin')->insert([
-                'nisn'            => $request->nisn,
+                'nisn'            => $request->presensi_nisn,
                 'tgl_izin'        => $request->tgl_presensi,
                 'status'          => $request->status_absen, // i / s
                 'keterangan'      => $request->keterangan_absen,

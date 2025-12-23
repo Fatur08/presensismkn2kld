@@ -1,8 +1,14 @@
 <form action="/update_keterangan_absen" method="post">
     @csrf
+    <!-- Dari Tabel Presensi -->
     <input type="hidden" value="{{ $presensi->id }}"            id="presensi_id"    name="presensi_id">
-    <input type="hidden" value="{{ $presensi->nisn }}"          id="nisn"           name="nisn">
+    <input type="hidden" value="{{ $presensi->nisn }}"          id="presensi_nisn"  name="presensi_nisn">
     <input type="hidden" value="{{ $presensi->tgl_presensi }}"  id="tgl_presensi"   name="tgl_presensi">
+
+
+    <!-- Dari Tabel Murid -->
+    <input type="hidden" value="{{ $nisn }}"    id="nisn"       name="nisn">
+    <input type="hidden" value="{{ $tanggal }}" id="tanggal"    name="tanggal">
     <div class="row">
         <div class="col-12">
             <div class="form-group">
