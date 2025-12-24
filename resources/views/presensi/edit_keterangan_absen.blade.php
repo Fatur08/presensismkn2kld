@@ -18,6 +18,7 @@
             <div class="form-group">
                 <h4>Status Izin / Sakit</h4>
                 <select name="status_absen" id="status_absen" class="form-select">
+                    <option value="">Pilih Status Izin / Sakit</option>
                     <option value="i">Izin</option>
                     <option value="s">Sakit</option>
                 </select>
