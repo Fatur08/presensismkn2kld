@@ -49,7 +49,7 @@
         <div class="col-12">
             <div class="form-group">
                 <h4>Bukti Izin / Sakit (Foto)</h4>
-                <input type="file" name="bukti_izin" class="form-control">
+                <input type="file" name="bukti_izin" id="bukti_izin" class="form-control">
             </div>
         </div>
     </div>
