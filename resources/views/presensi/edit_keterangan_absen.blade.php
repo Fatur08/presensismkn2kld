@@ -16,6 +16,7 @@
     <div class="row">
         <div class="col-12">
             <div class="form-group">
+                <h4>Status Izin / Sakit</h4>
                 <select name="status_absen" id="status_absen" class="form-select">
                     <option value="i">Izin</option>
                     <option value="s">Sakit</option>
@@ -26,6 +27,7 @@
     <div class="row mt-3">
         <div class="col-12">
             <div class="input-icon">
+                <h4>Keterangan</h4>
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
                         viewBox="0 0 24 24" fill="none" stroke="currentColor" 
@@ -43,6 +45,7 @@
     <div class="row mt-3">
         <div class="col-12">
             <div class="form-group">
+                <h4>Bukti Izin / Sakit (Foto)</h4>
                 <input type="file" name="bukti_izin" class="form-control">
             </div>
         </div>
