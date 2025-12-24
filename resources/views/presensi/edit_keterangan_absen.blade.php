@@ -1,4 +1,6 @@
-<form action="/update_keterangan_absen" method="post">
+@extends('layouts.admin.presensi.layout_edit_keterangan_absen')
+@section('content')
+<form action="/update_keterangan_absen" method="POST" id="FormEditKeteranganAbsen" enctype="multipart/form-data">
     @csrf
     <input type     = "hidden"
            name     = "presensi_id"
@@ -62,3 +64,52 @@
         </div>
     </div>
 </form>
+@endsection
+@push('myscript')
+<script>
+    $(function(){
+        $(".flatpickr").datepicker({
+            format: "yyyy-mm-dd",
+            autoclose: true,
+            todayHighlight: true
+        })
+
+        $("#FormEditKeteranganAbsen").submit(function(){
+            var status_absen = $("#status_absen").val();
+            var keterangan_absen = $("#keterangan_absen").val();
+            var bukti_izin = $("#bukti_izin").val();
+            if(status_absen==""){
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'Status Absen Harus Diisi',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                  }).then(()=> {
+                      $("#status_absen").focus();
+                  });
+                return false;
+            } else if (keterangan_absen==""){
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'Keterangan Harus Diisi',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                  }).then(()=> {
+                      $("#keterangan_absen").focus();
+                  });
+                return false;
+            } else if (bukti_izin==""){
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'Bukti Harus Diisi',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                  }).then(()=> {
+                      $("#bukti_izin").focus();
+                  });
+                return false;
+            }
+        });
+    });
+</script>
+@endpush
