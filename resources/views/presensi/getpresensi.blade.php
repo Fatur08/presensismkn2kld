@@ -104,7 +104,7 @@ function selisih($jam_batas, $jam_masuk)
                         </svg>
                         Edit
                     </a>
-                @else
+                @elseif (!in_array($d->status_izin, ['i', 's']))
                     <a href="#"
                        class="btn btn-secondary edit_keterangan_absen"
                        id       = "{{ $d->id }}"
