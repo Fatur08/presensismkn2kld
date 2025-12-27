@@ -514,20 +514,21 @@ class PresensiController extends Controller
             $bukti_izin = null;
 
             if ($request->hasFile('bukti_izin')) {
-
                 $file = $request->file('bukti_izin');
-
                 // nama file unik
                 $bukti_izin = 'bukti_izin_' .
                               Carbon::now()->format('YmdHis') . '.' .
                               $file->getClientOriginalExtension();
 
-                // simpan ke storage/app/public/uploads/bukti_izin
-                $file->storeAs(
-                    'uploads/bukti_izin',
-                    $bukti_izin,
-                    'public'
-                );
+                $storagePath = 'public/uploads/bukti_izin/';
+                $request->file('bukti_izin')->storeAs($storagePath, $bukti_izin);
+                $publicPath = public_path('storage/uploads/bukti_izin/');
+                if (!is_dir($publicPath)) {
+                    mkdir($publicPath, 0777, true);
+                }
+                $sourceFile = storage_path('app/' . $storagePath . $bukti_izin);
+                $destinationFile = public_path('storage/uploads/bukti_izin/' . $bukti_izin);
+                copy($sourceFile, $destinationFile);
             }
 
             // simpan izin / sakit
