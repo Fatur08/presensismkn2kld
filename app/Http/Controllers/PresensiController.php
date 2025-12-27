@@ -510,27 +510,52 @@ class PresensiController extends Controller
         DB::beginTransaction();
 
         try {
+
+            $bukti_izin = null;
+
+            if ($request->hasFile('bukti_izin')) {
+
+                $file = $request->file('bukti_izin');
+
+                // nama file unik
+                $bukti_izin = 'bukti_izin_' .
+                              Carbon::now()->format('YmdHis') . '.' .
+                              $file->getClientOriginalExtension();
+
+                // simpan ke storage/app/public/uploads/bukti_izin
+                $file->storeAs(
+                    'uploads/bukti_izin',
+                    $bukti_izin,
+                    'public'
+                );
+            }
+
             // simpan izin / sakit
             DB::table('pengajuan_izin')->insert([
                 'nisn'            => $request->nisn,
                 'tgl_izin'        => $request->tanggal,
                 'status'          => $request->status_absen, // i / s
                 'keterangan'      => $request->keterangan_absen,
+                'bukti_izin'      => $bukti_izin,
                 'status_approved' => 1,
             ]);
 
             DB::commit();
 
-            return Redirect::back()
-                ->with('success', $request->status_absen == 'i'
+            return Redirect::back()->with(
+                'success',
+                $request->status_absen == 'i'
                     ? 'Izin berhasil dicatat'
                     : 'Sakit berhasil dicatat'
-                );
+            );
 
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return Redirect::back()->with('error', 'Terjadi kesalahan saat menyimpan data');
+            return Redirect::back()->with(
+                'error',
+                'Terjadi kesalahan saat menyimpan data'
+            );
         }
     }
 
