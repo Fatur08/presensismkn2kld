@@ -1,6 +1,5 @@
 <div class="modal-body">
     <div class="mt-3">
-        <label class="fw-bold mb-2">Bukti Izin / Sakit</label>
         @if($izin->bukti_izin)
             <div class="text-center">
                 <img src="{{ asset('storage/uploads/bukti_izin/'.$izin->bukti_izin) }}"
