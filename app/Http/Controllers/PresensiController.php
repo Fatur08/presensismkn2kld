@@ -584,7 +584,7 @@ class PresensiController extends Controller
             ->first();
 
         return view('presensi.bukti_keterangan_absen', compact(
-            'nama_lengkap',
+            'nama_murid',
             'izin',
             'tanggalIndonesia'
         ));

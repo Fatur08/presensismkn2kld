@@ -9,7 +9,7 @@
         <table class="table table-bordered">
             <tr>
                 <th width="40%">Nama Murid</th>
-                <td>{{ $nama_lengkap ?? '-' }}</td>
+                <td>{{ $nama_murid ?? '-' }}</td>
             </tr>
             <tr>
                 <th>Tanggal</th>
