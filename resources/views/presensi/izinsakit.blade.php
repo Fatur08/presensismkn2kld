@@ -99,6 +99,7 @@
                             <th style='text-align: center;'>Keterangan</th>
                             <th style='text-align: center;'>Validasi</th>
                             <th style='text-align: center;'>Aksi</th>
+                            <th style='text-align: center;'>Ket.</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -126,25 +127,14 @@
                                     <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-external-link"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" /><path d="M11 13l9 -9" /><path d="M15 4h5v5" /></svg>
                                     Edit
                                 </a>
-                                <a href="#"
-                                   class="btn btn-secondary bukti_izin_sakit"
-                                   id       = "{{ $d->id }}"
-                                   nisn     = "{{ $d->nisn }}"
-                                   tanggal  = "{{ $d->tgl_izin }}"
-                                   style="font-size:8pt; padding:2px 6px; height:auto; line-height:1;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-article">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
-                                        <path d="M7 8h10" />
-                                        <path d="M7 12h10" />
-                                        <path d="M7 16h10" />
-                                    </svg>
-                                    Bukti
-                                </a>
                                 @else
                                 <a href="/presensi/{{ $d->id }}/batalkanizinsakit" class="btn btn-sm bg-danger">
                                     <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-square-rounded-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10l4 4m0 -4l-4 4" /><path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z" /></svg>
                                     Batalkan
                                 </a>
+                                @endif
+                            </td>
+                            <td style='text-align: center;'>
                                 <a href="#"
                                    class="btn btn-secondary bukti_izin_sakit"
                                    id       = "{{ $d->id }}"
@@ -159,7 +149,6 @@
                                     </svg>
                                     Bukti
                                 </a>
-                                @endif
                             </td>
                         </tr>
                         @endforeach
