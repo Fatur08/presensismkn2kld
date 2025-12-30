@@ -126,10 +126,38 @@
                                     <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-external-link"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" /><path d="M11 13l9 -9" /><path d="M15 4h5v5" /></svg>
                                     Edit
                                 </a>
+                                <a href="#"
+                                   class="btn btn-secondary bukti_izin_sakit"
+                                   id       = "{{ $d->id }}"
+                                   nisn     = "{{ $d->nisn }}"
+                                   tanggal  = "{{ $d->tgl_izin }}"
+                                   style="font-size:8pt; padding:2px 6px; height:auto; line-height:1;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-article">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
+                                        <path d="M7 8h10" />
+                                        <path d="M7 12h10" />
+                                        <path d="M7 16h10" />
+                                    </svg>
+                                    Bukti
+                                </a>
                                 @else
                                 <a href="/presensi/{{ $d->id }}/batalkanizinsakit" class="btn btn-sm bg-danger">
                                     <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-square-rounded-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 10l4 4m0 -4l-4 4" /><path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z" /></svg>
                                     Batalkan
+                                </a>
+                                <a href="#"
+                                   class="btn btn-secondary bukti_izin_sakit"
+                                   id       = "{{ $d->id }}"
+                                   nisn     = "{{ $d->nisn }}"
+                                   tanggal  = "{{ $d->tgl_izin }}"
+                                   style="font-size:8pt; padding:2px 6px; height:auto; line-height:1;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-article">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
+                                        <path d="M7 8h10" />
+                                        <path d="M7 12h10" />
+                                        <path d="M7 16h10" />
+                                    </svg>
+                                    Bukti
                                 </a>
                                 @endif
                             </td>
@@ -179,6 +207,26 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+
+{{-- Modal Bukti Izin Sakit --}}
+<div class="modal modal-blur fade" id="modal-bukti_izin_sakit" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Keterangan Absen</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modal_bukti_izin_sakit">
+                
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('myscript')
@@ -195,6 +243,30 @@
             autoclose: true, 
             todayHighlight: true,
             format: 'yyyy-mm-dd'
+        });
+
+
+
+
+        $(".bukti_izin_sakit").click(function(e){
+            var id      = $(this).attr("id") ?? null;
+            var nisn    = $(this).attr("nisn");
+            var tanggal = $(this).attr("tanggal");
+            $.ajax({
+                type    :'POST',
+                url     :'/bukti_izin_sakit',
+                data    :{
+                    _token  :"{{ csrf_token() }}",
+                    id      : id,
+                    nisn    : nisn,
+                    tanggal : tanggal
+                },
+                cache:false,
+                success:function(respond){
+                    $("#modal_bukti_izin_sakit").html(respond);
+                }
+            });
+            $("#modal-bukti_izin_sakit").modal("show");
         });
     });
 </script>

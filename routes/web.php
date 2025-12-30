@@ -113,7 +113,11 @@ Route::middleware(['auth:user'])->group(function(){
     Route::post('/presensi/cetakrekapsemester',[PresensiController::class,'cetakrekapsemester']);
     Route::get('/presensi/rekaptahun',[PresensiController::class,'rekaptahun']);
     Route::post('/presensi/cetakrekaptahun',[PresensiController::class,'cetakrekaptahun']);
+
+
+    //Data Izin Sakit
     Route::get('/presensi/izinsakit',[PresensiController::class,'izinsakit']);
+    Route::post('/bukti_izin_sakit',[PresensiController::class,'bukti_izin_sakit']);
     Route::post('/presensi/approveizinsakit',[PresensiController::class,'approveizinsakit']);
     Route::get('/presensi/{id}/batalkanizinsakit',[PresensiController::class,'batalkanizinsakit']);
 

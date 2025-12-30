@@ -1181,6 +1181,25 @@ class PresensiController extends Controller
         return view('presensi.izinsakit',compact('izinsakit', 'jurusan'));
     }
 
+
+
+    public function bukti_izin_sakit(Request $request)
+    {
+        $id      = $request->id;
+        $nisn    = $request->nisn;
+        $tanggal = $request->tanggal;
+
+        $izin = DB::table('pengajuan_izin')
+            ->where('nisn', $nisn)
+            ->where('tgl_izin', $tanggal)
+            ->where('status_approved', 1)
+            ->first();
+
+        return view('presensi.bukti_izin_sakit', compact('izin'));
+    }
+
+
+
     public function approveizinsakit(Request $request)
     {
         $status_approved = $request->status_approved;
