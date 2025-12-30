@@ -108,7 +108,7 @@
                             <td>{{ \Carbon\Carbon::parse($d->tgl_izin)->translatedFormat('d F Y') }}</td>
                             <!--<td>{{ $d->nisn }}</td>-->
                             <td>{{ $d->nama_lengkap }}</td>
-                            <td style='text-align: center;'>{{ $d->kelas }}</td>
+                            <td style='text-align: center;'>{{ $d->kelas }} {{ $d->kode_jurusan }}</td>
                             <td style='text-align: center;'>{{ $d->status == "i" ? "izin" : "Sakit" }}</td>
                             <td>{{ $d->keterangan }}</td>
                             <td style='text-align: center;'>
