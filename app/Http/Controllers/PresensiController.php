@@ -562,6 +562,33 @@ class PresensiController extends Controller
 
 
 
+    public function bukti_keterangan_absen(Request $request)
+    {
+        $id      = $request->id;
+        $nisn    = $request->nisn;
+        $tanggal = $request->tanggal;
+    
+        $presensi = DB::table('presensi')
+            ->join('murid', 'presensi.nisn', '=', 'murid.nisn')
+            ->where('presensi.id', $id)
+            ->select('presensi.*', 'murid.nama_lengkap')
+            ->first();
+    
+        $izin = DB::table('pengajuan_izin')
+            ->where('nisn', $nisn)
+            ->where('tgl_izin', $tanggal)
+            ->where('status_approved', 1)
+            ->first();
+    
+        return view('presensi.bukti_keterangan_absen', compact(
+            'presensi',
+            'izin',
+            'tanggal'
+        ));
+    }
+
+
+
     public function rekappresensi()
     {
         $namabulan = ["","Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];

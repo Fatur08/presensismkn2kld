@@ -106,7 +106,7 @@ function selisih($jam_batas, $jam_masuk)
                     </a>
                 @elseif (in_array($d->status_izin, ['i', 's']))
                     <a href="#"
-                       class="btn btn-secondary edit_keterangan_absen"
+                       class="btn btn-secondary bukti_keterangan_absen"
                        id       = "{{ $d->id }}"
                        nisn     = "{{ $d->nisn }}"
                        tanggal  = "{{ $tanggal }}"
@@ -183,6 +183,27 @@ function selisih($jam_batas, $jam_masuk)
                 }
             });
             $("#modal-edit_keterangan_absen").modal("show");
+        });
+
+        $(".bukti_keterangan_absen").click(function(e){
+            var id      = $(this).attr("id") ?? null;
+            var nisn    = $(this).attr("nisn");
+            var tanggal = $(this).attr("tanggal");
+            $.ajax({
+                type    :'POST',
+                url     :'/bukti_keterangan_absen',
+                data    :{
+                    _token  :"{{ csrf_token() }}",
+                    id      : id,
+                    nisn    : nisn,
+                    tanggal : tanggal
+                },
+                cache:false,
+                success:function(respond){
+                    $("#modal_bukti_keterangan_absen").html(respond);
+                }
+            });
+            $("#modal-bukti_keterangan_absen").modal("show");
         });
 
         $('#modal-peta_jam_masuk').on('hidden.bs.modal', function () {
