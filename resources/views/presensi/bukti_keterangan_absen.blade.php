@@ -1,12 +1,4 @@
-<div class="modal-header">
-    <h5 class="modal-title">
-        Bukti Keterangan Absen
-    </h5>
-    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-</div>
-
 <div class="modal-body">
-
     @if(!$izin)
         <div class="alert alert-warning text-center">
             Tidak ada data izin / sakit pada tanggal
@@ -17,7 +9,7 @@
         <table class="table table-bordered">
             <tr>
                 <th width="40%">Nama Murid</th>
-                <td>{{ $presensi->nama_lengkap ?? '-' }}</td>
+                <td>{{ $nama_lengkap ?? '-' }}</td>
             </tr>
             <tr>
                 <th>Tanggal</th>

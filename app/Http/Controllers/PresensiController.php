@@ -572,10 +572,9 @@ class PresensiController extends Controller
 
         $tanggalIndonesia = Carbon::parse($tanggal)->translatedFormat('l, d F Y');
 
-        $presensi = DB::table('presensi')
-            ->join('murid', 'presensi.nisn', '=', 'murid.nisn')
-            ->where('presensi.id', $id)
-            ->select('presensi.*', 'murid.nama_lengkap')
+        $nama_murid = DB::table('murid')
+            ->where('nisn', $nisn)
+            ->select('nama_lengkap')
             ->first();
 
         $izin = DB::table('pengajuan_izin')
@@ -585,7 +584,7 @@ class PresensiController extends Controller
             ->first();
 
         return view('presensi.bukti_keterangan_absen', compact(
-            'presensi',
+            'nama_lengkap',
             'izin',
             'tanggalIndonesia'
         ));
