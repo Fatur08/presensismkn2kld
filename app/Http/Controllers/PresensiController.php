@@ -574,8 +574,7 @@ class PresensiController extends Controller
 
         $nama_murid = DB::table('murid')
             ->where('nisn', $nisn)
-            ->select('nama_lengkap')
-            ->first();
+            ->value('nama_lengkap');
 
         $izin = DB::table('pengajuan_izin')
             ->where('nisn', $nisn)
