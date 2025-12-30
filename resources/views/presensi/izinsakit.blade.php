@@ -92,7 +92,7 @@
                         <tr>
                             <th style='text-align: center;'>No.</th>
                             <th style='text-align: center;'>Tanggal</th>
-                            <th style='text-align: center;'>NISN</th>
+                            <!--<th style='text-align: center;'>NISN</th>-->
                             <th style='text-align: center;'>Nama Murid</th>
                             <th style='text-align: center;'>Kelas</th>
                             <th style='text-align: center;'>Status</th>
@@ -106,7 +106,7 @@
                         <tr>
                             <td style='text-align: center;'>{{ $loop->iteration }}</td>
                             <td>{{ \Carbon\Carbon::parse($d->tgl_izin)->translatedFormat('d F Y') }}</td>
-                            <td>{{ $d->nisn }}</td>
+                            <!--<td>{{ $d->nisn }}</td>-->
                             <td>{{ $d->nama_lengkap }}</td>
                             <td style='text-align: center;'>{{ $d->kelas }}</td>
                             <td style='text-align: center;'>{{ $d->status == "i" ? "izin" : "Sakit" }}</td>
