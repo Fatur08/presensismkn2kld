@@ -10,7 +10,7 @@
     @if(!$izin)
         <div class="alert alert-warning text-center">
             Tidak ada data izin / sakit pada tanggal
-            <strong>{{ tanggalIndo($tanggal) }}</strong>
+            <strong>{{ $tanggalIndonesia }}</strong>
         </div>
     @else
 
@@ -21,7 +21,7 @@
             </tr>
             <tr>
                 <th>Tanggal</th>
-                <td>{{ tanggalIndo($tanggal) }}</td>
+                <td>{{ $tanggalIndonesia }}</td>
             </tr>
             <tr>
                 <th>Status Absen</th>

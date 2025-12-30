@@ -566,24 +566,28 @@ class PresensiController extends Controller
     {
         $id      = $request->id;
         $nisn    = $request->nisn;
-        $tanggal = $request->tanggal;
-    
+        // Format tanggal
+        $tanggal = Carbon::parse($request->tanggal)->format('Y-m-d');
+        setlocale(LC_TIME, 'id_ID.utf8');
+
+        $tanggalIndonesia = Carbon::parse($tanggal)->translatedFormat('l, d F Y');
+
         $presensi = DB::table('presensi')
             ->join('murid', 'presensi.nisn', '=', 'murid.nisn')
             ->where('presensi.id', $id)
             ->select('presensi.*', 'murid.nama_lengkap')
             ->first();
-    
+
         $izin = DB::table('pengajuan_izin')
             ->where('nisn', $nisn)
             ->where('tgl_izin', $tanggal)
             ->where('status_approved', 1)
             ->first();
-    
+
         return view('presensi.bukti_keterangan_absen', compact(
             'presensi',
             'izin',
-            'tanggal'
+            'tanggalIndonesia'
         ));
     }
 
