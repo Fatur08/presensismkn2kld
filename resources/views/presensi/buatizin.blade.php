@@ -28,8 +28,7 @@
         @csrf
         <div class="form-group boxed">
             <div class="input-wrapper">
-                <h4>Hai Kak</h4>
-                <input type="text" id="tgl_izin" name="tgl_izin" class="form-control datepicker" placeholder="Tanggal">
+                <input type="text" id="tgl_izin" name="tgl_izin" class="form-control datepicker" placeholder="Masukkan Tanggal">
             </div>
         </div>
         <div class="form-group boxed">
@@ -40,7 +39,7 @@
             </select>
         </div>
         <div class="form-group boxed">
-            <textarea name="keterangan" id="keterangan" cols="30" rows="5" class="form-control" placeholder="Keterangan"></textarea>
+            <textarea name="keterangan" id="keterangan" cols="30" rows="5" class="form-control" placeholder="Masukkan Keterangan"></textarea>
         </div>
         <div class="form-group boxed">
             <div class="input-wrapper">
