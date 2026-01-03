@@ -27,44 +27,32 @@
     <div class="col">
         <form action="/presensi/storeizin" method="POST" id="frmIzin">
             @csrf
-            <div class="row">
-                <div class="col-12">
-                    <div class="form-group">
-                        <h4>Masukkan Tanggal</h4>
+            <div class="col">
+                <div class="form-group boxed">
+                    <h4>Masukkan Tanggal</h4>
+                    <div class="input-wrapper">
                         <input type="text" id="tgl_izin" name="tgl_izin" class="form-control datepicker" placeholder="Tanggal">
                     </div>
                 </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-12">
-                    <div class="form-group">
-                        <select name="status" id="status" class="form-control">
-                            <option value="">Pilih Status</option>
-                            <option value="i">Izin</option>
-                            <option value="s">Sakit</option>
-                        </select>
-                    </div>
+                <div class="form-group boxed">
+                    <select name="status" id="status" class="form-control">
+                        <option value="">Pilih Status</option>
+                        <option value="i">Izin</option>
+                        <option value="s">Sakit</option>
+                    </select>
                 </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-12">
-                    <div class="form-group">
-                        <h4>Masukkan Keterangan</h4>
-                        <textarea name="keterangan" id="keterangan" cols="30" rows="5" class="form-control" placeholder="Keterangan"></textarea>
-                    </div>
+                <div class="form-group boxed">
+                    <h4>Masukkan Keterangan</h4>
+                    <textarea name="keterangan" id="keterangan" cols="30" rows="5" class="form-control" placeholder="Keterangan"></textarea>
                 </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-12">
-                    <div class="form-group">
-                        <h4>Masukkan Bukti Izin / Sakit</h4>
+                <div class="form-group boxed">
+                    <h4>Masukkan Bukti Izin / Sakit</h4>
+                    <div class="input-wrapper">
                         <input type="file" name="bukti_izin" id="bukti_izin" class="form-control">
                     </div>
                 </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-12">
-                    <div class="form-group">
+                <div class="form-group boxed">
+                    <div class="input-wrapper">
                         <button class="btn btn-primary w-100">Kirim</button>
                     </div>
                 </div>
