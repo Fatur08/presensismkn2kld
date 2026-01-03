@@ -357,16 +357,36 @@ class PresensiController extends Controller
 
     public function storeizin(Request $request)
     {
-        $nisn = str_pad((string) Auth::guard('murid')->user()->nisn, 10, '0',STR_PAD_LEFT);
-        $tgl_izin = $request->tgl_izin;
-        $status = $request->status;
+        $nisn       = str_pad((string) Auth::guard('murid')->user()->nisn, 10, '0',STR_PAD_LEFT);
+        $tgl_izin   = $request->tgl_izin;
+        $status     = $request->status;
         $keterangan = $request->keterangan;
+        $bukti_izin = null;
+
+        if ($request->hasFile('bukti_izin')) {
+            $file = $request->file('bukti_izin');
+            // nama file unik
+            $bukti_izin = 'bukti_izin_' .
+                          Carbon::now()->format('YmdHis') . '.' .
+                          $file->getClientOriginalExtension();
+            $storagePath = 'public/uploads/bukti_izin/';
+            $request->file('bukti_izin')->storeAs($storagePath, $bukti_izin);
+            $publicPath = public_path('storage/uploads/bukti_izin/');
+            if (!is_dir($publicPath)) {
+                mkdir($publicPath, 0777, true);
+            }
+            $sourceFile = storage_path('app/' . $storagePath . $bukti_izin);
+            $destinationFile = public_path('storage/uploads/bukti_izin/' . $bukti_izin);
+            copy($sourceFile, $destinationFile);
+        }
 
         $data = [
-            'nisn' => $nisn,
-            'tgl_izin' => $tgl_izin,
-            'status' => $status,
-            'keterangan' => $keterangan
+            'nisn'              => $nisn,
+            'tgl_izin'          => $tgl_izin,
+            'status'            => $status,
+            'keterangan'        => $keterangan,
+            'bukti_izin'        => $bukti_izin,
+            'status_approved'   => 0,
         ];
 
         $simpan = DB::table('pengajuan_izin')
