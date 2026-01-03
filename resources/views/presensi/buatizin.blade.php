@@ -24,7 +24,7 @@
 @endsection
 @section('content')
 <div class="col" style="margin-top: 70px;">
-    <form action="/presensi/storeizin" method="POST" id="frmIzin">
+    <form action="/presensi/storeizin" method="POST" id="frmIzin" enctype="multipart/form-data">
         @csrf
         <div class="form-group boxed">
             <div class="input-wrapper">
