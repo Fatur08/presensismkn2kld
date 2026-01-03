@@ -28,17 +28,23 @@
         <form action="/presensi/storeizin" method="POST" id="frmIzin">
             @csrf
             <div class="form-group">
+                <h4>Masukkan Tanggal</h4>
                 <input type="text" id="tgl_izin" name="tgl_izin" class="form-control datepicker" placeholder="Tanggal">
             </div>
             <div class="form-group">
                 <select name="status" id="status" class="form-control">
-                    <option value="">Izin / Sakit</option>
+                    <option value="">Pilih Status</option>
                     <option value="i">Izin</option>
                     <option value="s">Sakit</option>
                 </select>
             </div>
             <div class="form-group">
+                <h4>Masukkan Keterangan</h4>
                 <textarea name="keterangan" id="keterangan" cols="30" rows="5" class="form-control" placeholder="Keterangan"></textarea>
+            </div>
+            <div class="form-group">
+                <h4>Masukkan Bukti Izin / Sakit</h4>
+                <input type="file" name="bukti_izin" id="bukti_izin" class="form-control">
             </div>
             <div class="form-group">
                 <button class="btn btn-primary w-100">Kirim</button>
