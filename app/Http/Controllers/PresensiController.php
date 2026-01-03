@@ -1212,7 +1212,6 @@ class PresensiController extends Controller
         $izin = DB::table('pengajuan_izin')
             ->where('nisn', $nisn)
             ->where('tgl_izin', $tanggal)
-            ->where('status_approved', 1)
             ->first();
 
         return view('presensi.bukti_izin_sakit', compact('izin'));
