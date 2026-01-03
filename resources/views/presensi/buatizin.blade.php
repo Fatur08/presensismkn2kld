@@ -28,6 +28,7 @@
         @csrf
         <div class="form-group boxed">
             <div class="input-wrapper">
+                <h4>Hai Kak</h4>
                 <input type="text" id="tgl_izin" name="tgl_izin" class="form-control datepicker" placeholder="Tanggal">
             </div>
         </div>
