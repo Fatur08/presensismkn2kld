@@ -265,8 +265,11 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-12">
-                            <input type="file" name="foto" class="form-control mb-2">
+                        <div class="col-6">
+                            <input type="file" id="foto" name="foto" class="form-control">
+                        </div>
+                        <div class="col-6 mt-2">
+                            <label>Masukkan Foto Murid</label>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -328,18 +331,6 @@
         $(".delete-confirm").click(function(e){
             var form = $(this).closest('form');
             e.preventDefault();
-            /*
-            Swal.fire({
-                title: "Apakah Anda Yakin Data Ini Mau di Delete?",
-                showCancelButton: true,
-                confirmButtonText: "Delete"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                  Swal.fire("Deleted!", "", "success");
-                }
-            });
-            */
             Swal.fire({
                 title: "Apakah Anda Yakin Data ini Ingin Di Hapus?",
                 text: "Jika Ya Maka Data Akan Terhapus Permanen",
@@ -366,8 +357,9 @@
             var nama_lengkap = $("#nama_lengkap").val();
             var jenis_kelamin = $("#jenis_kelamin").val();
             var kelas = $("#kelas").val();
-            var kode_jurusan = $("FormTambahMurid").find("#kode_jurusan").val();
+            var kode_jurusan = $("#kode_jurusan").val();
             var no_hp = $("#no_hp").val();
+            var foto = $("FormTambahMurid").find("#foto").val();
             if(nisn==""){
                 //alert('NISN Harus Diisi');
                 Swal.fire({
@@ -427,6 +419,16 @@
                     confirmButtonText: 'OK'
                   }).then(()=> {
                       $("#no_hp").focus();
+                  });
+                return false;
+            } else if (foto==""){
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'Foto Harus Diisi',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                  }).then(()=> {
+                      $("#foto").focus();
                   });
                 return false;
             }
