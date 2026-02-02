@@ -243,11 +243,11 @@
                                     maxlength="15"
                                     oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                 >
+                            
+                                <small class="text-muted">
+                                    Nomor HP hanya boleh angka (contoh: 08xxxxxxxxxx)
+                                </small>
                             </div>
-
-                            <small class="text-muted">
-                                Nomor HP hanya boleh angka (contoh: 08xxxxxxxxxx)
-                            </small>
                         </div>
                     </div>
                     <div class="row">
