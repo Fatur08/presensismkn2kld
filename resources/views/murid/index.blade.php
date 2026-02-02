@@ -359,9 +359,8 @@
             var kelas = $("#kelas").val();
             var kode_jurusan = $("#kode_jurusan").val();
             var no_hp = $("#no_hp").val();
-            var foto = $("FormTambahMurid").find("#foto").val();
+            var foto = $("#foto").val();
             if(nisn==""){
-                //alert('NISN Harus Diisi');
                 Swal.fire({
                     title: 'Warning!',
                     text: 'NISN Harus Diisi',
