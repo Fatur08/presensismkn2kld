@@ -33,14 +33,14 @@
                   <!-- Download SVG icon from http://tabler-icons.io/i/user -->
                   <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-user"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></svg>
                 </span>
-                <input type="text" value="{{ $murid->nama_lengkap}}" id="nama_murid" name="nama_murid" class="form-control" placeholder="Nama Lengkap">
+                <input type="text" value="{{ $murid->nama_lengkap}}" id="edit_nama_lengkap" name="edit_nama_lengkap" class="form-control" placeholder="Nama Lengkap">
               </div>
         </div>
     </div>
     <div class="row">
         <div class="col-12">
             <div class="input-icon mb-3">
-                <select name="kelas" id="kelas" class="form-select">
+                <select name="edit_kelas" id="edit_kelas" class="form-select">
                     <option value="">Pilih Kelas</option>
                     <option value="X" {{ $murid->kelas === 'X' ? 'selected' : '' }}>Kelas X</option>
                     <option value="XI" {{ $murid->kelas === 'XI' ? 'selected' : '' }}>Kelas XI</option>
@@ -51,7 +51,7 @@
     </div>
     <div class="row">
         <div class="col-12 mb-3">
-            <select name="kode_jurusan" id="kode_jurusan" class="form-select">
+            <select name="edit_kode_jurusan" id="edit_kode_jurusan" class="form-select">
                 <option value="">Jurusan</option>
                 @foreach ($jurusan as $d)
                     <option {{ $murid->kode_jurusan ==$d->kode_jurusan ? 'selected' : '' }} value="{{ $d->kode_jurusan }}">{{ $d->nama_jurusan }}</option>
@@ -69,8 +69,8 @@
                 <input
                     type="text"
                     value="{{ $murid->no_hp }}"
-                    id="no_hp"
-                    name="no_hp"
+                    id="edit_no_hp"
+                    name="edit_no_hp"
                     class="form-control"
                     placeholder="Masukkan Nomor HP"
                     inputmode="numeric"
@@ -91,7 +91,7 @@
     </div>
     <div class="row mb-3">
         <div class="col-6">
-            <input type="file" id="foto" name="foto" class="form-control">
+            <input type="file" id="edit_foto" name="edit_foto" class="form-control">
             <input type="hidden" name="old_foto" value="{{ $murid->foto }}">
         </div>
         <div class="col-6 mt-2">
@@ -115,11 +115,11 @@
     $(function(){
         $("#FormEditMurid").submit(function(){
             var nisn_baru = $("#nisn_baru").val();
-            var nama_murid = $("#nama_murid").val();
-            var kelas = $("#kelas").val();
-            var kode_jurusan = $("#kode_jurusan").val();
-            var no_hp = $("#no_hp").val();
-            var foto = $("#foto").val();
+            var edit_nama_lengkap = $("#edit_nama_lengkap").val();
+            var edit_kelas = $("#edit_kelas").val();
+            var edit_kode_jurusan = $("#edit_kode_jurusan").val();
+            var edit_no_hp = $("#edit_no_hp").val();
+            var edit_foto = $("#edit_foto").val();
             if(nisn_baru==""){
                 Swal.fire({
                     title: 'Warning!',
@@ -140,44 +140,44 @@
                       $("#nama_lengkap").focus();
                   });
                 return false;
-            } else if (kelas==""){
+            } else if (edit_kelas==""){
                 Swal.fire({
                     title: 'Warning!',
                     text: 'Kelas Harus Diisi',
                     icon: 'warning',
                     confirmButtonText: 'OK'
                   }).then(()=> {
-                      $("#kelas").focus();
+                      $("#edit_kelas").focus();
                   });
                 return false;
-            } else if (kode_jurusan==""){
+            } else if (edit_kode_jurusan==""){
                 Swal.fire({
                     title: 'Warning!',
                     text: 'Jurusan Harus Diisi',
                     icon: 'warning',
                     confirmButtonText: 'OK'
                   }).then(()=> {
-                      $("#kode_jurusan").focus();
+                      $("#edit_kode_jurusan").focus();
                   });
                 return false;
-            } else if (no_hp==""){
+            } else if (edit_no_hp==""){
                 Swal.fire({
                     title: 'Warning!',
                     text: 'No. HP Harus Diisi',
                     icon: 'warning',
                     confirmButtonText: 'OK'
                   }).then(()=> {
-                      $("#no_hp").focus();
+                      $("#edit_no_hp").focus();
                   });
                 return false;
-            } else if (foto==""){
+            } else if (edit_foto==""){
                 Swal.fire({
                     title: 'Warning!',
                     text: 'Foto Harus Diisi',
                     icon: 'warning',
                     confirmButtonText: 'OK'
                   }).then(()=> {
-                      $("#foto").focus();
+                      $("#edit_foto").focus();
                   });
                 return false;
             }

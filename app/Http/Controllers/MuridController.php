@@ -102,10 +102,10 @@ class MuridController extends Controller
         $nisn_lama = $request->nisn_lama; // dari hidden input
         $nisn_baru = $request->nisn_baru; // dari form editable
     
-        $nama_lengkap = $request->nama_lengkap;
-        $kelas = $request->kelas;
-        $no_hp = $request->no_hp;
-        $kode_jurusan = $request->kode_jurusan;
+        $edit_nama_lengkap = $request->edit_nama_lengkap;
+        $edit_kelas = $request->edit_kelas;
+        $edit_no_hp = $request->edit_no_hp;
+        $edit_kode_jurusan = $request->edit_kode_jurusan;
         $password = Hash::make('12345');
         $old_foto = $request->old_foto;
     
@@ -128,11 +128,11 @@ class MuridController extends Controller
         try {
             $data = [
                 'nisn' => $nisn_baru,
-                'nama_lengkap' => $nama_lengkap,
-                'kelas' => $kelas,
-                'no_hp' => $no_hp,
+                'nama_lengkap' => $edit_nama_lengkap,
+                'kelas' => $edit_kelas,
+                'no_hp' => $edit_no_hp,
                 'foto' => $foto,
-                'kode_jurusan' => $kode_jurusan,
+                'kode_jurusan' => $edit_kode_jurusan,
                 'password' => $password
             ];
         
