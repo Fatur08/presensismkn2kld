@@ -89,7 +89,7 @@
             </small>
         </div>
     </div>
-    <div class="row">
+    <div class="row mb-3">
         <div class="col-6">
             <input type="file" id="foto" name="foto" class="form-control">
             <input type="hidden" name="old_foto" value="{{ $murid->foto }}">
