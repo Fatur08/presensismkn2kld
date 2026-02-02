@@ -48,11 +48,11 @@
                                         </div>
                                         <div class="col-2">
                                             <div class="form-group">
-                                                <select name="kelas" id="kelas" class="form-select">
+                                                <select name="pilih_kelas" id="pilih_kelas" class="form-select">
                                                     <option value="">Kelas</option>
-                                                    <option value="X" {{ request('kelas') == 'X' ? 'selected' : '' }}>Kelas X</option>
-                                                    <option value="XI" {{ request('kelas') == 'XI' ? 'selected' : '' }}>Kelas XI</option>
-                                                    <option value="XII" {{ request('kelas') == 'XII' ? 'selected' : '' }}>Kelas XII</option>
+                                                    <option value="X" {{ request('pilih_kelas') == 'X' ? 'selected' : '' }}>Kelas X</option>
+                                                    <option value="XI" {{ request('pilih_kelas') == 'XI' ? 'selected' : '' }}>Kelas XI</option>
+                                                    <option value="XII" {{ request('pilih_kelas') == 'XII' ? 'selected' : '' }}>Kelas XII</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -160,7 +160,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="/murid/store" method="POST" id="frmMurid" enctype="multipart/form-data">
+                <form action="/murid/store" method="POST" id="FormTambahMurid" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <div class="col-12">
@@ -361,12 +361,12 @@
             });
         });
 
-        $("#frmMurid").submit(function(){
+        $("#FormTambahMurid").submit(function(){
             var nisn = $("#nisn").val();
             var nama_lengkap = $("#nama_lengkap").val();
             var jenis_kelamin = $("#jenis_kelamin").val();
             var kelas = $("#kelas").val();
-            var kode_jurusan = $("frmMurid").find("#kode_jurusan").val();
+            var kode_jurusan = $("FormTambahMurid").find("#kode_jurusan").val();
             var no_hp = $("#no_hp").val();
             if(nisn==""){
                 //alert('NISN Harus Diisi');
