@@ -1,4 +1,6 @@
-<form action="/murid/{{ $murid->nisn }}/update" method="POST" id="frmMurid" enctype="multipart/form-data">
+@extends('layouts.admin.murid.edit_murid')
+@section('content')
+<form action="/murid/{{ $murid->nisn }}/update" method="POST" id="FormEditMurid" enctype="multipart/form-data">
     @csrf
     <div class="row">
         <div class="col-12">
@@ -8,8 +10,20 @@
                   <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-barcode"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v-1a2 2 0 0 1 2 -2h2" /><path d="M4 17v1a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v1" /><path d="M16 20h2a2 2 0 0 0 2 -2v-1" /><path d="M5 11h1v2h-1z" /><path d="M10 11l0 2" /><path d="M14 11h1v2h-1z" /><path d="M19 11l0 2" /></svg>
                 </span>
                 <input type="hidden" name="nisn_lama" value="{{ $murid->nisn }}">
-                <input type="text" value="{{ $murid->nisn }}" id="nisn_baru" class="form-control" name="nisn_baru" placeholder="NISN">
-              </div>
+                <input
+                    type="text"
+                    value="{{ $murid->nisn }}"
+                    id="nisn_baru"
+                    name="nisn_baru"
+                    class="form-control"
+                    placeholder="Masukkan NISN"
+                    inputmode="numeric"
+                    pattern="[0-9]+"
+                    minlength="10"
+                    maxlength="10"
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                >  
+            </div>
         </div>
     </div>
     <div class="row">
@@ -47,19 +61,41 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <div class="input-icon mb-3">
+            <div class="input-icon">
                 <span class="input-icon-addon">
                   <!-- Download SVG icon from http://tabler-icons.io/i/user -->
                   <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-phone"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" /></svg>
                 </span>
-                <input type="text" value="{{ $murid->no_hp }}" id="no_hp" class="form-control" name="no_hp" placeholder="Nomor HP">
-              </div>
+                <input
+                    type="text"
+                    value="{{ $murid->no_hp }}"
+                    id="no_hp"
+                    name="no_hp"
+                    class="form-control"
+                    placeholder="Masukkan Nomor HP"
+                    inputmode="numeric"
+                    pattern="[0-9]+"
+                    minlength="10"
+                    maxlength="15"
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                >
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-12">
+            <small class="text-muted">
+                Nomor HP hanya boleh angka (contoh: 08xxxxxxxxxx)
+            </small>
         </div>
     </div>
     <div class="row">
-        <div class="col-12 mb-3">
-            <input type="file" name="foto" class="form-control">
+        <div class="col-6">
+            <input type="file" id="foto" name="foto" class="form-control">
             <input type="hidden" name="old_foto" value="{{ $murid->foto }}">
+        </div>
+        <div class="col-6 mt-2">
+            <label>Masukkan Foto Murid</label>
         </div>
     </div>
     <div class="row">
@@ -73,3 +109,79 @@
         </div>
     </div>
 </form>
+@endsection
+@push('myscript')
+<script>
+    $(function(){
+        $("#FormEditMurid").submit(function(){
+            var nisn_baru = $("#nisn_baru").val();
+            var nama_lengkap = $("#nama_lengkap").val();
+            var kelas = $("#kelas").val();
+            var kode_jurusan = $("#kode_jurusan").val();
+            var no_hp = $("#no_hp").val();
+            var foto = $("#foto").val();
+            if(nisn_baru==""){
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'NISN Harus Diisi',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                  }).then(()=> {
+                      $("#nisn_baru").focus();
+                  });
+                return false;
+            } else if (nama_lengkap==""){
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'Nama Harus Diisi',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                  }).then(()=> {
+                      $("#nama_lengkap").focus();
+                  });
+                return false;
+            } else if (kelas==""){
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'Kelas Harus Diisi',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                  }).then(()=> {
+                      $("#kelas").focus();
+                  });
+                return false;
+            } else if (kode_jurusan==""){
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'Jurusan Harus Diisi',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                  }).then(()=> {
+                      $("#kode_jurusan").focus();
+                  });
+                return false;
+            } else if (no_hp==""){
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'No. HP Harus Diisi',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                  }).then(()=> {
+                      $("#no_hp").focus();
+                  });
+                return false;
+            } else if (foto==""){
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'Foto Harus Diisi',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                  }).then(()=> {
+                      $("#foto").focus();
+                  });
+                return false;
+            }
+        });
+    });
+</script>
+@endpush
