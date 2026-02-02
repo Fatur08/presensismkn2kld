@@ -1,16 +1,5 @@
 @extends('layouts.admin.tabler')
 @section('content')
-<style>
-    .input-icon {
-        position: relative;
-    }
-
-    .input-icon-addon {
-        display: flex;
-        align-items: center;   /* ⬅️ bikin icon benar-benar center vertikal */
-        justify-content: center;
-    }
-</style>
 <div class="page-header d-print-none">
     <div class="container-xl">
         <div class="row align-items-center justify-content-between">
@@ -230,7 +219,7 @@
                     </div>
                     <div class="row mt-3">
                         <div class="col-12">
-                            <div class="input-icon mb-3">
+                            <div class="input-icon">
                                 <span class="input-icon-addon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                          viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -241,7 +230,7 @@
                                                  a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2"/>
                                     </svg>
                                 </span>
-                    
+
                                 <input
                                     type="text"
                                     id="no_hp"
@@ -254,11 +243,14 @@
                                     maxlength="15"
                                     oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                 >
-                    
-                                <small class="text-muted">
-                                    Nomor HP hanya boleh angka (contoh: 08xxxxxxxxxx)
-                                </small>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <small class="text-muted">
+                                Nomor HP hanya boleh angka (contoh: 08xxxxxxxxxx)
+                            </small>
                         </div>
                     </div>
                     <div class="row">
