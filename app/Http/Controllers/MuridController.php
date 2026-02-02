@@ -20,8 +20,8 @@ class MuridController extends Controller
         if(!empty($request->nama_murid)){
             $query->where('nama_lengkap','like','%'.$request->nama_murid . '%');
         }
-        if(!empty($request->kode_jurusan)){
-            $query->where('murid.kode_jurusan', $request->kode_jurusan);
+        if(!empty($request->pilih_kode_jurusan)){
+            $query->where('murid.kode_jurusan', $request->pilih_kode_jurusan);
         }
         if(!empty($request->pilih_kelas)){
             $query->where('murid.kelas', $request->pilih_kelas);
@@ -30,7 +30,7 @@ class MuridController extends Controller
         $jurusan = DB::table('jurusan')->get();
         $dataKosong = $murid->isEmpty(); 
         $sudahCari = !empty($request->nama_murid) || 
-                     !empty($request->kode_jurusan) || 
+                     !empty($request->pilih_kode_jurusan) || 
                      !empty($request->pilih_kelas);
         
         return view('murid.index', compact('murid','jurusan','dataKosong','sudahCari'));
