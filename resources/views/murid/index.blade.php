@@ -264,7 +264,7 @@
                             </small>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row mb-3">
                         <div class="col-6">
                             <input type="file" id="foto" name="foto" class="form-control">
                         </div>
