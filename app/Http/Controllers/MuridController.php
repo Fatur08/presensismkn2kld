@@ -122,7 +122,13 @@ class MuridController extends Controller
         if($request->hasFile('edit_foto')){
             $edit_foto = $nisn_baru.".".$request->file('edit_foto')->getClientOriginalExtension();
         } else {
-            $edit_foto = $old_foto;
+            // Tidak upload → rename foto lama jika NISN berubah
+            if ($nisn_lama != $nisn_baru && $old_foto) {
+                $ext = pathinfo($old_foto, PATHINFO_EXTENSION);
+                $edit_foto = $nisn_baru . '.' . $ext;
+            } else {
+                $edit_foto = $old_foto;
+            }
         }
     
         try {
