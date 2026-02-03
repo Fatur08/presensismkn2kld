@@ -146,35 +146,51 @@ class MuridController extends Controller
         
             if ($update) {
                 if ($request->hasFile('edit_foto')) {
-                    $edit_foto = $nisn_baru.".".$request->file('edit_foto')->getClientOriginalExtension();
+                    // === JIKA UPLOAD FOTO BARU ===
+                    $edit_foto = $nisn_baru . "." . $request->file('edit_foto')->getClientOriginalExtension();
                     $folderpath = "public/uploads/murid/";
                     $folderpathold = $folderpath . $old_foto;
-                    if (Storage::exists($folderpathold)) {
+
+                    // Hapus foto lama
+                    if ($old_foto && Storage::exists($folderpathold)) {
                         Storage::delete($folderpathold);
                     }
+
+                    // Simpan foto baru
                     $request->file('edit_foto')->storeAs($folderpath, $edit_foto);
+
+                    // Copy ke public/storage
                     $publicPath = public_path('storage/uploads/murid/');
                     if (!is_dir($publicPath)) {
                         mkdir($publicPath, 0777, true);
                     }
+
                     $sourceFile = storage_path('app/' . $folderpath . $edit_foto);
-                    $destinationFile = public_path('storage/uploads/murid/' . $edit_foto);
+                    $destinationFile = $publicPath . $edit_foto;
                     copy($sourceFile, $destinationFile);
+
                 } else if ($nisn_lama != $nisn_baru && $old_foto) {
+                    // === JIKA TIDAK UPLOAD FOTO, TAPI NISN BERUBAH ===
                     $ext = pathinfo($old_foto, PATHINFO_EXTENSION);
-                    $edit_foto = $nisn_baru . '.' . $ext;
+                    $edit_foto = $nisn_baru . "." . $ext;
+
                     $folderpath = "public/uploads/murid/";
                     $folderpathold = $folderpath . $old_foto;
+                    $folderpathnew = $folderpath . $edit_foto;
+
+                    // Rename file lama
                     if (Storage::exists($folderpathold)) {
-                        Storage::delete($folderpathold);
+                        Storage::move($folderpathold, $folderpathnew);
                     }
-                    $old_foto->storeAs($folderpath, $edit_foto);
+
+                    // Copy ulang ke public/storage
                     $publicPath = public_path('storage/uploads/murid/');
                     if (!is_dir($publicPath)) {
                         mkdir($publicPath, 0777, true);
                     }
-                    $sourceFile = storage_path('app/' . $folderpath . $edit_foto);
-                    $destinationFile = public_path('storage/uploads/murid/' . $edit_foto);
+
+                    $sourceFile = storage_path('app/' . $folderpathnew);
+                    $destinationFile = $publicPath . $edit_foto;
                     copy($sourceFile, $destinationFile);
                 }
                 return Redirect::back()->with(['success' => 'Data Berhasil Diupdate']);
