@@ -237,10 +237,8 @@ class PresensiController extends Controller
 
     public function updateprofile(Request $request)
     {
-        $nisn = str_pad((string) Auth::guard('murid')->user()->nisn, 10, '0',STR_PAD_LEFT);
-
-        $nama_lengkap = $request
-            ->nama_lengkap;
+        $nisn           = str_pad((string) Auth::guard('murid')->user()->nisn, 10, '0',STR_PAD_LEFT);
+        $nama_lengkap   = $request->nama_lengkap;
 
         $kode_jurusan = $request->kode_jurusan;
 
