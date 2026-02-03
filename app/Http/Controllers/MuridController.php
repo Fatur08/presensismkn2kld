@@ -106,7 +106,7 @@ class MuridController extends Controller
         $edit_kelas = $request->edit_kelas;
         $edit_no_hp = $request->edit_no_hp;
         $edit_kode_jurusan = $request->edit_kode_jurusan;
-        $password = Hash::make('12345');
+        //$password = Hash::make('12345');
         $old_foto = $request->old_foto;
     
         // Cek jika nisn baru sudah ada tapi bukan milik data yang sedang diedit
@@ -140,7 +140,7 @@ class MuridController extends Controller
                 'no_hp' => $edit_no_hp,
                 'foto' => $edit_foto,
                 'kode_jurusan' => $edit_kode_jurusan,
-                'password' => $password
+                //'password' => $password
             ];
         
             $update = DB::table('murid')->where('nisn', $nisn_lama)->update($data);
