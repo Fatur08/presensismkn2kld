@@ -119,7 +119,7 @@
             var edit_kelas = $("#edit_kelas").val();
             var edit_kode_jurusan = $("#edit_kode_jurusan").val();
             var edit_no_hp = $("#edit_no_hp").val();
-            var edit_foto = $("#edit_foto").val();
+            //var edit_foto = $("#edit_foto").val();
             if(nisn_baru==""){
                 Swal.fire({
                     title: 'Warning!',
@@ -180,7 +180,7 @@
                       $("#edit_no_hp").focus();
                   });
                 return false;
-            } else if (edit_foto==""){
+            } /*else if (edit_foto==""){
                 Swal.fire({
                     title: 'Warning!',
                     text: 'Foto Harus Diisi',
@@ -190,7 +190,7 @@
                       $("#edit_foto").focus();
                   });
                 return false;
-            }
+            }*/
         });
     });
 </script>
