@@ -160,6 +160,21 @@ class MuridController extends Controller
                     $sourceFile = storage_path('app/' . $folderpath . $edit_foto);
                     $destinationFile = public_path('storage/uploads/murid/' . $edit_foto);
                     copy($sourceFile, $destinationFile);
+                } else if ($nisn_lama != $nisn_baru && $old_foto) {
+                    $edit_foto = $nisn_baru.".".$request->file('edit_foto')->getClientOriginalExtension();
+                    $folderpath = "public/uploads/murid/";
+                    $folderpathold = $folderpath . $old_foto;
+                    if (Storage::exists($folderpathold)) {
+                        Storage::delete($folderpathold);
+                    }
+                    $request->file('edit_foto')->storeAs($folderpath, $edit_foto);
+                    $publicPath = public_path('storage/uploads/murid/');
+                    if (!is_dir($publicPath)) {
+                        mkdir($publicPath, 0777, true);
+                    }
+                    $sourceFile = storage_path('app/' . $folderpath . $edit_foto);
+                    $destinationFile = public_path('storage/uploads/murid/' . $edit_foto);
+                    copy($sourceFile, $destinationFile);
                 }
                 return Redirect::back()->with(['success' => 'Data Berhasil Diupdate']);
             } else {
