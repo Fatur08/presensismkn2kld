@@ -30,9 +30,9 @@
                                         {{ Session::get('success') }}
                                     </div>
                                 @endif
-                                @if (Session::get('warning'))
+                                @if (Session::get('error'))
                                     <div class="alert alert-warning">
-                                        {{ Session::get('warning') }}
+                                        {{ Session::get('error') }}
                                     </div>
                                 @endif
                             </div>
