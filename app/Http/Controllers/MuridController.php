@@ -168,7 +168,7 @@ class MuridController extends Controller
                     if (Storage::exists($folderpathold)) {
                         Storage::delete($folderpathold);
                     }
-                    $request->file('edit_foto')->storeAs($folderpath, $edit_foto);
+                    $old_foto->storeAs($folderpath, $edit_foto);
                     $publicPath = public_path('storage/uploads/murid/');
                     if (!is_dir($publicPath)) {
                         mkdir($publicPath, 0777, true);
