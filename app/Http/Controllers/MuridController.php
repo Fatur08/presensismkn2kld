@@ -119,10 +119,10 @@ class MuridController extends Controller
             return Redirect::back()->with(['error' => 'NISN sudah digunakan oleh murid lain']);
         }
     
-        if($request->hasFile('foto')){
-            $foto = $nisn_baru.".".$request->file('foto')->getClientOriginalExtension();
+        if($request->hasFile('edit_foto')){
+            $edit_foto = $nisn_baru.".".$request->file('edit_foto')->getClientOriginalExtension();
         } else {
-            $foto = $old_foto;
+            $edit_foto = $old_foto;
         }
     
         try {
@@ -131,7 +131,7 @@ class MuridController extends Controller
                 'nama_lengkap' => $edit_nama_lengkap,
                 'kelas' => $edit_kelas,
                 'no_hp' => $edit_no_hp,
-                'foto' => $foto,
+                'foto' => $edit_foto,
                 'kode_jurusan' => $edit_kode_jurusan,
                 'password' => $password
             ];
