@@ -161,7 +161,8 @@ class MuridController extends Controller
                     $destinationFile = public_path('storage/uploads/murid/' . $edit_foto);
                     copy($sourceFile, $destinationFile);
                 } else if ($nisn_lama != $nisn_baru && $old_foto) {
-                    $edit_foto = $nisn_baru.".".$request->file('edit_foto')->getClientOriginalExtension();
+                    $ext = pathinfo($old_foto, PATHINFO_EXTENSION);
+                    $edit_foto = $nisn_baru . '.' . $ext;
                     $folderpath = "public/uploads/murid/";
                     $folderpathold = $folderpath . $old_foto;
                     if (Storage::exists($folderpathold)) {
