@@ -370,6 +370,16 @@
                       $("#nisn").focus();
                   });
                 return false;
+            } else if (nisn.length !== 10){
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'NISN harus tepat 10 digit angka',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                  }).then(()=> {
+                      $("#nisn").focus();
+                  });
+                return false;
             } else if (nama_lengkap==""){
                 Swal.fire({
                     title: 'Warning!',
