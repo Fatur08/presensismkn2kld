@@ -97,7 +97,7 @@ class MuridController extends Controller
         return view('murid.edit',compact('jurusan','murid'));
     }
 
-    public function update($nisn, Request $request)
+    public function update(Request $request)
     {
         $nisn_lama = $request->nisn_lama; // dari hidden input
         $nisn_baru = $request->nisn_baru; // dari form editable
@@ -131,6 +131,7 @@ class MuridController extends Controller
             }
         }
     
+        DB::beginTransaction();
         try {
             $data = [
                 'nisn' => $nisn_baru,
@@ -143,28 +144,37 @@ class MuridController extends Controller
             ];
         
             $update = DB::table('murid')->where('nisn', $nisn_lama)->update($data);
+
+            DB::table('pengajuan_izin')
+                ->where('nisn', $nisn_lama)
+                ->update(['nisn' => $nisn_baru]);
+
+            DB::table('presensi')
+                ->where('nisn', $nisn_lama)
+                ->update(['nisn' => $nisn_baru]);
+
+            DB::table('riwayat_pelanggaran')
+                ->where('nisn', $nisn_lama)
+                ->update(['nisn' => $nisn_baru]);
         
+            
             if ($update) {
                 if ($request->hasFile('edit_foto')) {
                     // === JIKA UPLOAD FOTO BARU ===
                     $edit_foto = $nisn_baru . "." . $request->file('edit_foto')->getClientOriginalExtension();
                     $folderpath = "public/uploads/murid/";
                     $folderpathold = $folderpath . $old_foto;
-
                     // Hapus foto lama
                     if ($old_foto && Storage::exists($folderpathold)) {
                         Storage::delete($folderpathold);
                     }
-
                     // Simpan foto baru
                     $request->file('edit_foto')->storeAs($folderpath, $edit_foto);
-
                     // Copy ke public/storage
                     $publicPath = public_path('storage/uploads/murid/');
                     if (!is_dir($publicPath)) {
                         mkdir($publicPath, 0777, true);
                     }
-
                     $sourceFile = storage_path('app/' . $folderpath . $edit_foto);
                     $destinationFile = $publicPath . $edit_foto;
                     copy($sourceFile, $destinationFile);
@@ -173,28 +183,26 @@ class MuridController extends Controller
                     // === JIKA TIDAK UPLOAD FOTO, TAPI NISN BERUBAH ===
                     $ext = pathinfo($old_foto, PATHINFO_EXTENSION);
                     $edit_foto = $nisn_baru . "." . $ext;
-
                     $folderpath = "public/uploads/murid/";
                     $folderpathold = $folderpath . $old_foto;
                     $folderpathnew = $folderpath . $edit_foto;
-
                     // Rename file lama
                     if (Storage::exists($folderpathold)) {
                         Storage::move($folderpathold, $folderpathnew);
                     }
-
                     // Copy ulang ke public/storage
                     $publicPath = public_path('storage/uploads/murid/');
                     if (!is_dir($publicPath)) {
                         mkdir($publicPath, 0777, true);
                     }
-
                     $sourceFile = storage_path('app/' . $folderpathnew);
                     $destinationFile = $publicPath . $edit_foto;
                     copy($sourceFile, $destinationFile);
                 }
+                DB::commit();
                 return Redirect::back()->with(['success' => 'Data Berhasil Diupdate']);
             } else {
+                DB::rollBack();
                 return Redirect::back()->with(['error' => 'Data Gagal Diupdate (data tidak ditemukan)']);
             }
         } catch (\Exception $e) {
