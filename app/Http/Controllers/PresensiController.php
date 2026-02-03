@@ -241,7 +241,6 @@ class PresensiController extends Controller
         $nama_lengkap   = $request->nama_lengkap;
 
         $kode_jurusan = $request->kode_jurusan;
-
         $kelas = $request->kelas;
 
         $no_hp = $request
