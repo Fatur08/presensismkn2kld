@@ -9,6 +9,12 @@
     .datepicker-date-display{
         background-color: #0f3a7e !important;
     }
+
+    .judul-kecil {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
 </style>
 <!--- App Header -->
 <div class="appHeader bg-primary text-light">
@@ -27,7 +33,7 @@
     <form action="/presensi/storeizin" method="POST" id="frmIzin" enctype="multipart/form-data">
         @csrf
         <div class="form-group boxed">
-            <h4>Tanggal Izin / Sakit</h4>
+            <h4 class="judul-kecil">Tanggal Izin / Sakit</h4>
             <div class="input-wrapper">
                 <input type="text" id="tgl_izin" name="tgl_izin" class="form-control datepicker" placeholder="Masukkan Tanggal">
             </div>
