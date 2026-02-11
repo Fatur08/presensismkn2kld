@@ -35,24 +35,26 @@
 
         <div class="col-12 mb-3">
             <h4 class="judul-kecil">Tanggal Izin / Sakit</h4>
-            <input type="text" id="tgl_izin" name="tgl_izin"
-                class="form-control datepicker"
-                placeholder="Masukkan Tanggal">
+            <div class="input-wrapper">
+                <input type="text" id="tgl_izin" name="tgl_izin" class="form-control datepicker" placeholder="Masukkan Tanggal">
+            </div>
         </div>
 
         <div class="col-12 mb-3">
             <select name="status" id="status" class="form-control">
-                <option value="">Pilih Status</option>
+                <option value="">Pilih Status Izin / Sakit</option>
                 <option value="i">Izin</option>
                 <option value="s">Sakit</option>
             </select>
         </div>
 
         <div class="col-12 mb-3">
+            <h4 class="judul-kecil">Keterangan Izin / Sakit</h4>
             <textarea name="keterangan" id="keterangan" cols="30" rows="5" class="form-control" placeholder="Masukkan Keterangan"></textarea>
         </div>
 
         <div class="col-12 mb-3">
+            <h4 class="judul-kecil">Bukti Izin / Sakit (Foto)</h4>
             <input type="file" name="bukti_izin"
                 id="bukti_izin"
                 class="form-control">
