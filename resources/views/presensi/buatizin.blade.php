@@ -30,49 +30,39 @@
 @endsection
 @section('content')
 <div class="row" style="margin-top: 70px;">
-    <div class="col-12">
-        <form action="/presensi/storeizin" method="POST" id="frmIzin" enctype="multipart/form-data">
-            @csrf
+    <form action="/presensi/storeizin" method="POST" id="frmIzin" enctype="multipart/form-data" class="w-100">
+        @csrf
 
-            <div class="form-group boxed mb-3">
-                <h4 class="judul-kecil">Tanggal Izin / Sakit</h4>
-                <div class="input-wrapper">
-                    <input type="text" id="tgl_izin" name="tgl_izin"
-                        class="form-control datepicker w-100"
-                        placeholder="Masukkan Tanggal">
-                </div>
-            </div>
+        <div class="col-12 mb-3">
+            <h4 class="judul-kecil">Tanggal Izin / Sakit</h4>
+            <input type="text" id="tgl_izin" name="tgl_izin"
+                class="form-control datepicker"
+                placeholder="Masukkan Tanggal">
+        </div>
 
-            <div class="form-group boxed mb-3">
-                <select name="status" id="status"
-                    class="form-control w-100">
-                    <option value="">Pilih Status</option>
-                    <option value="i">Izin</option>
-                    <option value="s">Sakit</option>
-                </select>
-            </div>
+        <div class="col-12 mb-3">
+            <select name="status" id="status" class="form-control">
+                <option value="">Pilih Status</option>
+                <option value="i">Izin</option>
+                <option value="s">Sakit</option>
+            </select>
+        </div>
 
-            <div class="form-group boxed mb-3">
-                <textarea name="keterangan" id="keterangan"
-                    rows="5"
-                    class="form-control w-100"
-                    placeholder="Masukkan Keterangan"></textarea>
-            </div>
+        <div class="col-12 mb-3">
+            <textarea name="keterangan" id="keterangan" cols="30" rows="5" class="form-control" placeholder="Masukkan Keterangan"></textarea>
+        </div>
 
-            <div class="form-group boxed mb-3">
-                <div class="input-wrapper">
-                    <input type="file" name="bukti_izin"
-                        id="bukti_izin"
-                        class="form-control w-100">
-                </div>
-            </div>
+        <div class="col-12 mb-3">
+            <input type="file" name="bukti_izin"
+                id="bukti_izin"
+                class="form-control">
+        </div>
 
-            <div class="form-group boxed">
-                <button class="btn btn-primary w-100">Kirim</button>
-            </div>
+        <div class="col-12">
+            <button class="btn btn-primary w-100">Kirim</button>
+        </div>
 
-        </form>
-    </div>
+    </form>
 </div>
 @endsection
 @push('myscript')
