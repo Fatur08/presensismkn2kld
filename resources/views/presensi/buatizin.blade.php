@@ -56,31 +56,25 @@
 </div>
 
 
-<form action="/presensi/{{ $murid->nisn }}/updateprofile" method="POST" enctype="multipart/form-data">
+<form action="/presensi/updateprofile" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="col">
         <div class="form-group boxed">
             <h4>Nama Lengkap</h4>
             <div class="input-wrapper">
-                <input type="text" class="form-control" value="{{ $murid->nama_lengkap }}" name="nama_lengkap" placeholder="Masukkan Nama Lengkap Baru" autocomplete="off">
+                <input type="text" class="form-control"  name="nama_lengkap" placeholder="Masukkan Nama Lengkap Baru" autocomplete="off">
             </div>
         </div>
         <div class="form-group boxed">
             <h4>Jurusan</h4>
             <select name="kode_jurusan" id="kode_jurusan" class="form-control">
                     <option value="">Pilih Jurusan</option>
-                    @foreach($jurusan as $j)
-                        <option {{ $murid->kode_jurusan == $j->kode_jurusan ? 'selected' : '' }} value="{{ $j->kode_jurusan }}">{{ $j->nama_jurusan }}</option>
-                    @endforeach
             </select>
         </div>
         <div class="form-group boxed">
             <h4>Kelas</h4>
             <select name="kelas" id="kelas" class="form-control">
                 <option value="">Pilih Kelas</option>
-                <option value="X" {{ $murid->kelas == 'X' ? 'selected' : '' }}>X</option>
-                <option value="XI" {{ $murid->kelas == 'XI' ? 'selected' : '' }}>XI</option>
-                <option value="XII" {{ $murid->kelas == 'XII' ? 'selected' : '' }}>XII</option>
             </select>
         </div>
         <div class="form-group boxed">
@@ -88,7 +82,6 @@
             <div class="input-wrapper">
                 <input
                     type="text"
-                    value="{{ $murid->no_hp }}"
                     id="no_hp"
                     name="no_hp"
                     class="form-control"
