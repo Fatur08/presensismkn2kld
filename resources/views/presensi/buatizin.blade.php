@@ -54,67 +54,6 @@
         </div>
     </form>
 </div>
-
-
-<form action="/presensi/updateprofile" method="POST" enctype="multipart/form-data">
-    @csrf
-    <div class="col">
-        <div class="form-group boxed">
-            <h4>Nama Lengkap</h4>
-            <div class="input-wrapper">
-                <input type="text" class="form-control"  name="nama_lengkap" placeholder="Masukkan Nama Lengkap Baru" autocomplete="off">
-            </div>
-        </div>
-        <div class="form-group boxed">
-            <h4>Jurusan</h4>
-            <select name="kode_jurusan" id="kode_jurusan" class="form-control">
-                    <option value="">Pilih Jurusan</option>
-            </select>
-        </div>
-        <div class="form-group boxed">
-            <h4>Kelas</h4>
-            <select name="kelas" id="kelas" class="form-control">
-                <option value="">Pilih Kelas</option>
-            </select>
-        </div>
-        <div class="form-group boxed">
-            <h4>Nomor HP</h4>
-            <div class="input-wrapper">
-                <input
-                    type="text"
-                    id="no_hp"
-                    name="no_hp"
-                    class="form-control"
-                    placeholder="Masukkan Nomor HP Baru"
-                    inputmode="numeric"
-                    pattern="[0-9]+"
-                    minlength="10"
-                    maxlength="15"
-                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                >
-            </div>
-        </div>
-        <div class="form-group boxed">
-            <div class="input-wrapper">
-                <input type="password" class="form-control" name="password" placeholder="Masukkan Password Baru" autocomplete="off">
-            </div>
-        </div>
-        <div class="form-group boxed" id="fileUpload1">
-            <h4>Foto 3x4</h4>
-            <input type="file" name="foto" id="fileuploadInput" accept=".png, .jpg, .jpeg">
-            <label for="fileuploadInput">
-            </label>
-        </div>
-        <div class="form-group boxed">
-            <div class="input-wrapper">
-                <button type="submit" class="btn btn-primary btn-block">
-                    <ion-icon name="refresh-outline"></ion-icon>
-                    Update
-                </button>
-            </div>
-        </div>
-    </div>
-</form>
 @endsection
 @push('myscript')
 <script>
