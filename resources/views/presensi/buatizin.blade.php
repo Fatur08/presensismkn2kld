@@ -27,6 +27,7 @@
     <form action="/presensi/storeizin" method="POST" id="frmIzin" enctype="multipart/form-data">
         @csrf
         <div class="form-group boxed">
+            <h4>Tanggal Izin / Sakit</h4>
             <div class="input-wrapper">
                 <input type="text" id="tgl_izin" name="tgl_izin" class="form-control datepicker" placeholder="Masukkan Tanggal">
             </div>
