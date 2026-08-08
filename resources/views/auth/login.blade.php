@@ -41,7 +41,8 @@
             animation: fadeIn 1s ease-in-out;
         }
 
-        h2, h4 {
+        h2,
+        h4 {
             text-align: center;
             color: #2c3e50;
             margin-top: 10px;
@@ -68,6 +69,7 @@
             from {
                 opacity: 0;
             }
+
             to {
                 opacity: 1;
             }
@@ -78,6 +80,7 @@
                 transform: translateY(-20px);
                 opacity: 0;
             }
+
             to {
                 transform: translateY(0);
                 opacity: 1;
@@ -89,6 +92,7 @@
                 transform: translateY(20px);
                 opacity: 0;
             }
+
             to {
                 transform: translateY(0);
                 opacity: 1;
@@ -98,11 +102,13 @@
         /* Media Query untuk membuat konten menyesuaikan dengan ukuran layar */
         @media (min-width: 1200px) and (max-width: 2160px) {
             .login-form {
-                max-width: 40%; /* adjust the width to your liking */
-                margin: 0 auto; /* center the form horizontally */
+                max-width: 40%;
+                /* adjust the width to your liking */
+                margin: 0 auto;
+                /* center the form horizontally */
             }
         }
-        
+
         @media (max-width: 768px) {
             .login-form {
                 max-width: 80%;
@@ -115,6 +121,7 @@
                 max-width: 85%;
                 margin: 10px auto;
             }
+
             .form-image {
                 max-width: 100px;
             }
@@ -132,24 +139,25 @@
                 <img src="{{ asset('assets/img/login/smkn2kld.png') }}" alt="SMKN 2 Kalianda" class="form-image">
             </div>
             <div class="section">
-                <h2>Aplikasi Absen Murid <br> SMK Negeri 2 Kalianda</h2>
+                <h2>Aplikasi Absen Murid <br> SMK Negeri 2 Kalianda Ea</h2>
                 <h4>Silahkan Login</h4>
             </div>
             <div class="section mt-5 mb-5">
                 @php
-                $messagewarning = Session::get('warning');
+                    $messagewarning = Session::get('warning');
                 @endphp
                 @if ($messagewarning)
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    {{ $messagewarning }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        {{ $messagewarning }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 @endif
                 <form action="/proseslogin" method="POST">
                     @csrf
                     <div class="form-group boxed">
                         <div class="input-wrapper">
-                            <input type="text" name="nisn" class="form-control" id="nisn" placeholder="Masukkan NISN Anda" style="opacity: 0.5;">
+                            <input type="text" name="nisn" class="form-control" id="nisn"
+                                placeholder="Masukkan NISN Anda" style="opacity: 0.5;">
                             <i class="clear-input">
                                 <ion-icon name="close-circle"></ion-icon>
                             </i>
@@ -158,7 +166,8 @@
 
                     <div class="form-group boxed">
                         <div class="input-wrapper">
-                            <input type="password" class="form-control" id="password1" name="password" placeholder="Masukkan Password Anda" style="opacity: 0.5;">
+                            <input type="password" class="form-control" id="password1" name="password"
+                                placeholder="Masukkan Password Anda" style="opacity: 0.5;">
                             <i class="clear-input">
                                 <ion-icon name="close-circle"></ion-icon>
                             </i>
