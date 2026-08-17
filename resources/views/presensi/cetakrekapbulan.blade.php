@@ -312,9 +312,9 @@ for ($i = 1; $i <= $jumlahHari; $i++) {
                             $tglCari = $tanggal->format('Y-m-d');
 
                             $sqlIzinSakit = "SELECT status FROM pengajuan_izin 
-                                                         WHERE nisn = '$nisn' 
-                                                         AND status_approved = 1 
-                                                         AND tgl_izin = '$tglCari'";
+                                                                                                                                         WHERE nisn = '$nisn' 
+                                                                                                                                         AND status_approved = 1 
+                                                                                                                                         AND tgl_izin = '$tglCari'";
 
                             $result = $conn->query($sqlIzinSakit);
                             if ($result) {
@@ -334,21 +334,22 @@ for ($i = 1; $i <= $jumlahHari; $i++) {
                         $isBolos = false;
 
                         $sqlPresensi = "SELECT jam_in, jam_out 
-                                FROM presensi 
-                                WHERE nisn = '$nisn' 
-                                AND tgl_presensi = '$tglCari'";
+                                                                                                FROM presensi 
+                                                                                                WHERE nisn = '$nisn' 
+                                                                                                AND tgl_presensi = '$tglCari'
+                                                                                                LIMIT 1";
 
-                        $result = $conn->query($sqlPresensi);
+                        $resultPresensi = $conn->query($sqlPresensi);
 
-                        if ($result && $row = $result->fetch_assoc()) {
-                            $jam_in = $row['jam_in'];
-                            $jam_out = $row['jam_out'];
+                        if ($resultPresensi && $rowPresensi = $resultPresensi->fetch_assoc()) {
 
-                            // Bolos = sudah absen masuk tetapi tidak absen pulang
-                            if (!empty($jam_in) && empty($jam_out)) {
+                            $jam_in_presensi = $rowPresensi['jam_in'];
+                            $jam_out_presensi = $rowPresensi['jam_out'];
+
+                            // Sudah absen masuk tetapi belum absen pulang = BOLOS
+                            if (!empty($jam_in_presensi) && is_null($jam_out_presensi)) {
                                 $isBolos = true;
                                 $totalbolos++;
-                                $totalalfa++;
                             }
                         }
 
@@ -356,16 +357,26 @@ for ($i = 1; $i <= $jumlahHari; $i++) {
                         $isTerlambat = false;
                         if (!empty($d->$tgl) && !$isIzin && !$isSakit && !$isBolos) {
                             $totalhadir += 1;
+
                             $jam_masuk = $hadir[0];
+
                             if ($jam_masuk > $jamMasuk) {
                                 $isTerlambat = true;
                                 $totalterlambat++;
                             }
-                        } elseif (($hari != 'Sunday' && $hari != 'Minggu') && !$isLibur && !$isIzin && !$isSakit && !$isTerlambat && empty($d->$tgl)) {
+                        } elseif (
+                            ($hari != 'Sunday' && $hari != 'Minggu')
+                            && !$isLibur
+                            && !$isIzin
+                            && !$isSakit
+                            && !$isTerlambat
+                            && !$isBolos
+                            && empty($d->$tgl)
+                        ) {
                             $totalalfa++;
                         }
                         //dd($d->$tgl, $jamMasuk, $jamPulangAsli, $jamPulangBatas);
-                                ?>
+                                                                                                                ?>
                                     <td style="text-align: center;">
                                         <?php        if ($hari == 'Sunday' || $hari == 'Minggu'): ?>
                                         <div style="width: 10px; height: 10px; background-color: white; margin: auto;" title="Minggu">
@@ -391,7 +402,7 @@ for ($i = 1; $i <= $jumlahHari; $i++) {
                                         <?php
                             $jam_masuk = $hadir[0];
                             $jam_pulang = $hadir[1];
-                                        ?>
+                                                                                                                        ?>
                                         <?php            if ($jam_masuk <= $jamMasuk && $jam_pulang >= $jamPulangAsli && $jam_pulang <= $jamPulangBatas): ?>
                                         <div style="width: 10px; height: 10px; background-color: green; margin: auto;"></div>
                                         <?php            elseif ($jam_masuk > $jamMasuk && $jam_pulang >= $jamPulangAsli && $jam_pulang <= $jamPulangBatas): ?>
