@@ -254,204 +254,225 @@ for ($i = 1; $i <= $jumlahHari; $i++) {
                 @endphp
 
                 @foreach ($rekap as $d)
-                                    <tr>
-                                        <td style='text-align: center; width: 30px;'>{{ $no++ }}</td>
-                                        <td style="width: 120px;">{{ $d->nisn }}</td>
-                                        <td style="width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                            @if($d->jenis_kelamin === 'Perempuan')
-                                                <b><i>{{ $d->nama_lengkap }}</i></b>
-                                            @else
-                                                {{ $d->nama_lengkap }}
-                                            @endif
-                                        </td>
-                                        <?php
-                        $totalhadir = 0;
-                        $totalterlambat = 0;
-                        $totalalfa = 0;
-                        $totalizin = 0;
-                        $totalsakit = 0;
-                        $totalbolos = 0;
-                        // Hitung total laki-laki dan perempuan di dalam foreach
-                        if ($d->jenis_kelamin == 'Laki-laki') {
-                            $total_laki_laki++;
+                                <tr>
+                                    <td style='text-align: center; width: 30px;'>{{ $no++ }}</td>
+                                    <td style="width: 120px;">{{ $d->nisn }}</td>
+                                    <td style="width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                        @if($d->jenis_kelamin === 'Perempuan')
+                                            <b><i>{{ $d->nama_lengkap }}</i></b>
+                                        @else
+                                            {{ $d->nama_lengkap }}
+                                        @endif
+                                    </td>
+                                    <?php
+                    $totalhadir = 0;
+                    $totalterlambat = 0;
+                    $totalalfa = 0;
+                    $totalizin = 0;
+                    $totalsakit = 0;
+                    $totalbolos = 0;
+                    // Hitung total laki-laki dan perempuan di dalam foreach
+                    if ($d->jenis_kelamin == 'Laki-laki') {
+                        $total_laki_laki++;
+                    } else {
+                        $total_perempuan++;
+                    }
+
+                    // Gunakan bulan dan tahun dari input form, bukan bulan sekarang
+                    $jumlahHari = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
+
+                    for ($i = 1; $i <= $jumlahHari; $i++) {
+                        $tgl = "tgl_" . $i;
+                        if (empty($d->$tgl)) {
+                            $hadir = ['', ''];
                         } else {
-                            $total_perempuan++;
+                            $hadir = explode("-", $d->$tgl);
                         }
 
-                        // Gunakan bulan dan tahun dari input form, bukan bulan sekarang
-                        $jumlahHari = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
+                        $tanggalStr = $tahun . '-' . str_pad($bulan, 2, '0', STR_PAD_LEFT) . '-' . str_pad($i, 2, '0', STR_PAD_LEFT);
+                        $tanggal = Carbon::parse($tanggalStr);
+                        $hari = $tanggal->translatedFormat('l'); // atau 'l' saja untuk bahasa Inggris
 
-                        for ($i = 1; $i <= $jumlahHari; $i++) {
-                            $tgl = "tgl_" . $i;
-                            if (empty($d->$tgl)) {
-                                $hadir = ['', ''];
-                            } else {
-                                $hadir = explode("-", $d->$tgl);
+                        $isLibur = false;
+
+                        if (!$conn->connect_error) {
+                            $sql = "SELECT COUNT(*) as total FROM libur_sekolah WHERE tanggal = '" . $tanggal->format('Y-m-d') . "'";
+                            $result = $conn->query($sql);
+                            if ($result && $row = $result->fetch_assoc()) {
+                                $isLibur = $row['total'] > 0;
                             }
+                        }
 
-                            $tanggalStr = $tahun . '-' . str_pad($bulan, 2, '0', STR_PAD_LEFT) . '-' . str_pad($i, 2, '0', STR_PAD_LEFT);
-                            $tanggal = Carbon::parse($tanggalStr);
-                            $hari = $tanggal->translatedFormat('l'); // atau 'l' saja untuk bahasa Inggris
+                        // Ambil izin dan sakit dari database untuk tanggal ini
+                        $isIzin = false;
+                        $isSakit = false;
 
-                            $isLibur = false;
+                        if (!$conn->connect_error) {
+                            $nisn = $d->nisn;
+                            $tglCari = $tanggal->format('Y-m-d');
 
-                            if (!$conn->connect_error) {
-                                $sql = "SELECT COUNT(*) as total FROM libur_sekolah WHERE tanggal = '" . $tanggal->format('Y-m-d') . "'";
-                                $result = $conn->query($sql);
-                                if ($result && $row = $result->fetch_assoc()) {
-                                    $isLibur = $row['total'] > 0;
-                                }
-                            }
+                            $sqlIzinSakit = "SELECT status FROM pengajuan_izin 
+                                                                                                                                                                                                                 WHERE nisn = '$nisn' 
+                                                                                                                                                                                                                 AND status_approved = 1 
+                                                                                                                                                                                                                 AND tgl_izin = '$tglCari'";
 
-                            // Ambil izin dan sakit dari database untuk tanggal ini
-                            $isIzin = false;
-                            $isSakit = false;
-
-                            if (!$conn->connect_error) {
-                                $nisn = $d->nisn;
-                                $tglCari = $tanggal->format('Y-m-d');
-
-                                $sqlIzinSakit = "SELECT status FROM pengajuan_izin 
-                                                                                                                                                             WHERE nisn = '$nisn' 
-                                                                                                                                                             AND status_approved = 1 
-                                                                                                                                                             AND tgl_izin = '$tglCari'";
-
-                                $result = $conn->query($sqlIzinSakit);
-                                if ($result) {
-                                    while ($row = $result->fetch_assoc()) {
-                                        if ($row['status'] === 'i') {
-                                            $isIzin = true;
-                                            $totalizin++;
-                                        } elseif ($row['status'] === 's') {
-                                            $isSakit = true;
-                                            $totalsakit++;
-                                        }
+                            $result = $conn->query($sqlIzinSakit);
+                            if ($result) {
+                                while ($row = $result->fetch_assoc()) {
+                                    if ($row['status'] === 'i') {
+                                        $isIzin = true;
+                                        $totalizin++;
+                                    } elseif ($row['status'] === 's') {
+                                        $isSakit = true;
+                                        $totalsakit++;
                                     }
                                 }
                             }
+                        }
 
-                            // Cek bolos
-                            $isBolos = false;
+                        $nisn = $d->nisn;
+                        $tglCari = $tanggal->format('Y-m-d');
 
-                            $jam_in_presensi = null;
-                            $jam_out_presensi = null;
+                        // =============================
+                        // CEK STATUS PRESENSI
+                        // =============================
+                        $isBolos = false;
+                        $isSudahAbsenMasuk = false;
 
-                            $sqlPresensi = "SELECT jam_in, jam_out
+                        $jam_in_presensi = null;
+                        $jam_out_presensi = null;
+
+                        $sqlPresensi = "SELECT jam_in, jam_out
                                                                     FROM presensi
                                                                     WHERE nisn = '$nisn'
                                                                     AND tgl_presensi = '$tglCari'
                                                                     LIMIT 1";
 
-                            $resultPresensi = $conn->query($sqlPresensi);
+                        $resultPresensi = $conn->query($sqlPresensi);
 
-                            if ($resultPresensi && $rowPresensi = $resultPresensi->fetch_assoc()) {
+                        if ($resultPresensi && $rowPresensi = $resultPresensi->fetch_assoc()) {
 
-                                $jam_in_presensi = $rowPresensi['jam_in'];
-                                $jam_out_presensi = $rowPresensi['jam_out'];
+                            $jam_in_presensi = $rowPresensi['jam_in'];
+                            $jam_out_presensi = $rowPresensi['jam_out'];
 
-                                if (
-                                    !empty($jam_in_presensi) &&
-                                    (
-                                        $jam_out_presensi === null ||
-                                        $jam_out_presensi === ''
-                                    )
-                                ) {
-                                    $isBolos = true;
-                                    $totalbolos++;
-                                }
+                            // Sudah absen masuk
+                            if ($jam_in_presensi !== null && $jam_in_presensi !== '') {
+                                $isSudahAbsenMasuk = true;
                             }
 
-                            // Cek Terlambat
-                            $isTerlambat = false;
-                            if (!empty($d->$tgl) && !$isIzin && !$isSakit && !$isBolos) {
-                                $totalhadir += 1;
-                                $jam_masuk = $hadir[0];
-                                if ($jam_masuk > $jamMasuk) {
-                                    $isTerlambat = true;
-                                    $totalterlambat++;
-                                }
-                            } elseif (
-                                ($hari != 'Sunday' && $hari != 'Minggu')
-                                && !$isLibur
-                                && !$isIzin
-                                && !$isSakit
-                                && !$isTerlambat
-                                && !$isBolos
-                                && empty($d->$tgl)
-                            ) {
-                                $totalalfa++;
-                            }
-                            //dd($d->$tgl, $jamMasuk, $jamPulangAsli, $jamPulangBatas);
-                                                                                                                                    ?>
-                                        <?php
-                            // Pastikan status bolos tetap true ketika masuk ke bagian tampilan
+                            // Sudah masuk tetapi belum absen pulang = BOLOS
                             if (
-                                !empty($jam_in_presensi) &&
-                                (
-                                    $jam_out_presensi === null ||
-                                    $jam_out_presensi === ''
-                                )
+                                $isSudahAbsenMasuk &&
+                                ($jam_out_presensi === null || $jam_out_presensi === '')
                             ) {
                                 $isBolos = true;
+                                $totalbolos++;
                             }
-                    ?>
-                                        <td style="text-align: center;">
-                                            <?php        if ($hari == 'Sunday' || $hari == 'Minggu'): ?>
-                                            <div style="width: 10px; height: 10px; background-color: white; margin: auto;" title="Minggu">
-                                            </div>
-                                            <?php        elseif ($isLibur): ?>
-                                            <div style="width: 10px; height: 10px; background-color: gray; margin: auto;" title="Libur">
-                                            </div>
-                                            <?php        elseif ($isIzin && $isSakit): ?>
-                                            <div style="width: 10px; height: 10px; background-color: yellow; margin: auto;" title="Izin">
-                                            </div>
-                                            <div style="width: 10px; height: 10px; background-color: blue; margin: auto;" title="Sakit">
-                                            </div>
-                                            <?php        elseif ($isIzin): ?>
-                                            <div style="width: 10px; height: 10px; background-color: yellow; margin: auto;" title="Izin">
-                                            </div>
-                                            <?php        elseif ($isSakit): ?>
-                                            <div style="width: 10px; height: 10px; background-color: blue; margin: auto;" title="Sakit">
-                                            </div>
-                                            <?php        elseif ($isBolos): ?>
-                                            <div style="width: 10px; height: 10px; background-color: purple; margin: auto;" title="Bolos">
-                                            </div>
-                                            <?php        elseif (!empty($d->$tgl)): ?>
-                                            <?php
-                                $jam_masuk = $hadir[0];
-                                $jam_pulang = $hadir[1];
-                                                                                                                            ?>
-                                            <?php            if ($jam_masuk <= $jamMasuk && $jam_pulang >= $jamPulangAsli && $jam_pulang <= $jamPulangBatas): ?>
-                                            <div style="width: 10px; height: 10px; background-color: green; margin: auto;"></div>
-                                            <?php            elseif ($jam_masuk > $jamMasuk && $jam_pulang >= $jamPulangAsli && $jam_pulang <= $jamPulangBatas): ?>
-                                            <!--<div style="width: 10px; height: 10px; background-color: green; margin: auto;"></div>-->
-                                            <div style="width: 10px; height: 10px; background-color: saddlebrown; margin: auto;"></div>
-                                            <?php            else: ?>
-                                            <div style="width: 10px; height: 10px; background-color: red; margin: auto;"></div>
-                                            <?php            endif; ?>
-                                            <?php        else: ?>
-                                            <div style="width: 10px; height: 10px; background-color: red; margin: auto;"></div>
-                                            <?php        endif; ?>
-                                        </td>
-                                        <?php    } ?>
-                                        <td style='text-align: center;'>{{ $totalhadir }}</td>
-                                        <td style='text-align: center;'>{{ $totalterlambat }}</td>
-                                        <td style='text-align: center;'>{{ $totalalfa }}</td>
-                                        <td style='text-align: center;'>{{ $totalizin }}</td>
-                                        <td style='text-align: center;'>{{ $totalsakit }}</td>
-                                        <td style='text-align: center;'>{{ $totalbolos }}</td>
-                                        <td style='text-align: center;'>
-                                            @if ($totalalfa >= 24)
-                                                P3
-                                            @elseif ($totalalfa >= 16)
-                                                P2
-                                            @elseif ($totalalfa >= 8)
-                                                P1
-                                            @else
+                        }
 
-                                            @endif
-                                        </td>
-                                    </tr>
+                        // DEBUG
+                        if ($nisn == 'NISN_SISWA_YANG_BOLos') {
+                            dd([
+                                'nisn' => $nisn,
+                                'tglCari' => $tglCari,
+                                'd_tgl' => $d->$tgl,
+                                'jam_in_presensi' => $jam_in_presensi ?? 'TIDAK ADA',
+                                'jam_out_presensi' => $jam_out_presensi ?? 'TIDAK ADA',
+                                'isBolos' => $isBolos,
+                            ]);
+                        }
+
+                        // Cek Terlambat
+                        $isTerlambat = false;
+                        if (!empty($d->$tgl) && !$isIzin && !$isSakit && !$isBolos) {
+                            $totalhadir += 1;
+                            $jam_masuk = $hadir[0];
+                            if ($jam_masuk > $jamMasuk) {
+                                $isTerlambat = true;
+                                $totalterlambat++;
+                            }
+                        } elseif (
+                            ($hari != 'Sunday' && $hari != 'Minggu')
+                            && !$isLibur
+                            && !$isIzin
+                            && !$isSakit
+                            && !$isTerlambat
+                            && !$isBolos
+                            && empty($d->$tgl)
+                        ) {
+                            $totalalfa++;
+                        }
+                        //dd($d->$tgl, $jamMasuk, $jamPulangAsli, $jamPulangBatas);
+                                                                                                                                                                                        ?>
+                                    <?php
+                        // Pastikan status bolos tetap true ketika masuk ke bagian tampilan
+                        if (
+                            !empty($jam_in_presensi) &&
+                            (
+                                $jam_out_presensi === null ||
+                                $jam_out_presensi === ''
+                            )
+                        ) {
+                            $isBolos = true;
+                        }
+                                                                        ?>
+                                    <td style="text-align: center;">
+                                        <?php        if ($hari == 'Sunday' || $hari == 'Minggu'): ?>
+                                        <div style="width: 10px; height: 10px; background-color: white; margin: auto;" title="Minggu">
+                                        </div>
+                                        <?php        elseif ($isLibur): ?>
+                                        <div style="width: 10px; height: 10px; background-color: gray; margin: auto;" title="Libur">
+                                        </div>
+                                        <?php        elseif ($isIzin && $isSakit): ?>
+                                        <div style="width: 10px; height: 10px; background-color: yellow; margin: auto;" title="Izin">
+                                        </div>
+                                        <div style="width: 10px; height: 10px; background-color: blue; margin: auto;" title="Sakit">
+                                        </div>
+                                        <?php        elseif ($isIzin): ?>
+                                        <div style="width: 10px; height: 10px; background-color: yellow; margin: auto;" title="Izin">
+                                        </div>
+                                        <?php        elseif ($isSakit): ?>
+                                        <div style="width: 10px; height: 10px; background-color: blue; margin: auto;" title="Sakit">
+                                        </div>
+                                        <?php        elseif ($isBolos): ?>
+                                        <div style="width: 10px; height: 10px; background-color: purple; margin: auto;" title="Bolos">
+                                        </div>
+                                        <?php        elseif (!empty($d->$tgl)): ?>
+                                        <?php
+                            $jam_masuk = $hadir[0];
+                            $jam_pulang = $hadir[1];
+                                                                                                                                                                                ?>
+                                        <?php            if ($jam_masuk <= $jamMasuk && $jam_pulang >= $jamPulangAsli && $jam_pulang <= $jamPulangBatas): ?>
+                                        <div style="width: 10px; height: 10px; background-color: green; margin: auto;"></div>
+                                        <?php            elseif ($jam_masuk > $jamMasuk && $jam_pulang >= $jamPulangAsli && $jam_pulang <= $jamPulangBatas): ?>
+                                        <!--<div style="width: 10px; height: 10px; background-color: green; margin: auto;"></div>-->
+                                        <div style="width: 10px; height: 10px; background-color: saddlebrown; margin: auto;"></div>
+                                        <?php            else: ?>
+                                        <div style="width: 10px; height: 10px; background-color: red; margin: auto;"></div>
+                                        <?php            endif; ?>
+                                        <?php        else: ?>
+                                        <div style="width: 10px; height: 10px; background-color: red; margin: auto;"></div>
+                                        <?php        endif; ?>
+                                    </td>
+                                    <?php    } ?>
+                                    <td style='text-align: center;'>{{ $totalhadir }}</td>
+                                    <td style='text-align: center;'>{{ $totalterlambat }}</td>
+                                    <td style='text-align: center;'>{{ $totalalfa }}</td>
+                                    <td style='text-align: center;'>{{ $totalizin }}</td>
+                                    <td style='text-align: center;'>{{ $totalsakit }}</td>
+                                    <td style='text-align: center;'>{{ $totalbolos }}</td>
+                                    <td style='text-align: center;'>
+                                        @if ($totalalfa >= 24)
+                                            P3
+                                        @elseif ($totalalfa >= 16)
+                                            P2
+                                        @elseif ($totalalfa >= 8)
+                                            P1
+                                        @else
+
+                                        @endif
+                                    </td>
+                                </tr>
                 @endforeach
             </table>
 
