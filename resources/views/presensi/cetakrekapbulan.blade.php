@@ -119,452 +119,1157 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
 <!-- Set also "landscape" if you need -->
 
 <body class="legal potrait">
-    <!-- Each sheet element should have the class "sheet" -->
-    <!-- "padding-**mm" is optional: you can set 10, 15, 20 or 25 -->
+
     <section class="sheet padding-10mm">
+
         <div class="page">
+
+            {{-- =========================================================
+            HEADER SEKOLAH
+            ========================================================== --}}
+
             <table style="width: 100%;">
                 <tr>
                     <td style="width: 15%; text-align: center;">
                         <img src="{{ asset('assets/img/lampung.png') }}" width="75" height="80" alt="">
                     </td>
+
                     <td style="width: 70%; text-align: center;">
-                        <div style="font-family: Arial, Helvetica, sans-serif; font-size: 18px; font-weight: bold;">
+
+                        <div style="
+                            font-family: Arial, Helvetica, sans-serif;
+                            font-size: 18px;
+                            font-weight: bold;
+                        ">
                             PEMERINTAH PROVINSI LAMPUNG<br>
                             DINAS PENDIDIKAN<br>
                             SMK NEGERI 2 KALIANDA
                         </div>
-                        <div
-                            style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-style: italic; margin-top: 5px;">
-                            Alamat : Jl. Soekarno-Hatta KM 52 Kalianda 35513 Telp. 0727-322282 Fax. 0727-322282
+
+                        <div style="
+                            font-family: Arial, Helvetica, sans-serif;
+                            font-size: 12px;
+                            font-style: italic;
+                            margin-top: 5px;
+                        ">
+                            Alamat : Jl. Soekarno-Hatta KM 52 Kalianda 35513
+                            Telp. 0727-322282 Fax. 0727-322282
                         </div>
+
                     </td>
+
                     <td style="width: 15%; text-align: center;">
                         <img src="{{ asset('assets/img/logo_smkn2.png') }}" width="75" height="80" alt="">
                     </td>
                 </tr>
             </table>
 
-            <!-- Garis dua -->
+
+            {{-- GARIS HEADER --}}
             <hr style="border: 2px solid black; margin: 0;">
             <hr style="border: 1px solid black; margin-top: 1px;">
 
-            <table style="width: 100%; font-family: Arial, Helvetica, sans-serif;">
+
+            {{-- =========================================================
+            JUDUL REKAP
+            ========================================================== --}}
+
+            <table style="
+                width: 100%;
+                font-family: Arial, Helvetica, sans-serif;
+            ">
+
                 <tr>
                     <td colspan="4" style="text-align: center;">
-                        <div style="font-size: 18px; font-weight: bold;">
-                            REKAPITULASI ABSEN SISWA BULANAN HAIIIIi<br>
+                        <div style="
+                            font-size: 18px;
+                            font-weight: bold;
+                        ">
+                            REKAPITULASI ABSEN SISWA BULANAN<br>
                             TAHUN PELAJARAN {{ $tahun }}<br>
                         </div>
                     </td>
                 </tr>
+
                 <tr>
-                    <td style="width: 8%; font-size: 14px; font-weight: bold;">Jurusan</td>
-                    <td style="width: 2%; font-size: 14px; font-weight: bold; text-align: center;">:</td>
-                    <td style="width: 40%; font-size: 14px; font-weight: bold;">{{ $nama_jurusan ?? '...' }}</td>
+                    <td style="
+                        width: 8%;
+                        font-size: 14px;
+                        font-weight: bold;
+                    ">
+                        Jurusan
+                    </td>
+
+                    <td style="
+                        width: 2%;
+                        font-size: 14px;
+                        font-weight: bold;
+                        text-align: center;
+                    ">
+                        :
+                    </td>
+
+                    <td style="
+                        width: 40%;
+                        font-size: 14px;
+                        font-weight: bold;
+                    ">
+                        {{ $nama_jurusan ?? '...' }}
+                    </td>
                 </tr>
+
                 <tr>
-                    <td style="font-size: 14px; font-weight: bold;">Kelas</td>
-                    <td style="font-size: 14px; font-weight: bold; text-align: center;">:</td>
-                    <td style="font-size: 14px; font-weight: bold;">{{ $kelas ?? '...' }}</td>
+                    <td style="
+                        font-size: 14px;
+                        font-weight: bold;
+                    ">
+                        Kelas
+                    </td>
+
+                    <td style="
+                        font-size: 14px;
+                        font-weight: bold;
+                        text-align: center;
+                    ">
+                        :
+                    </td>
+
+                    <td style="
+                        font-size: 14px;
+                        font-weight: bold;
+                    ">
+                        {{ $kelas ?? '...' }}
+                    </td>
                 </tr>
+
             </table>
 
+
+            {{-- =========================================================
+            TABEL PRESENSI
+            ========================================================== --}}
+
             <table class="tabelpresensi">
-                <?php
-// Ganti supaya jumlah hari sesuai bulan & tahun yang dikirim
-$jumlahHari = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
-            ?>
+
+                @php
+                    $jumlahHari = cal_days_in_month(
+                        CAL_GREGORIAN,
+                        $bulan,
+                        $tahun
+                    );
+                @endphp
+
+
+                {{-- =====================================================
+                HEADER BULAN + KETERANGAN
+                ====================================================== --}}
 
                 <tr>
-                    <th colspan="3">BULAN {{ strtoupper($namabulan[$bulan]) }} {{ $tahun }}</th>
-                    <th colspan="<?= $jumlahHari ?>">Tanggal</th>
-                    <th rowspan="3" style="vertical-align: top; background-color: green; color: white;">
+
+                    <th colspan="3">
+                        BULAN {{ strtoupper($namabulan[$bulan]) }} {{ $tahun }}
+                    </th>
+
+                    <th colspan="{{ $jumlahHari }}">
+                        Tanggal
+                    </th>
+
+                    <th rowspan="3" style="
+                            vertical-align: top;
+                            background-color: green;
+                            color: white;
+                        ">
                         H<br>A<br>D<br>I<br>R
                     </th>
-                    <th rowspan="3" style="vertical-align: top; background-color: saddlebrown; color: white;">
+
+                    <th rowspan="3" style="
+                            vertical-align: top;
+                            background-color: saddlebrown;
+                            color: white;
+                        ">
                         T<br>E<br>R<br>L<br>A<br>M<br>B<br>A<br>T
                     </th>
-                    <th rowspan="3" style="vertical-align: top; background-color: red; color: white;">
+
+                    <th rowspan="3" style="
+                            vertical-align: top;
+                            background-color: red;
+                            color: white;
+                        ">
                         A<br>L<br>F<br>A
                     </th>
-                    <th rowspan="3" style="vertical-align: top; background-color: yellow; color: black;">
+
+                    <th rowspan="3" style="
+                            vertical-align: top;
+                            background-color: yellow;
+                            color: black;
+                        ">
                         I<br>Z<br>I<br>N
                     </th>
-                    <th rowspan="3" style="vertical-align: top; background-color: blue; color: white;">
+
+                    <th rowspan="3" style="
+                            vertical-align: top;
+                            background-color: blue;
+                            color: white;
+                        ">
                         S<br>A<br>K<br>I<br>T
                     </th>
-                    <th rowspan="3" style="vertical-align: top; background-color: purple; color: white;">
+
+                    <th rowspan="3" style="
+                            vertical-align: top;
+                            background-color: purple;
+                            color: white;
+                        ">
                         B<br>O<br>L<br>O<br>S
                     </th>
-                    <th rowspan="3" style="vertical-align: top;">K<br>e<br>t.</th>
-                </tr>
 
-                <tr>
-                    <th rowspan="2" style="width: 30px; text-align: center;">No</th>
-                    <th rowspan="2" style="width: 120px; text-align: center;">NISN</th>
-                    <th rowspan="2" style="width: 180px;">Nama Murid</th>
-                    <?php
-$jumlahHari = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
-for ($i = 1; $i <= $jumlahHari; $i++) {
-                ?>
-                    <th>{{ $i }}</th>
-                    <?php } ?>
-                </tr>
-                <tr>
-                    <?php
-setlocale(LC_TIME, 'id_ID.utf8'); // Mengatur lokal ke Bahasa Indonesia
-
-// Gunakan bulan dan tahun dari input form, bukan bulan sekarang
-$jumlahHari = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
-
-// Hari dalam bahasa Indonesia
-$hariIndonesia = [
-    'Sunday' => 'Minggu',
-    'Monday' => 'Senin',
-    'Tuesday' => 'Selasa',
-    'Wednesday' => 'Rabu',
-    'Thursday' => 'Kamis',
-    'Friday' => 'Jumat',
-    'Saturday' => 'Sabtu',
-];
-
-for ($i = 1; $i <= $jumlahHari; $i++) {
-    $tanggal = $tahun . '-' . $bulan . '-' . str_pad($i, 2, '0', STR_PAD_LEFT);
-    $hariInggris = date('l', strtotime($tanggal));
-    $hari = $hariIndonesia[$hariInggris];
-
-    // Pecah huruf satu per satu dan gabungkan dengan <br>
-    $hurufHari = '';
-    foreach (mb_str_split($hari) as $huruf) {
-        $hurufHari .= $huruf . '<br>';
-    }
-                ?>
-                    <th style="text-align: center; vertical-align: top; line-height: 1;">
-                        {!! $hurufHari !!}
+                    <th rowspan="3" style="vertical-align: top;">
+                        K<br>e<br>t.
                     </th>
-                    <?php } ?>
+
                 </tr>
+
+
+                {{-- =====================================================
+                HEADER NOMOR
+                ====================================================== --}}
+
+                <tr>
+
+                    <th rowspan="2" style="
+                            width: 30px;
+                            text-align: center;
+                        ">
+                        No
+                    </th>
+
+                    <th rowspan="2" style="
+                            width: 120px;
+                            text-align: center;
+                        ">
+                        NISN
+                    </th>
+
+                    <th rowspan="2" style="width: 180px;">
+                        Nama Murid
+                    </th>
+
+                    @for ($i = 1; $i <= $jumlahHari; $i++)
+
+                        <th>
+                            {{ $i }}
+                        </th>
+
+                    @endfor
+
+                </tr>
+
+
+                {{-- =====================================================
+                HEADER NAMA HARI
+                ====================================================== --}}
+
+                <tr>
+
+                    @php
+                        $hariIndonesia = [
+                            'Sunday' => 'Minggu',
+                            'Monday' => 'Senin',
+                            'Tuesday' => 'Selasa',
+                            'Wednesday' => 'Rabu',
+                            'Thursday' => 'Kamis',
+                            'Friday' => 'Jumat',
+                            'Saturday' => 'Sabtu',
+                        ];
+                    @endphp
+
+                    @for ($i = 1; $i <= $jumlahHari; $i++)
+
+                        @php
+                            $tanggalHeader = Carbon\Carbon::create(
+                                $tahun,
+                                $bulan,
+                                $i
+                            );
+
+                            $hariInggris = $tanggalHeader->format('l');
+
+                            $hariHeader = $hariIndonesia[$hariInggris] ?? $hariInggris;
+
+                            $hurufHari = '';
+
+                            foreach (mb_str_split($hariHeader) as $huruf) {
+                                $hurufHari .= $huruf . '<br>';
+                            }
+                        @endphp
+
+                        <th style="
+                                text-align: center;
+                                vertical-align: top;
+                                line-height: 1;
+                            ">
+                            {!! $hurufHari !!}
+                        </th>
+
+                    @endfor
+
+                </tr>
+
+
+                {{-- =====================================================
+                DATA SISWA
+                ====================================================== --}}
 
                 @php
                     $no = 1;
                     $total_laki_laki = 0;
                     $total_perempuan = 0;
+
                     $rekap = $rekap->sortBy('nama_lengkap');
                 @endphp
 
+
                 @foreach ($rekap as $d)
-                                <tr>
-                                    <td style='text-align: center; width: 30px;'>{{ $no++ }}</td>
-                                    <td style="width: 120px;">{{ $d->nisn }}</td>
-                                    <td style="width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                        @if($d->jenis_kelamin === 'Perempuan')
-                                            <b><i>{{ $d->nama_lengkap }}</i></b>
-                                        @else
-                                            {{ $d->nama_lengkap }}
-                                        @endif
-                                    </td>
-                                    <?php
-                    $totalhadir = 0;
-                    $totalterlambat = 0;
-                    $totalalfa = 0;
-                    $totalizin = 0;
-                    $totalsakit = 0;
-                    $totalbolos = 0;
-                    // Hitung total laki-laki dan perempuan di dalam foreach
-                    if ($d->jenis_kelamin == 'Laki-laki') {
-                        $total_laki_laki++;
-                    } else {
-                        $total_perempuan++;
-                    }
 
-                    // Gunakan bulan dan tahun dari input form, bukan bulan sekarang
-                    $jumlahHari = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
+                    <tr>
 
-                    for ($i = 1; $i <= $jumlahHari; $i++) {
-                        $tgl = "tgl_" . $i;
-                        if (empty($d->$tgl)) {
-                            $hadir = ['', ''];
-                        } else {
-                            $hadir = explode("-", $d->$tgl);
-                        }
+                        {{-- NOMOR --}}
+                        <td style="
+                                text-align: center;
+                                width: 30px;
+                            ">
+                            {{ $no++ }}
+                        </td>
 
-                        $tanggalStr = $tahun . '-' . str_pad($bulan, 2, '0', STR_PAD_LEFT) . '-' . str_pad($i, 2, '0', STR_PAD_LEFT);
-                        $tanggal = Carbon::parse($tanggalStr);
-                        $hari = $tanggal->translatedFormat('l'); // atau 'l' saja untuk bahasa Inggris
 
-                        $isLibur = false;
+                        {{-- NISN --}}
+                        <td style="width: 120px;">
+                            {{ $d->nisn }}
+                        </td>
 
-                        if (!$conn->connect_error) {
-                            $sql = "SELECT COUNT(*) as total FROM libur_sekolah WHERE tanggal = '" . $tanggal->format('Y-m-d') . "'";
-                            $result = $conn->query($sql);
-                            if ($result && $row = $result->fetch_assoc()) {
-                                $isLibur = $row['total'] > 0;
+
+                        {{-- NAMA --}}
+                        <td style="
+                                width: 180px;
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                            ">
+
+                            @if ($d->jenis_kelamin === 'Perempuan')
+
+                                <b>
+                                    <i>
+                                        {{ $d->nama_lengkap }}
+                                    </i>
+                                </b>
+
+                            @else
+
+                                {{ $d->nama_lengkap }}
+
+                            @endif
+
+                        </td>
+
+
+                        @php
+
+                            /*
+                            |--------------------------------------------------------------------------
+                            | TOTAL PER SISWA
+                            |--------------------------------------------------------------------------
+                            */
+
+                            $totalhadir = 0;
+                            $totalterlambat = 0;
+                            $totalalfa = 0;
+                            $totalizin = 0;
+                            $totalsakit = 0;
+                            $totalbolos = 0;
+
+
+                            /*
+                            |--------------------------------------------------------------------------
+                            | TOTAL JENIS KELAMIN
+                            |--------------------------------------------------------------------------
+                            */
+
+                            if ($d->jenis_kelamin === 'Laki-laki') {
+
+                                $total_laki_laki++;
+
+                            } else {
+
+                                $total_perempuan++;
+
                             }
-                        }
 
-                        // Ambil izin dan sakit dari database untuk tanggal ini
-                        $isIzin = false;
-                        $isSakit = false;
+                        @endphp
 
-                        if (!$conn->connect_error) {
-                            $nisn = $d->nisn;
-                            $tglCari = $tanggal->format('Y-m-d');
 
-                            $sqlIzinSakit = "SELECT status FROM pengajuan_izin 
-                                                                                                                                                                                                                                 WHERE nisn = '$nisn' 
-                                                                                                                                                                                                                                 AND status_approved = 1 
-                                                                                                                                                                                                                                 AND tgl_izin = '$tglCari'";
+                        {{-- =================================================
+                        PERULANGAN SETIAP TANGGAL
+                        ================================================== --}}
 
-                            $result = $conn->query($sqlIzinSakit);
-                            if ($result) {
-                                while ($row = $result->fetch_assoc()) {
-                                    if ($row['status'] === 'i') {
-                                        $isIzin = true;
-                                        $totalizin++;
-                                    } elseif ($row['status'] === 's') {
-                                        $isSakit = true;
-                                        $totalsakit++;
-                                    }
+                        @for ($i = 1; $i <= $jumlahHari; $i++)
+
+                            @php
+
+                                /*
+                                |--------------------------------------------------------------------------
+                                | DATA TANGGAL
+                                |--------------------------------------------------------------------------
+                                */
+
+                                $tgl = 'tgl_' . $i;
+
+                                $dataPresensi = $d->$tgl ?? '';
+
+                                /*
+                                |--------------------------------------------------------------------------
+                                | Pecah jam masuk dan jam pulang
+                                |
+                                | Contoh:
+                                |
+                                | 07:11-14:31
+                                | 07:11-
+                                | ''
+                                |--------------------------------------------------------------------------
+                                */
+
+                                if ($dataPresensi !== '') {
+
+                                    $hadir = explode('-', $dataPresensi, 2);
+
+                                    $jam_masuk = $hadir[0] ?? '';
+                                    $jam_pulang = $hadir[1] ?? '';
+
+                                } else {
+
+                                    $jam_masuk = '';
+                                    $jam_pulang = '';
+
                                 }
-                            }
-                        }
 
-                        $nisn = $d->nisn;
-                        $tglCari = $tanggal->format('Y-m-d');
 
-                        // =============================
-                        // CEK STATUS PRESENSI
-                        // =============================
-                        $isBolos = false;
-                        $isSudahAbsenMasuk = false;
+                                /*
+                                |--------------------------------------------------------------------------
+                                | TANGGAL
+                                |--------------------------------------------------------------------------
+                                */
 
-                        $jam_in_presensi = null;
-                        $jam_out_presensi = null;
+                                $tanggal = Carbon\Carbon::create(
+                                    $tahun,
+                                    $bulan,
+                                    $i
+                                );
 
-                        $sqlPresensi = "SELECT jam_in, jam_out
-                                                                                    FROM presensi
-                                                                                    WHERE nisn = '$nisn'
-                                                                                    AND tgl_presensi = '$tglCari'
-                                                                                    LIMIT 1";
+                                $tglCari = $tanggal->format('Y-m-d');
 
-                        $resultPresensi = $conn->query($sqlPresensi);
+                                $hari = $tanggal->format('l');
 
-                        if ($resultPresensi && $rowPresensi = $resultPresensi->fetch_assoc()) {
 
-                            $jam_in_presensi = $rowPresensi['jam_in'];
-                            $jam_out_presensi = $rowPresensi['jam_out'];
+                                /*
+                                |--------------------------------------------------------------------------
+                                | CEK HARI MINGGU
+                                |--------------------------------------------------------------------------
+                                */
 
-                            // Sudah absen masuk
-                            if ($jam_in_presensi !== null && $jam_in_presensi !== '') {
-                                $isSudahAbsenMasuk = true;
-                            }
+                                $isMinggu = ($hari === 'Sunday');
 
-                            // Sudah masuk tetapi belum absen pulang = BOLOS
-                            if (
-                                $isSudahAbsenMasuk &&
-                                ($jam_out_presensi === null || $jam_out_presensi === '')
-                            ) {
-                                $isBolos = true;
-                                $totalbolos++;
-                            }
-                        }
 
-                        // DEBUG
-                        if ($nisn == 'NISN_SISWA_YANG_BOLos') {
-                            dd([
-                                'nisn' => $nisn,
-                                'tglCari' => $tglCari,
-                                'd_tgl' => $d->$tgl,
-                                'jam_in_presensi' => $jam_in_presensi ?? 'TIDAK ADA',
-                                'jam_out_presensi' => $jam_out_presensi ?? 'TIDAK ADA',
-                                'isBolos' => $isBolos,
-                            ]);
-                        }
+                                /*
+                                |--------------------------------------------------------------------------
+                                | CEK LIBUR SEKOLAH
+                                |--------------------------------------------------------------------------
+                                */
 
-                        // Cek Terlambat
-                        $isTerlambat = false;
-                        if (!empty($d->$tgl) && !$isIzin && !$isSakit && !$isBolos) {
-                            $totalhadir += 1;
-                            $jam_masuk = $hadir[0];
-                            if ($jam_masuk > $jamMasuk) {
-                                $isTerlambat = true;
-                                $totalterlambat++;
-                            }
-                        } elseif (
-                            ($hari != 'Sunday' && $hari != 'Minggu')
-                            && !$isLibur
-                            && !$isIzin
-                            && !$isSakit
-                            && !$isTerlambat
-                            && !$isBolos
-                            && empty($d->$tgl)
-                        ) {
-                            $totalalfa++;
-                        }
-                        //dd($d->$tgl, $jamMasuk, $jamPulangAsli, $jamPulangBatas);
-                                                                                                                                                                                                        ?>
-                                    <?php
-                        // Pastikan status bolos tetap true ketika masuk ke bagian tampilan
-                        if (
-                            !empty($jam_in_presensi) &&
-                            (
-                                $jam_out_presensi === null ||
-                                $jam_out_presensi === ''
-                            )
-                        ) {
-                            $isBolos = true;
-                        }
-                                                                                        ?>
-                                    <td style="text-align: center;">
-                                        <?php        if ($hari == 'Sunday' || $hari == 'Minggu'): ?>
-                                        <div style="width: 10px; height: 10px; background-color: white; margin: auto;" title="Minggu">
-                                        </div>
-                                        <?php        elseif ($isLibur): ?>
-                                        <div style="width: 10px; height: 10px; background-color: gray; margin: auto;" title="Libur">
-                                        </div>
-                                        <?php        elseif ($isIzin && $isSakit): ?>
-                                        <div style="width: 10px; height: 10px; background-color: yellow; margin: auto;" title="Izin">
-                                        </div>
-                                        <div style="width: 10px; height: 10px; background-color: blue; margin: auto;" title="Sakit">
-                                        </div>
-                                        <?php        elseif ($isIzin): ?>
-                                        <div style="width: 10px; height: 10px; background-color: yellow; margin: auto;" title="Izin">
-                                        </div>
-                                        <?php        elseif ($isSakit): ?>
-                                        <div style="width: 10px; height: 10px; background-color: blue; margin: auto;" title="Sakit">
-                                        </div>
-                                        <?php        elseif ($isBolos): ?>
-                                        <div style="width: 10px; height: 10px; background-color: purple; margin: auto;" title="Bolos">
-                                        </div>
-                                        <?php        elseif (!empty($d->$tgl)): ?>
-                                        <?php
-                            $jam_masuk = $hadir[0];
-                            $jam_pulang = $hadir[1];
-                                                                                                                                                                                                ?>
-                                        <?php            if ($jam_masuk <= $jamMasuk && $jam_pulang >= $jamPulangAsli && $jam_pulang <= $jamPulangBatas): ?>
-                                        <div style="width: 10px; height: 10px; background-color: green; margin: auto;"></div>
-                                        <?php            elseif ($jam_masuk > $jamMasuk && $jam_pulang >= $jamPulangAsli && $jam_pulang <= $jamPulangBatas): ?>
-                                        <!--<div style="width: 10px; height: 10px; background-color: green; margin: auto;"></div>-->
-                                        <div style="width: 10px; height: 10px; background-color: saddlebrown; margin: auto;"></div>
-                                        <?php            else: ?>
-                                        <div style="width: 10px; height: 10px; background-color: red; margin: auto;"></div>
-                                        <?php            endif; ?>
-                                        <?php        else: ?>
-                                        <div style="width: 10px; height: 10px; background-color: red; margin: auto;"></div>
-                                        <?php        endif; ?>
-                                    </td>
-                                    <?php    } ?>
-                                    <td style='text-align: center;'>{{ $totalhadir }}</td>
-                                    <td style='text-align: center;'>{{ $totalterlambat }}</td>
-                                    <td style='text-align: center;'>{{ $totalalfa }}</td>
-                                    <td style='text-align: center;'>{{ $totalizin }}</td>
-                                    <td style='text-align: center;'>{{ $totalsakit }}</td>
-                                    <td style='text-align: center;'>{{ $totalbolos }}</td>
-                                    <td style='text-align: center;'>
-                                        @if ($totalalfa >= 24)
-                                            P3
-                                        @elseif ($totalalfa >= 16)
-                                            P2
-                                        @elseif ($totalalfa >= 8)
-                                            P1
-                                        @else
+                                $isLibur = false;
 
-                                        @endif
-                                    </td>
-                                </tr>
+                                if (!$conn->connect_error) {
+
+                                    $sqlLibur = "
+                                                                SELECT COUNT(*) AS total
+                                                                FROM libur_sekolah
+                                                                WHERE tanggal = '$tglCari'
+                                                            ";
+
+                                    $resultLibur = $conn->query($sqlLibur);
+
+                                    if (
+                                        $resultLibur &&
+                                        $rowLibur = $resultLibur->fetch_assoc()
+                                    ) {
+
+                                        $isLibur = ((int) $rowLibur['total'] > 0);
+
+                                    }
+
+                                }
+
+
+                                /*
+                                |--------------------------------------------------------------------------
+                                | CEK IZIN / SAKIT
+                                |--------------------------------------------------------------------------
+                                */
+
+                                $isIzin = false;
+                                $isSakit = false;
+
+                                if (!$conn->connect_error) {
+
+                                    $nisn = $d->nisn;
+
+                                    $sqlIzinSakit = "
+                                                                SELECT status
+                                                                FROM pengajuan_izin
+                                                                WHERE nisn = '$nisn'
+                                                                AND status_approved = 1
+                                                                AND tgl_izin = '$tglCari'
+                                                            ";
+
+                                    $resultIzinSakit = $conn->query($sqlIzinSakit);
+
+                                    if ($resultIzinSakit) {
+
+                                        while (
+                                            $rowIzinSakit =
+                                            $resultIzinSakit->fetch_assoc()
+                                        ) {
+
+                                            if ($rowIzinSakit['status'] === 'i') {
+
+                                                $isIzin = true;
+
+                                                $totalizin++;
+
+                                            } elseif (
+                                                $rowIzinSakit['status'] === 's'
+                                            ) {
+
+                                                $isSakit = true;
+
+                                                $totalsakit++;
+
+                                            }
+
+                                        }
+
+                                    }
+
+                                }
+
+
+                                /*
+                                |--------------------------------------------------------------------------
+                                | STATUS PRESENSI
+                                |--------------------------------------------------------------------------
+                                */
+
+                                $isBolos = false;
+                                $isTerlambat = false;
+                                $isHadir = false;
+                                $isAlfa = false;
+
+
+                                /*
+                                |--------------------------------------------------------------------------
+                                | PRIORITAS STATUS
+                                |--------------------------------------------------------------------------
+                                |
+                                | 1. Minggu
+                                | 2. Libur
+                                | 3. Izin
+                                | 4. Sakit
+                                | 5. Bolos
+                                | 6. Hadir
+                                | 7. Alfa
+                                |
+                                */
+
+
+                                /*
+                                |--------------------------------------------------------------------------
+                                | BOLOS
+                                |--------------------------------------------------------------------------
+                                |
+                                | Sudah absen masuk
+                                | tetapi belum absen pulang.
+                                |
+                                | Contoh:
+                                |
+                                | 07:11-
+                                |
+                                */
+
+                                if (
+                                    !empty($jam_masuk) &&
+                                    empty($jam_pulang) &&
+                                    !$isIzin &&
+                                    !$isSakit &&
+                                    !$isLibur &&
+                                    !$isMinggu
+                                ) {
+
+                                    $isBolos = true;
+
+                                    $totalbolos++;
+
+                                }
+
+
+                                /*
+                                |--------------------------------------------------------------------------
+                                | HADIR
+                                |--------------------------------------------------------------------------
+                                |
+                                | Kalau ada jam masuk DAN jam pulang,
+                                | maka dihitung HADIR.
+                                |
+                                | Terlambat tetap termasuk HADIR.
+                                |
+                                */ elseif (
+                                    !empty($jam_masuk) &&
+                                    !empty($jam_pulang) &&
+                                    !$isIzin &&
+                                    !$isSakit &&
+                                    !$isLibur &&
+                                    !$isMinggu
+                                ) {
+
+                                    $isHadir = true;
+
+                                    $totalhadir++;
+
+
+                                    /*
+                                    |--------------------------------------------------------------------------
+                                    | TERLAMBAT
+                                    |--------------------------------------------------------------------------
+                                    */
+
+                                    if ($jam_masuk > $jamMasuk) {
+
+                                        $isTerlambat = true;
+
+                                        $totalterlambat++;
+
+                                    }
+
+                                }
+
+
+                                /*
+                                |--------------------------------------------------------------------------
+                                | ALFA
+                                |--------------------------------------------------------------------------
+                                |
+                                | Tidak ada jam masuk
+                                | dan tidak ada status izin/sakit/libur.
+                                |
+                                */ elseif (
+                                    empty($jam_masuk) &&
+                                    !$isIzin &&
+                                    !$isSakit &&
+                                    !$isLibur &&
+                                    !$isMinggu
+                                ) {
+
+                                    $isAlfa = true;
+
+                                    $totalalfa++;
+
+                                }
+
+                            @endphp
+
+
+                            {{-- =================================================
+                            KOTAK STATUS HARIAN
+                            ================================================== --}}
+
+                            <td style="text-align: center;">
+
+                                {{-- MINGGU --}}
+                                @if ($isMinggu)
+
+                                    <div style="
+                                                    width: 10px;
+                                                    height: 10px;
+                                                    background-color: white;
+                                                    margin: auto;
+                                                " title="Minggu"></div>
+
+
+                                    {{-- LIBUR --}}
+                                @elseif ($isLibur)
+
+                                    <div style="
+                                                    width: 10px;
+                                                    height: 10px;
+                                                    background-color: gray;
+                                                    margin: auto;
+                                                " title="Libur"></div>
+
+
+                                    {{-- IZIN + SAKIT --}}
+                                @elseif ($isIzin && $isSakit)
+
+                                    <div style="
+                                                    width: 10px;
+                                                    height: 10px;
+                                                    background-color: yellow;
+                                                    margin: auto;
+                                                " title="Izin"></div>
+
+                                    <div style="
+                                                    width: 10px;
+                                                    height: 10px;
+                                                    background-color: blue;
+                                                    margin: auto;
+                                                " title="Sakit"></div>
+
+
+                                    {{-- IZIN --}}
+                                @elseif ($isIzin)
+
+                                    <div style="
+                                                    width: 10px;
+                                                    height: 10px;
+                                                    background-color: yellow;
+                                                    margin: auto;
+                                                " title="Izin"></div>
+
+
+                                    {{-- SAKIT --}}
+                                @elseif ($isSakit)
+
+                                    <div style="
+                                                    width: 10px;
+                                                    height: 10px;
+                                                    background-color: blue;
+                                                    margin: auto;
+                                                " title="Sakit"></div>
+
+
+                                    {{-- BOLOS --}}
+                                @elseif ($isBolos)
+
+                                    <div style="
+                                                    width: 10px;
+                                                    height: 10px;
+                                                    background-color: purple;
+                                                    margin: auto;
+                                                " title="Bolos"></div>
+
+
+                                    {{-- HADIR TERLAMBAT --}}
+                                @elseif ($isTerlambat)
+
+                                    <div style="
+                                                    width: 10px;
+                                                    height: 10px;
+                                                    background-color: saddlebrown;
+                                                    margin: auto;
+                                                " title="Hadir - Terlambat"></div>
+
+
+                                    {{-- HADIR --}}
+                                @elseif ($isHadir)
+
+                                    <div style="
+                                                    width: 10px;
+                                                    height: 10px;
+                                                    background-color: green;
+                                                    margin: auto;
+                                                " title="Hadir"></div>
+
+
+                                    {{-- ALFA --}}
+                                @elseif ($isAlfa)
+
+                                    <div style="
+                                                    width: 10px;
+                                                    height: 10px;
+                                                    background-color: red;
+                                                    margin: auto;
+                                                " title="Alfa"></div>
+
+
+                                @endif
+
+                            </td>
+
+                        @endfor
+
+
+                        {{-- =================================================
+                        TOTAL HADIR
+                        ================================================== --}}
+
+                        <td style="text-align: center;">
+                            {{ $totalhadir }}
+                        </td>
+
+
+                        {{-- =================================================
+                        TOTAL TERLAMBAT
+                        ================================================== --}}
+
+                        <td style="text-align: center;">
+                            {{ $totalterlambat }}
+                        </td>
+
+
+                        {{-- =================================================
+                        TOTAL ALFA
+                        ================================================== --}}
+
+                        <td style="text-align: center;">
+                            {{ $totalalfa }}
+                        </td>
+
+
+                        {{-- =================================================
+                        TOTAL IZIN
+                        ================================================== --}}
+
+                        <td style="text-align: center;">
+                            {{ $totalizin }}
+                        </td>
+
+
+                        {{-- =================================================
+                        TOTAL SAKIT
+                        ================================================== --}}
+
+                        <td style="text-align: center;">
+                            {{ $totalsakit }}
+                        </td>
+
+
+                        {{-- =================================================
+                        TOTAL BOLOS
+                        ================================================== --}}
+
+                        <td style="text-align: center;">
+                            {{ $totalbolos }}
+                        </td>
+
+
+                        {{-- =================================================
+                        KETERANGAN
+                        ================================================== --}}
+
+                        <td style="text-align: center;">
+
+                            @if ($totalalfa >= 24)
+
+                                P3
+
+                            @elseif ($totalalfa >= 16)
+
+                                P2
+
+                            @elseif ($totalalfa >= 8)
+
+                                P1
+
+                            @endif
+
+                        </td>
+
+                    </tr>
+
                 @endforeach
+
             </table>
 
-            <table width="100%" style="margin-top: 20px; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
+
+            {{-- =========================================================
+            KETERANGAN WARNA
+            ========================================================== --}}
+
+            <table width="100%" style="
+                    margin-top: 20px;
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-size: 12px;
+                ">
+
                 <tr>
-                    <td style="width: 40%; vertical-align: top;">
-                        <b>Keterangan :</b><br><br>
-                        <table style="font-family: Arial, Helvetica, sans-serif; font-size: 10px;">
-                            <tr>
-                                <td>
-                                    <div
-                                        style="width: 12px; height: 12px; background-color: green; display: inline-block;">
-                                    </div>
-                                </td>
-                                <td style="padding-right: 5px;">Hadir</td>
-                                <td>
-                                    <div
-                                        style="width: 12px; height: 12px; background-color: brown; display: inline-block;">
-                                    </div>
-                                </td>
-                                <td style="padding-right: 5px;">Terlambat</td>
-                                <td>
-                                    <div
-                                        style="width: 12px; height: 12px; background-color: red; display: inline-block;">
-                                    </div>
-                                </td>
-                                <td style="padding-right: 5px;">Alfa</td>
-                                <td>
-                                    <div
-                                        style="width: 12px; height: 12px; background-color: yellow; display: inline-block;">
-                                    </div>
-                                </td>
-                                <td style="padding-right: 5px;">Izin</td>
-                                <td>
-                                    <div
-                                        style="width: 12px; height: 12px; background-color: blue; display: inline-block;">
-                                    </div>
-                                </td>
-                                <td style="padding-right: 5px;">Sakit</td>
-                                <td>
-                                    <div
-                                        style="width: 12px; height: 12px; background-color: purple; display: inline-block;">
-                                    </div>
-                                </td>
-                                <td style="padding-right: 5px;">Bolos</td>
-                            </tr>
-                        </table>
+
+                    <td style="
+                        width: 40%;
+                        vertical-align: top;
+                    ">
+
+                        <b>Keterangan :</b>
 
                         <br><br>
-                        <table style="width: 50%;">
+
+                        <table style="
+                            font-family: Arial, Helvetica, sans-serif;
+                            font-size: 10px;
+                        ">
+
                             <tr>
-                                <td style="width: 30%; font-size: 11px;">Laki-laki</td>
-                                <td style="width: 5%; text-align: center; font-size: 11px;">:</td>
-                                <td style="font-size: 11px;">{{ $total_laki_laki }}</td>
+
+                                {{-- HADIR --}}
+                                <td>
+                                    <div style="
+                                        width: 12px;
+                                        height: 12px;
+                                        background-color: green;
+                                        display: inline-block;
+                                    "></div>
+                                </td>
+
+                                <td style="padding-right: 5px;">
+                                    Hadir
+                                </td>
+
+
+                                {{-- TERLAMBAT --}}
+                                <td>
+                                    <div style="
+                                        width: 12px;
+                                        height: 12px;
+                                        background-color: saddlebrown;
+                                        display: inline-block;
+                                    "></div>
+                                </td>
+
+                                <td style="padding-right: 5px;">
+                                    Terlambat
+                                </td>
+
+
+                                {{-- ALFA --}}
+                                <td>
+                                    <div style="
+                                        width: 12px;
+                                        height: 12px;
+                                        background-color: red;
+                                        display: inline-block;
+                                    "></div>
+                                </td>
+
+                                <td style="padding-right: 5px;">
+                                    Alfa
+                                </td>
+
+
+                                {{-- IZIN --}}
+                                <td>
+                                    <div style="
+                                        width: 12px;
+                                        height: 12px;
+                                        background-color: yellow;
+                                        display: inline-block;
+                                    "></div>
+                                </td>
+
+                                <td style="padding-right: 5px;">
+                                    Izin
+                                </td>
+
+
+                                {{-- SAKIT --}}
+                                <td>
+                                    <div style="
+                                        width: 12px;
+                                        height: 12px;
+                                        background-color: blue;
+                                        display: inline-block;
+                                    "></div>
+                                </td>
+
+                                <td style="padding-right: 5px;">
+                                    Sakit
+                                </td>
+
+
+                                {{-- BOLOS --}}
+                                <td>
+                                    <div style="
+                                        width: 12px;
+                                        height: 12px;
+                                        background-color: purple;
+                                        display: inline-block;
+                                    "></div>
+                                </td>
+
+                                <td style="padding-right: 5px;">
+                                    Bolos
+                                </td>
+
                             </tr>
-                            <tr>
-                                <td style="font-size: 11px;">Perempuan</td>
-                                <td style="text-align: center; font-size: 11px;">:</td>
-                                <td style="font-size: 11px;">{{ $total_perempuan }}</td>
-                            </tr>
-                            <tr>
-                                <td style="font-size: 11px;">Jumlah</td>
-                                <td style="text-align: center; font-size: 11px;">:</td>
-                                <td style="font-size: 11px;">{{ $total_laki_laki + $total_perempuan }}</td>
-                            </tr>
+
                         </table>
+
+
+                        <br><br>
+
+
+                        {{-- =================================================
+                        JUMLAH SISWA
+                        ================================================== --}}
+
+                        <table style="width: 50%;">
+
+                            <tr>
+
+                                <td style="
+                                    width: 30%;
+                                    font-size: 11px;
+                                ">
+                                    Laki-laki
+                                </td>
+
+                                <td style="
+                                    width: 5%;
+                                    text-align: center;
+                                    font-size: 11px;
+                                ">
+                                    :
+                                </td>
+
+                                <td style="font-size: 11px;">
+                                    {{ $total_laki_laki }}
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td style="font-size: 11px;">
+                                    Perempuan
+                                </td>
+
+                                <td style="
+                                    text-align: center;
+                                    font-size: 11px;
+                                ">
+                                    :
+                                </td>
+
+                                <td style="font-size: 11px;">
+                                    {{ $total_perempuan }}
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td style="font-size: 11px;">
+                                    Jumlah
+                                </td>
+
+                                <td style="
+                                    text-align: center;
+                                    font-size: 11px;
+                                ">
+                                    :
+                                </td>
+
+                                <td style="font-size: 11px;">
+                                    {{ $total_laki_laki + $total_perempuan }}
+                                </td>
+
+                            </tr>
+
+                        </table>
+
                     </td>
-                    <td
-                        style="width: 30%; text-align: justify; vertical-align: top; padding: 0px 5px 5px 20px; font-family: 'Times New Roman', Times, serif; font-size: 12px;">
+
+
+                    {{-- =====================================================
+                    KEPALA SEKOLAH
+                    ====================================================== --}}
+
+                    <td style="
+                        width: 30%;
+                        text-align: justify;
+                        vertical-align: top;
+                        padding: 0px 5px 5px 20px;
+                        font-family: 'Times New Roman', Times, serif;
+                        font-size: 12px;
+                    ">
+
                         Kepala Sekolah <br>
-                        SMK Negeri 2 Kalianda,<br><br><br><br><br><br><br>
-                        <u><b>NYOMAN MISTER, M.Pd</b></u><br>
-                        Pembina<br>
+                        SMK Negeri 2 Kalianda,
+
+                        <br><br><br><br><br><br><br>
+
+                        <u>
+                            <b>
+                                NYOMAN MISTER, M.Pd
+                            </b>
+                        </u>
+
+                        <br>
+
+                        Pembina
+
+                        <br>
+
                         NIP. 19680814 200012 1 002
+
                     </td>
-                    <td
-                        style="width: 30%; text-align: justify; vertical-align: top; padding: 0px 5px 5px 20px; font-family: 'Times New Roman', Times, serif; font-size: 12px;">
-                        Kalianda, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}<br>
+
+
+                    {{-- =====================================================
+                    PETUGAS ABSENSI
+                    ====================================================== --}}
+
+                    <td style="
+                        width: 30%;
+                        text-align: justify;
+                        vertical-align: top;
+                        padding: 0px 5px 5px 20px;
+                        font-family: 'Times New Roman', Times, serif;
+                        font-size: 12px;
+                    ">
+
+                        Kalianda,
+                        {{ Carbon\Carbon::now()->translatedFormat('d F Y') }}
+
+                        <br>
+
                         Petugas Absensi,
+
                     </td>
+
                 </tr>
+
             </table>
 
+
+            {{-- =========================================================
+            LOGO BAWAH
+            ========================================================== --}}
+
             <table style="width: 100%;">
+
                 <tr>
+
                     <td style="text-align: left;">
+
                         <img src="{{ asset('assets/img/logo-KAN.png') }}" width="65" height="30" alt="">
+
                     </td>
+
                 </tr>
+
             </table>
+
         </div>
+
     </section>
+
 </body>
 
 </html>
