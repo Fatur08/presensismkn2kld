@@ -153,7 +153,7 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                 <tr>
                     <td colspan="4" style="text-align: center;">
                         <div style="font-size: 18px; font-weight: bold;">
-                            REKAPITULASI ABSEN SISWA BULANAN<br>
+                            REKAPITULASI ABSEN SISWA BULANAN HAIIIIi<br>
                             TAHUN PELAJARAN {{ $tahun }}<br>
                         </div>
                     </td>
@@ -312,9 +312,9 @@ for ($i = 1; $i <= $jumlahHari; $i++) {
                             $tglCari = $tanggal->format('Y-m-d');
 
                             $sqlIzinSakit = "SELECT status FROM pengajuan_izin 
-                                                                                                                                                                                                                 WHERE nisn = '$nisn' 
-                                                                                                                                                                                                                 AND status_approved = 1 
-                                                                                                                                                                                                                 AND tgl_izin = '$tglCari'";
+                                                                                                                                                                                                                                 WHERE nisn = '$nisn' 
+                                                                                                                                                                                                                                 AND status_approved = 1 
+                                                                                                                                                                                                                                 AND tgl_izin = '$tglCari'";
 
                             $result = $conn->query($sqlIzinSakit);
                             if ($result) {
@@ -343,10 +343,10 @@ for ($i = 1; $i <= $jumlahHari; $i++) {
                         $jam_out_presensi = null;
 
                         $sqlPresensi = "SELECT jam_in, jam_out
-                                                                    FROM presensi
-                                                                    WHERE nisn = '$nisn'
-                                                                    AND tgl_presensi = '$tglCari'
-                                                                    LIMIT 1";
+                                                                                    FROM presensi
+                                                                                    WHERE nisn = '$nisn'
+                                                                                    AND tgl_presensi = '$tglCari'
+                                                                                    LIMIT 1";
 
                         $resultPresensi = $conn->query($sqlPresensi);
 
@@ -403,7 +403,7 @@ for ($i = 1; $i <= $jumlahHari; $i++) {
                             $totalalfa++;
                         }
                         //dd($d->$tgl, $jamMasuk, $jamPulangAsli, $jamPulangBatas);
-                                                                                                                                                                                        ?>
+                                                                                                                                                                                                        ?>
                                     <?php
                         // Pastikan status bolos tetap true ketika masuk ke bagian tampilan
                         if (
@@ -415,7 +415,7 @@ for ($i = 1; $i <= $jumlahHari; $i++) {
                         ) {
                             $isBolos = true;
                         }
-                                                                        ?>
+                                                                                        ?>
                                     <td style="text-align: center;">
                                         <?php        if ($hari == 'Sunday' || $hari == 'Minggu'): ?>
                                         <div style="width: 10px; height: 10px; background-color: white; margin: auto;" title="Minggu">
@@ -441,7 +441,7 @@ for ($i = 1; $i <= $jumlahHari; $i++) {
                                         <?php
                             $jam_masuk = $hadir[0];
                             $jam_pulang = $hadir[1];
-                                                                                                                                                                                ?>
+                                                                                                                                                                                                ?>
                                         <?php            if ($jam_masuk <= $jamMasuk && $jam_pulang >= $jamPulangAsli && $jam_pulang <= $jamPulangBatas): ?>
                                         <div style="width: 10px; height: 10px; background-color: green; margin: auto;"></div>
                                         <?php            elseif ($jam_masuk > $jamMasuk && $jam_pulang >= $jamPulangAsli && $jam_pulang <= $jamPulangBatas): ?>
