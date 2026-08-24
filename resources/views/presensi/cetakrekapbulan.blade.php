@@ -2,7 +2,7 @@
 // require '../vendor/autoload.php';
 use Carbon\Carbon;
 \Carbon\Carbon::setLocale('id');
-$conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld123*", "u859704623_presensigps");
+$conn = new mysqli("localhost", "u859704623_fatur8", "Presensismkn2kld123*", "u859704623_aplikasi_absen");
 ?>
 
 <!DOCTYPE html>
@@ -403,10 +403,10 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                         @endphp
 
                         <th style="
-                                    text-align: center;
-                                    vertical-align: top;
-                                    line-height: 1;
-                                ">
+                                                text-align: center;
+                                                vertical-align: top;
+                                                line-height: 1;
+                                            ">
                             {!! $hurufHari !!}
                         </th>
 
@@ -434,9 +434,9 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
 
                         {{-- NOMOR --}}
                         <td style="
-                                    text-align: center;
-                                    width: 30px;
-                                ">
+                                                text-align: center;
+                                                width: 30px;
+                                            ">
                             {{ $no++ }}
                         </td>
 
@@ -449,11 +449,11 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
 
                         {{-- NAMA --}}
                         <td style="
-                                    width: 180px;
-                                    white-space: nowrap;
-                                    overflow: hidden;
-                                    text-overflow: ellipsis;
-                                ">
+                                                width: 180px;
+                                                white-space: nowrap;
+                                                overflow: hidden;
+                                                text-overflow: ellipsis;
+                                            ">
 
                             @if ($d->jenis_kelamin === 'Perempuan')
 
@@ -589,10 +589,10 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                                 if (!$conn->connect_error) {
 
                                     $sqlLibur = "
-                                                                                        SELECT COUNT(*) AS total
-                                                                                        FROM libur_sekolah
-                                                                                        WHERE tanggal = '$tglCari'
-                                                                                    ";
+                                                                                                                                                                SELECT COUNT(*) AS total
+                                                                                                                                                                FROM libur_sekolah
+                                                                                                                                                                WHERE tanggal = '$tglCari'
+                                                                                                                                                            ";
 
                                     $resultLibur = $conn->query($sqlLibur);
 
@@ -622,12 +622,12 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                                     $nisn = $d->nisn;
 
                                     $sqlIzinSakit = "
-                                                                                        SELECT status
-                                                                                        FROM pengajuan_izin
-                                                                                        WHERE nisn = '$nisn'
-                                                                                        AND status_approved = 1
-                                                                                        AND tgl_izin = '$tglCari'
-                                                                                    ";
+                                                                                                                                                                SELECT status
+                                                                                                                                                                FROM pengajuan_izin
+                                                                                                                                                                WHERE nisn = '$nisn'
+                                                                                                                                                                AND status_approved = 1
+                                                                                                                                                                AND tgl_izin = '$tglCari'
+                                                                                                                                                            ";
 
                                     $resultIzinSakit = $conn->query($sqlIzinSakit);
 
@@ -795,106 +795,106 @@ $conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld12
                                 @if ($isMinggu)
 
                                     <div style="
-                                                                width: 10px;
-                                                                height: 10px;
-                                                                background-color: white;
-                                                                margin: auto;
-                                                            " title="Minggu"></div>
+                                                                                                    width: 10px;
+                                                                                                    height: 10px;
+                                                                                                    background-color: white;
+                                                                                                    margin: auto;
+                                                                                                " title="Minggu"></div>
 
 
                                     {{-- LIBUR --}}
                                 @elseif ($isLibur)
 
                                     <div style="
-                                                                width: 10px;
-                                                                height: 10px;
-                                                                background-color: gray;
-                                                                margin: auto;
-                                                            " title="Libur"></div>
+                                                                                                    width: 10px;
+                                                                                                    height: 10px;
+                                                                                                    background-color: gray;
+                                                                                                    margin: auto;
+                                                                                                " title="Libur"></div>
 
 
                                     {{-- IZIN + SAKIT --}}
                                 @elseif ($isIzin && $isSakit)
 
                                     <div style="
-                                                                width: 10px;
-                                                                height: 10px;
-                                                                background-color: yellow;
-                                                                margin: auto;
-                                                            " title="Izin"></div>
+                                                                                                    width: 10px;
+                                                                                                    height: 10px;
+                                                                                                    background-color: yellow;
+                                                                                                    margin: auto;
+                                                                                                " title="Izin"></div>
 
                                     <div style="
-                                                                width: 10px;
-                                                                height: 10px;
-                                                                background-color: blue;
-                                                                margin: auto;
-                                                            " title="Sakit"></div>
+                                                                                                    width: 10px;
+                                                                                                    height: 10px;
+                                                                                                    background-color: blue;
+                                                                                                    margin: auto;
+                                                                                                " title="Sakit"></div>
 
 
                                     {{-- IZIN --}}
                                 @elseif ($isIzin)
 
                                     <div style="
-                                                                width: 10px;
-                                                                height: 10px;
-                                                                background-color: yellow;
-                                                                margin: auto;
-                                                            " title="Izin"></div>
+                                                                                                    width: 10px;
+                                                                                                    height: 10px;
+                                                                                                    background-color: yellow;
+                                                                                                    margin: auto;
+                                                                                                " title="Izin"></div>
 
 
                                     {{-- SAKIT --}}
                                 @elseif ($isSakit)
 
                                     <div style="
-                                                                width: 10px;
-                                                                height: 10px;
-                                                                background-color: blue;
-                                                                margin: auto;
-                                                            " title="Sakit"></div>
+                                                                                                    width: 10px;
+                                                                                                    height: 10px;
+                                                                                                    background-color: blue;
+                                                                                                    margin: auto;
+                                                                                                " title="Sakit"></div>
 
 
                                     {{-- BOLOS --}}
                                 @elseif ($isBolos)
 
                                     <div style="
-                                                                width: 10px;
-                                                                height: 10px;
-                                                                background-color: purple;
-                                                                margin: auto;
-                                                            " title="Bolos"></div>
+                                                                                                    width: 10px;
+                                                                                                    height: 10px;
+                                                                                                    background-color: purple;
+                                                                                                    margin: auto;
+                                                                                                " title="Bolos"></div>
 
 
                                     {{-- HADIR TERLAMBAT --}}
                                 @elseif ($isTerlambat)
 
                                     <div style="
-                                                                width: 10px;
-                                                                height: 10px;
-                                                                background-color: saddlebrown;
-                                                                margin: auto;
-                                                            " title="Hadir - Terlambat"></div>
+                                                                                                    width: 10px;
+                                                                                                    height: 10px;
+                                                                                                    background-color: saddlebrown;
+                                                                                                    margin: auto;
+                                                                                                " title="Hadir - Terlambat"></div>
 
 
                                     {{-- HADIR --}}
                                 @elseif ($isHadir)
 
                                     <div style="
-                                                                width: 10px;
-                                                                height: 10px;
-                                                                background-color: green;
-                                                                margin: auto;
-                                                            " title="Hadir"></div>
+                                                                                                    width: 10px;
+                                                                                                    height: 10px;
+                                                                                                    background-color: green;
+                                                                                                    margin: auto;
+                                                                                                " title="Hadir"></div>
 
 
                                     {{-- ALFA --}}
                                 @elseif ($isAlfa)
 
                                     <div style="
-                                                                width: 10px;
-                                                                height: 10px;
-                                                                background-color: red;
-                                                                margin: auto;
-                                                            " title="Alfa"></div>
+                                                                                                    width: 10px;
+                                                                                                    height: 10px;
+                                                                                                    background-color: red;
+                                                                                                    margin: auto;
+                                                                                                " title="Alfa"></div>
 
 
                                 @endif
