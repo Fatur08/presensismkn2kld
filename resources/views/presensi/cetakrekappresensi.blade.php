@@ -245,6 +245,168 @@ function selisih($jam_masuk, $jam_keluar)
                             $hadir = explode("-", $d->$tgl);
                         }
 
+                        $tanggalStr = ($tahun - 1) . '-' . str_pad($bulan, 2, '0', STR_PAD_LEFT) . '-' . str_pad($i, 2, '0', STR_PAD_LEFT);
+                        $tanggal = Carbon::parse($tanggalStr);
+                        $hari = $tanggal->translatedFormat('l'); // atau 'l' saja untuk bahasa Inggris
+
+                        $isLibur = false;
+
+                        if (!$conn->connect_error) {
+                            $sql = "SELECT COUNT(*) as total FROM libur_sekolah WHERE tanggal = '" . $tanggal->format('Y-m-d') . "'";
+                            $result = $conn->query($sql);
+                            if ($result && $row = $result->fetch_assoc()) {
+                                $isLibur = $row['total'] > 0;
+                            }
+                        }
+
+                        // Menghitung Jumlah Izin dan Sakit
+                        $isIzin = false;
+                        $isSakit = false;
+                        if (!$conn->connect_error) {
+                            $nisn = $d->nisn;
+                            $tglCari = $tanggal->format('Y-m-d');
+
+                            $sqlIzinSakit = "SELECT status FROM pengajuan_izin 
+                                                                                                         WHERE nisn = '$nisn' 
+                                                                                                         AND status_approved = 1 
+                                                                                                         AND tgl_izin = '$tglCari'";
+
+                            $result = $conn->query($sqlIzinSakit);
+                            if ($result) {
+                                while ($row = $result->fetch_assoc()) {
+                                    if ($row['status'] === 'i') {
+                                        $isIzin = true;
+                                        $rekapBulan[$bulan]['izin']++;
+                                    } elseif ($row['status'] === 's') {
+                                        $isSakit = true;
+                                        $rekapBulan[$bulan]['sakit']++;
+                                    }
+                                }
+                            }
+                        }
+
+                        $isBolos = false;
+                        if (!$conn->connect_error) {
+                            $sqlPresensi = "SELECT jam_in, jam_out FROM presensi 
+                                                                                            WHERE nisn = '$nisn' 
+                                                                                            AND tgl_presensi = '$tglCari'";
+                            $result = $conn->query($sqlPresensi);
+                            if ($result && $row = $result->fetch_assoc()) {
+                                $jam_in = $row['jam_in'];
+                                $jam_out = $row['jam_out'];
+                                if (!empty($jam_in) && (empty($jam_out) || $jam_out > $jamPulangBatas)) {
+                                    $isBolos = true;
+                                    $rekapBulan[$bulan]['bolos']++;
+                                }
+                            }
+                        }
+
+                        if (empty($d->$tgl)) {
+                            $hadir = ['', ''];
+                        } else {
+                            $hadir = explode("-", $d->$tgl);
+                        }
+
+                        // Hitung hadir, alfa
+                        $isHadir = false;
+                        if (!$conn->connect_error) {
+                            $sqlPresensi = "SELECT jam_in FROM presensi 
+                                                                                                        WHERE nisn = '$nisn' 
+                                                                                                        AND tgl_presensi = '$tglCari'";
+                            $result = $conn->query($sqlPresensi);
+                            if ($result && $row = $result->fetch_assoc()) {
+                                if (!empty($row['jam_in'])) {
+                                    $isHadir = true;
+                                }
+                            }
+                        }
+
+                        if ($isHadir && !$isIzin && !$isSakit && !$isBolos) {
+                            $rekapBulan[$bulan]['hadir']++;
+                        } elseif ($isHadir && !$isIzin && !$isSakit && $isBolos) {
+                            $rekapBulan[$bulan]['bolos']++;
+                        } elseif (($hari != 'Sunday' && $hari != 'Minggu') && !$isLibur && !$isIzin && !$isSakit && !$isHadir) {
+                            $rekapBulan[$bulan]['alfa']++;
+                        }
+                    }
+                }
+                                                                                    ?>
+
+                        <?php
+                foreach ($rekapBulan as $bulan => $rekap) {
+                    $totalSakitGanjil += $rekap['sakit'];
+                    $totalIzinGanjil += $rekap['izin'];
+                    $totalAlfaGanjil += $rekap['alfa'];
+                    $totalBolosGanjil += $rekap['bolos'];
+                }
+                                                                                    ?>
+
+                        <td rowspan="7">GANJIL</td>
+                        <?php
+                $namaBulanGanjil = [
+                    7 => 'JULI',
+                    8 => 'AGUSTUS',
+                    9 => 'SEPTEMBER',
+                    10 => 'OKTOBER',
+                    11 => 'NOVEMBER',
+                    12 => 'DESEMBER',
+                ];
+
+                foreach ($namaBulanGanjil as $bulanAngka => $namaBulan) {
+                    echo "<tr>
+                                                                                                    <td>{$namaBulan}</td>
+                                                                                                    <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['sakit']}</td>
+                                                                                                    <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['izin']}</td>
+                                                                                                    <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['alfa']}</td>
+                                                                                                    <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['bolos']}</td>
+                                                                                                  </tr>";
+                }
+                                                                                    ?>
+
+            @endforeach
+
+            <tr>
+                <td colspan="2">JUMLAH</td>
+                <td style='text-align: center;'><?= $totalSakitGanjil ?></td>
+                <td style='text-align: center;'><?= $totalIzinGanjil ?></td>
+                <td style='text-align: center;'><?= $totalAlfaGanjil ?></td>
+                <td style='text-align: center;'><?= $totalBolosGanjil ?></td>
+            </tr>
+
+
+            @foreach ($rekapgenap as $d)
+                        <?php
+                $semester = 'genap';
+                $bulanSemesterGenap = [];
+
+                if ($semester == 'genap') {
+                    $bulanSemesterGenap = [1, 2, 3, 4, 5, 6];
+                }
+
+                // Inisialisasi array untuk total tiap bulan
+                $rekapBulan = [];
+                foreach ($bulanSemesterGenap as $bulan) {
+                    $rekapBulan[$bulan] = [
+                        'hadir' => 0,
+                        'sakit' => 0,
+                        'izin' => 0,
+                        'alfa' => 0,
+                        'bolos' => 0,
+                    ];
+                }
+
+                // Ambil data dari presensi dan izin/sakit
+                foreach ($bulanSemesterGenap as $bulan) {
+                    $daysInMonth = Carbon::createFromDate(null, $bulan, 1)->daysInMonth;
+
+                    for ($i = 1; $i <= $daysInMonth; $i++) {
+                        $tgl = "tgl_" . $i;
+                        if (empty($d->$tgl)) {
+                            $hadir = ['', ''];
+                        } else {
+                            $hadir = explode("-", $d->$tgl);
+                        }
+
                         $tanggalStr = $tahun . '-' . str_pad($bulan, 2, '0', STR_PAD_LEFT) . '-' . str_pad($i, 2, '0', STR_PAD_LEFT);
                         $tanggal = Carbon::parse($tanggalStr);
                         $hari = $tanggal->translatedFormat('l'); // atau 'l' saja untuk bahasa Inggris
@@ -325,174 +487,12 @@ function selisih($jam_masuk, $jam_keluar)
                             $rekapBulan[$bulan]['hadir']++;
                         } elseif ($isHadir && !$isIzin && !$isSakit && $isBolos) {
                             $rekapBulan[$bulan]['bolos']++;
-                        } elseif (($hari != 'Sunday' && $hari != 'Minggu') && !$isLibur && !$isIzin && !$isSakit && !$isHadir) {
-                            $rekapBulan[$bulan]['alfa']++;
-                        }
-                    }
-                }
-                                                                        ?>
-
-                        <?php
-                foreach ($rekapBulan as $bulan => $rekap) {
-                    $totalSakitGanjil += $rekap['sakit'];
-                    $totalIzinGanjil += $rekap['izin'];
-                    $totalAlfaGanjil += $rekap['alfa'];
-                    $totalBolosGanjil += $rekap['bolos'];
-                }
-                                                                        ?>
-
-                        <td rowspan="7">GANJIL</td>
-                        <?php
-                $namaBulanGanjil = [
-                    7 => 'JULI',
-                    8 => 'AGUSTUS',
-                    9 => 'SEPTEMBER',
-                    10 => 'OKTOBER',
-                    11 => 'NOVEMBER',
-                    12 => 'DESEMBER',
-                ];
-
-                foreach ($namaBulanGanjil as $bulanAngka => $namaBulan) {
-                    echo "<tr>
-                                                                                        <td>{$namaBulan}</td>
-                                                                                        <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['sakit']}</td>
-                                                                                        <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['izin']}</td>
-                                                                                        <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['alfa']}</td>
-                                                                                        <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['bolos']}</td>
-                                                                                      </tr>";
-                }
-                                                                        ?>
-
-            @endforeach
-
-            <tr>
-                <td colspan="2">JUMLAH</td>
-                <td style='text-align: center;'><?= $totalSakitGanjil ?></td>
-                <td style='text-align: center;'><?= $totalIzinGanjil ?></td>
-                <td style='text-align: center;'><?= $totalAlfaGanjil ?></td>
-                <td style='text-align: center;'><?= $totalBolosGanjil ?></td>
-            </tr>
-
-
-            @foreach ($rekapgenap as $d)
-                        <?php
-                $semester = 'genap';
-                $bulanSemesterGenap = [];
-
-                if ($semester == 'genap') {
-                    $bulanSemesterGenap = [1, 2, 3, 4, 5, 6];
-                }
-
-                // Inisialisasi array untuk total tiap bulan
-                $rekapBulan = [];
-                foreach ($bulanSemesterGenap as $bulan) {
-                    $rekapBulan[$bulan] = [
-                        'hadir' => 0,
-                        'sakit' => 0,
-                        'izin' => 0,
-                        'alfa' => 0,
-                        'bolos' => 0,
-                    ];
-                }
-
-                // Ambil data dari presensi dan izin/sakit
-                foreach ($bulanSemesterGenap as $bulan) {
-                    $daysInMonth = Carbon::createFromDate(null, $bulan, 1)->daysInMonth;
-
-                    for ($i = 1; $i <= $daysInMonth; $i++) {
-                        $tgl = "tgl_" . $i;
-                        if (empty($d->$tgl)) {
-                            $hadir = ['', ''];
-                        } else {
-                            $hadir = explode("-", $d->$tgl);
-                        }
-
-                        $tanggalStr = $tahun . '-' . str_pad($bulan, 2, '0', STR_PAD_LEFT) . '-' . str_pad($i, 2, '0', STR_PAD_LEFT);
-                        $tanggal = Carbon::parse($tanggalStr);
-                        $hari = $tanggal->translatedFormat('l'); // atau 'l' saja untuk bahasa Inggris
-
-                        $isLibur = false;
-
-                        if (!$conn->connect_error) {
-                            $sql = "SELECT COUNT(*) as total FROM libur_sekolah WHERE tanggal = '" . $tanggal->format('Y-m-d') . "'";
-                            $result = $conn->query($sql);
-                            if ($result && $row = $result->fetch_assoc()) {
-                                $isLibur = $row['total'] > 0;
-                            }
-                        }
-
-                        // Menghitung Jumlah Izin dan Sakit
-                        $isIzin = false;
-                        $isSakit = false;
-                        if (!$conn->connect_error) {
-                            $nisn = $d->nisn;
-                            $tglCari = $tanggal->format('Y-m-d');
-
-                            $sqlIzinSakit = "SELECT status FROM pengajuan_izin 
-                                                                                 WHERE nisn = '$nisn' 
-                                                                                 AND status_approved = 1 
-                                                                                 AND tgl_izin = '$tglCari'";
-
-                            $result = $conn->query($sqlIzinSakit);
-                            if ($result) {
-                                while ($row = $result->fetch_assoc()) {
-                                    if ($row['status'] === 'i') {
-                                        $isIzin = true;
-                                        $rekapBulan[$bulan]['izin']++;
-                                    } elseif ($row['status'] === 's') {
-                                        $isSakit = true;
-                                        $rekapBulan[$bulan]['sakit']++;
-                                    }
-                                }
-                            }
-                        }
-
-                        $isBolos = false;
-                        if (!$conn->connect_error) {
-                            $sqlPresensi = "SELECT jam_in, jam_out FROM presensi 
-                                                                    WHERE nisn = '$nisn' 
-                                                                    AND tgl_presensi = '$tglCari'";
-                            $result = $conn->query($sqlPresensi);
-                            if ($result && $row = $result->fetch_assoc()) {
-                                $jam_in = $row['jam_in'];
-                                $jam_out = $row['jam_out'];
-                                if (!empty($jam_in) && (empty($jam_out) || $jam_out > $jamPulangBatas)) {
-                                    $isBolos = true;
-                                    $rekapBulan[$bulan]['bolos']++;
-                                }
-                            }
-                        }
-
-                        if (empty($d->$tgl)) {
-                            $hadir = ['', ''];
-                        } else {
-                            $hadir = explode("-", $d->$tgl);
-                        }
-
-                        // Hitung hadir, alfa
-                        $isHadir = false;
-                        if (!$conn->connect_error) {
-                            $sqlPresensi = "SELECT jam_in FROM presensi 
-                                                                                WHERE nisn = '$nisn' 
-                                                                                AND tgl_presensi = '$tglCari'";
-                            $result = $conn->query($sqlPresensi);
-                            if ($result && $row = $result->fetch_assoc()) {
-                                if (!empty($row['jam_in'])) {
-                                    $isHadir = true;
-                                }
-                            }
-                        }
-
-                        if ($isHadir && !$isIzin && !$isSakit && !$isBolos) {
-                            $rekapBulan[$bulan]['hadir']++;
-                        } elseif ($isHadir && !$isIzin && !$isSakit && $isBolos) {
-                            $rekapBulan[$bulan]['bolos']++;
                         } elseif (($hari != 'Sunday' && $hari != 'Minggu') && !$isLibur && !$isIzin && !$isSakit && !$isHadir && empty($d->$tgl)) {
                             $rekapBulan[$bulan]['alfa']++;
                         }
                     }
                 }
-                                                                        ?>
+                                                                                    ?>
 
                         <?php
                 foreach ($rekapBulan as $bulan => $rekap) {
@@ -501,7 +501,7 @@ function selisih($jam_masuk, $jam_keluar)
                     $totalAlfaGenap += $rekap['alfa'];
                     $totalBolosGenap += $rekap['bolos'];
                 }
-                                                                        ?>
+                                                                                    ?>
 
                         <td rowspan="7">GENAP</td>
                         <?php
@@ -516,14 +516,14 @@ function selisih($jam_masuk, $jam_keluar)
 
                 foreach ($namaBulanGenap as $bulanAngka => $namaBulan) {
                     echo "<tr>
-                                                                                        <td>{$namaBulan}</td>
-                                                                                        <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['sakit']}</td>
-                                                                                        <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['izin']}</td>
-                                                                                        <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['alfa']}</td>
-                                                                                        <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['bolos']}</td>
-                                                                                      </tr>";
+                                                                                                    <td>{$namaBulan}</td>
+                                                                                                    <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['sakit']}</td>
+                                                                                                    <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['izin']}</td>
+                                                                                                    <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['alfa']}</td>
+                                                                                                    <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['bolos']}</td>
+                                                                                                  </tr>";
                 }
-                                                                        ?>
+                                                                                    ?>
 
             @endforeach
 
