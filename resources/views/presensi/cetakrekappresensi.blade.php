@@ -267,9 +267,9 @@ function selisih($jam_masuk, $jam_keluar)
                             $tglCari = $tanggal->format('Y-m-d');
 
                             $sqlIzinSakit = "SELECT status FROM pengajuan_izin 
-                                                                                                                     WHERE nisn = '$nisn' 
-                                                                                                                     AND status_approved = 1 
-                                                                                                                     AND tgl_izin = '$tglCari'";
+                                                                                                                                 WHERE nisn = '$nisn' 
+                                                                                                                                 AND status_approved = 1 
+                                                                                                                                 AND tgl_izin = '$tglCari'";
 
                             $result = $conn->query($sqlIzinSakit);
                             if ($result) {
@@ -288,15 +288,14 @@ function selisih($jam_masuk, $jam_keluar)
                         $isBolos = false;
                         if (!$conn->connect_error) {
                             $sqlPresensi = "SELECT jam_in, jam_out FROM presensi 
-                                                                                                        WHERE nisn = '$nisn' 
-                                                                                                        AND tgl_presensi = '$tglCari'";
+                                                                                                                    WHERE nisn = '$nisn' 
+                                                                                                                    AND tgl_presensi = '$tglCari'";
                             $result = $conn->query($sqlPresensi);
                             if ($result && $row = $result->fetch_assoc()) {
                                 $jam_in = $row['jam_in'];
                                 $jam_out = $row['jam_out'];
                                 if (!empty($jam_in) && (empty($jam_out) || $jam_out > $jamPulangBatas)) {
                                     $isBolos = true;
-                                    $rekapBulan[$bulan]['bolos']++;
                                 }
                             }
                         }
@@ -311,8 +310,8 @@ function selisih($jam_masuk, $jam_keluar)
                         $isHadir = false;
                         if (!$conn->connect_error) {
                             $sqlPresensi = "SELECT jam_in FROM presensi 
-                                                                                                                    WHERE nisn = '$nisn' 
-                                                                                                                    AND tgl_presensi = '$tglCari'";
+                                                                                                                                WHERE nisn = '$nisn' 
+                                                                                                                                AND tgl_presensi = '$tglCari'";
                             $result = $conn->query($sqlPresensi);
                             if ($result && $row = $result->fetch_assoc()) {
                                 if (!empty($row['jam_in'])) {
@@ -330,7 +329,7 @@ function selisih($jam_masuk, $jam_keluar)
                         }
                     }
                 }
-                                                                                                ?>
+                                                                                                            ?>
 
                         <?php
                 foreach ($rekapBulan as $bulan => $rekap) {
@@ -339,7 +338,7 @@ function selisih($jam_masuk, $jam_keluar)
                     $totalAlfaGanjil += $rekap['alfa'];
                     $totalBolosGanjil += $rekap['bolos'];
                 }
-                                                                                                ?>
+                                                                                                            ?>
 
                         <td rowspan="7">GANJIL</td>
                         <?php
@@ -354,14 +353,14 @@ function selisih($jam_masuk, $jam_keluar)
 
                 foreach ($namaBulanGanjil as $bulanAngka => $namaBulan) {
                     echo "<tr>
-                                                                                                                <td>{$namaBulan}</td>
-                                                                                                                <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['sakit']}</td>
-                                                                                                                <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['izin']}</td>
-                                                                                                                <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['alfa']}</td>
-                                                                                                                <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['bolos']}</td>
-                                                                                                              </tr>";
+                                                                                                                            <td>{$namaBulan}</td>
+                                                                                                                            <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['sakit']}</td>
+                                                                                                                            <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['izin']}</td>
+                                                                                                                            <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['alfa']}</td>
+                                                                                                                            <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['bolos']}</td>
+                                                                                                                          </tr>";
                 }
-                                                                                                ?>
+                                                                                                            ?>
 
             @endforeach
 
@@ -429,9 +428,9 @@ function selisih($jam_masuk, $jam_keluar)
                             $tglCari = $tanggal->format('Y-m-d');
 
                             $sqlIzinSakit = "SELECT status FROM pengajuan_izin 
-                                                                                                         WHERE nisn = '$nisn' 
-                                                                                                         AND status_approved = 1 
-                                                                                                         AND tgl_izin = '$tglCari'";
+                                                                                                                     WHERE nisn = '$nisn' 
+                                                                                                                     AND status_approved = 1 
+                                                                                                                     AND tgl_izin = '$tglCari'";
 
                             $result = $conn->query($sqlIzinSakit);
                             if ($result) {
@@ -450,15 +449,14 @@ function selisih($jam_masuk, $jam_keluar)
                         $isBolos = false;
                         if (!$conn->connect_error) {
                             $sqlPresensi = "SELECT jam_in, jam_out FROM presensi 
-                                                                                            WHERE nisn = '$nisn' 
-                                                                                            AND tgl_presensi = '$tglCari'";
+                                                                                                        WHERE nisn = '$nisn' 
+                                                                                                        AND tgl_presensi = '$tglCari'";
                             $result = $conn->query($sqlPresensi);
                             if ($result && $row = $result->fetch_assoc()) {
                                 $jam_in = $row['jam_in'];
                                 $jam_out = $row['jam_out'];
                                 if (!empty($jam_in) && (empty($jam_out) || $jam_out > $jamPulangBatas)) {
                                     $isBolos = true;
-                                    $rekapBulan[$bulan]['bolos']++;
                                 }
                             }
                         }
@@ -473,8 +471,8 @@ function selisih($jam_masuk, $jam_keluar)
                         $isHadir = false;
                         if (!$conn->connect_error) {
                             $sqlPresensi = "SELECT jam_in FROM presensi 
-                                                                                                        WHERE nisn = '$nisn' 
-                                                                                                        AND tgl_presensi = '$tglCari'";
+                                                                                                                    WHERE nisn = '$nisn' 
+                                                                                                                    AND tgl_presensi = '$tglCari'";
                             $result = $conn->query($sqlPresensi);
                             if ($result && $row = $result->fetch_assoc()) {
                                 if (!empty($row['jam_in'])) {
@@ -492,7 +490,7 @@ function selisih($jam_masuk, $jam_keluar)
                         }
                     }
                 }
-                                                                                                ?>
+                                                                                                            ?>
 
                         <?php
                 foreach ($rekapBulan as $bulan => $rekap) {
@@ -501,7 +499,7 @@ function selisih($jam_masuk, $jam_keluar)
                     $totalAlfaGenap += $rekap['alfa'];
                     $totalBolosGenap += $rekap['bolos'];
                 }
-                                                                                                ?>
+                                                                                                            ?>
 
                         <td rowspan="7">GENAP</td>
                         <?php
@@ -516,14 +514,14 @@ function selisih($jam_masuk, $jam_keluar)
 
                 foreach ($namaBulanGenap as $bulanAngka => $namaBulan) {
                     echo "<tr>
-                                                                                                                <td>{$namaBulan}</td>
-                                                                                                                <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['sakit']}</td>
-                                                                                                                <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['izin']}</td>
-                                                                                                                <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['alfa']}</td>
-                                                                                                                <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['bolos']}</td>
-                                                                                                              </tr>";
+                                                                                                                            <td>{$namaBulan}</td>
+                                                                                                                            <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['sakit']}</td>
+                                                                                                                            <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['izin']}</td>
+                                                                                                                            <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['alfa']}</td>
+                                                                                                                            <td style='text-align: center;'>{$rekapBulan[$bulanAngka]['bolos']}</td>
+                                                                                                                          </tr>";
                 }
-                                                                                                ?>
+                                                                                                            ?>
 
             @endforeach
 
