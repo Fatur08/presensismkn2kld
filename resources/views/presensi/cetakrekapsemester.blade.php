@@ -132,19 +132,12 @@ $conn = new mysqli("localhost", "u859704623_fatur8", "Presensismkn2kld123*", "u8
             <hr style="border: 2px solid black; margin: 0;">
             <hr style="border: 1px solid black; margin-top: 1px;">
 
-            <?php
-// Tentukan tahun aktual untuk query database.
-// Semester Ganjil (Juli-Desember) ada di tahun sebelumnya ($tahun - 1),
-// Semester Genap (Januari-Juni) ada di tahun yang dipilih ($tahun).
-$tahunQuery = (strtolower($semester) == 'ganjil') ? ($tahun - 1) : $tahun;
-        ?>
-
             <table style="width: 100%; font-family: Arial, Helvetica, sans-serif;">
                 <tr>
                     <td colspan="4" style="text-align: center;">
                         <div style="font-size: 18px; font-weight: bold;">
                             REKAPITULASI ABSEN SISWA SEMESTER {{ strtoupper($semester) }}<br>
-                            TAHUN PELAJARAN {{ $tahun - 1 }}/{{ $tahun }}<br>
+                            TAHUN PELAJARAN {{ $tahun }}<br>
                         </div>
                     </td>
                 </tr>
@@ -162,8 +155,8 @@ $tahunQuery = (strtolower($semester) == 'ganjil') ? ($tahun - 1) : $tahun;
 
             <table class="tabelpresensi">
                 <tr>
-                    <th colspan="3">TAHUN {{ $tahun - 1 }}/{{ $tahun }}</th>
-                    <th colspan="30">BULAN</th>
+                    <th colspan="3">TAHUN {{ $tahun }}</th>
+                    <th colspan="24">BULAN</th>
                     <th rowspan="3" style="vertical-align: top; background-color: green; color: white;">
                         H<br>A<br>D<br>I<br>R
                     </th>
@@ -175,9 +168,6 @@ $tahunQuery = (strtolower($semester) == 'ganjil') ? ($tahun - 1) : $tahun;
                     </th>
                     <th rowspan="3" style="vertical-align: top; background-color: blue; color: white;">
                         S<br>A<br>K<br>I<br>T
-                    </th>
-                    <th rowspan="3" style="vertical-align: top; background-color: purple; color: white;">
-                        B<br>O<br>L<br>O<br>S
                     </th>
                     <th rowspan="3" style="vertical-align: top;">K<br>e<br>t.</th>
                 </tr>
@@ -210,7 +200,6 @@ $kategori = [
     ['label' => 'ALFA', 'bg' => 'red', 'text_color' => 'white'],
     ['label' => 'IZIN', 'bg' => 'yellow', 'text_color' => 'black'],
     ['label' => 'SAKIT', 'bg' => 'blue', 'text_color' => 'white'],
-    ['label' => 'BOLOS', 'bg' => 'purple', 'text_color' => 'white'],
 ];
             ?>
                 <tr>
@@ -272,7 +261,6 @@ $kategori = [
                             'alfa' => 0,
                             'izin' => 0,
                             'sakit' => 0,
-                            'bolos' => 0,
                         ];
                     }
 
@@ -288,7 +276,7 @@ $kategori = [
                         $daysInMonth = Carbon::createFromDate(null, $bulan, 1)->daysInMonth;
 
                         for ($i = 1; $i <= $daysInMonth; $i++) {
-                            $tanggalStr = $tahunQuery . '-' . str_pad($bulan, 2, '0', STR_PAD_LEFT) . '-' . str_pad($i, 2, '0', STR_PAD_LEFT);
+                            $tanggalStr = $tahun . '-' . str_pad($bulan, 2, '0', STR_PAD_LEFT) . '-' . str_pad($i, 2, '0', STR_PAD_LEFT);
                             $tanggal = Carbon::parse($tanggalStr);
                             $hari = $tanggal->translatedFormat('l'); // atau 'l' saja untuk bahasa Inggris
                             $tglField = "tgl_" . $i;
@@ -310,9 +298,9 @@ $kategori = [
                                 $tglCari = $tanggal->format('Y-m-d');
 
                                 $sqlIzinSakit = "SELECT status FROM pengajuan_izin 
-                                                                                                 WHERE nisn = '$nisn' 
-                                                                                                 AND status_approved = 1 
-                                                                                                 AND tgl_izin = '$tglCari'";
+                                                                 WHERE nisn = '$nisn' 
+                                                                 AND status_approved = 1 
+                                                                 AND tgl_izin = '$tglCari'";
 
                                 $result = $conn->query($sqlIzinSakit);
                                 if ($result) {
@@ -331,14 +319,15 @@ $kategori = [
                             $isBolos = false;
                             if (!$conn->connect_error) {
                                 $sqlPresensi = "SELECT jam_in, jam_out FROM presensi 
-                                                                                    WHERE nisn = '$nisn' 
-                                                                                    AND tgl_presensi = '$tglCari'";
+                                                    WHERE nisn = '$nisn' 
+                                                    AND tgl_presensi = '$tglCari'";
                                 $result = $conn->query($sqlPresensi);
                                 if ($result && $row = $result->fetch_assoc()) {
                                     $jam_in = $row['jam_in'];
                                     $jam_out = $row['jam_out'];
                                     if (!empty($jam_in) && (empty($jam_out) || $jam_out > $jamPulangBatas)) {
                                         $isBolos = true;
+                                        $rekapBulan[$bulan]['alfa']++;
                                     }
                                 }
                             }
@@ -353,8 +342,8 @@ $kategori = [
                             $isHadir = false;
                             if (!$conn->connect_error) {
                                 $sqlPresensi = "SELECT jam_in FROM presensi 
-                                                                                                WHERE nisn = '$nisn' 
-                                                                                                AND tgl_presensi = '$tglCari'";
+                                                                WHERE nisn = '$nisn' 
+                                                                AND tgl_presensi = '$tglCari'";
                                 $result = $conn->query($sqlPresensi);
                                 if ($result && $row = $result->fetch_assoc()) {
                                     if (!empty($row['jam_in'])) {
@@ -365,21 +354,18 @@ $kategori = [
 
                             if ($isHadir && !$isIzin && !$isSakit && !$isBolos) {
                                 $rekapBulan[$bulan]['hadir']++;
-                            } elseif ($isHadir && !$isIzin && !$isSakit && $isBolos) {
-                                $rekapBulan[$bulan]['bolos']++;
                             } elseif (($hari != 'Sunday' && $hari != 'Minggu') && !$isLibur && !$isIzin && !$isSakit && !$isHadir) {
                                 $rekapBulan[$bulan]['alfa']++;
                             }
                         }
                     }
-                                                                ?>
+                                ?>
 
                                     @foreach ($bulanSemester as $bulan)
                                         <td style='text-align: center;'>{{ $rekapBulan[$bulan]['hadir'] }}</td>
                                         <td style='text-align: center;'>{{ $rekapBulan[$bulan]['alfa'] }}</td>
                                         <td style='text-align: center;'>{{ $rekapBulan[$bulan]['izin'] }}</td>
                                         <td style='text-align: center;'>{{ $rekapBulan[$bulan]['sakit'] }}</td>
-                                        <td style='text-align: center;'>{{ $rekapBulan[$bulan]['bolos'] }}</td>
                                     @endforeach
 
                                     <?php
@@ -387,32 +373,25 @@ $kategori = [
                     $totalAlfa = 0;
                     $totalIzin = 0;
                     $totalSakit = 0;
-                    $totalBolos = 0;
 
                     foreach ($rekapBulan as $bulan => $rekap) {
                         $totalHadir += $rekap['hadir'];
                         $totalAlfa += $rekap['alfa'];
                         $totalIzin += $rekap['izin'];
                         $totalSakit += $rekap['sakit'];
-                        $totalBolos += $rekap['bolos'];
                     }
-
-                    // Predikat pelanggaran dihitung dari Alfa + Bolos digabung,
-                    // supaya bobotnya tetap sama seperti sebelum kolom Bolos dipisah
-                    $totalPelanggaran = $totalAlfa + $totalBolos;
-                                                                ?>
+                                ?>
 
                                     <td style='text-align: center;'><?= $totalHadir ?></td>
                                     <td style='text-align: center;'><?= $totalAlfa ?></td>
                                     <td style='text-align: center;'><?= $totalIzin ?></td>
                                     <td style='text-align: center;'><?= $totalSakit ?></td>
-                                    <td style='text-align: center;'><?= $totalBolos ?></td>
                                     <td style='text-align: center;'>
-                                        @if ($totalPelanggaran >= 24)
+                                        @if ($totalAlfa >= 24)
                                             P3
-                                        @elseif ($totalPelanggaran >= 16)
+                                        @elseif ($totalAlfa >= 16)
                                             P2
-                                        @elseif ($totalPelanggaran >= 8)
+                                        @elseif ($totalAlfa >= 8)
                                             P1
                                         @else
 
