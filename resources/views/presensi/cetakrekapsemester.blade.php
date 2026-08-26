@@ -2,7 +2,7 @@
 // require '../vendor/autoload.php';
 use Carbon\Carbon;
 \Carbon\Carbon::setLocale('id');
-$conn = new mysqli("localhost", "u859704623_fatur_rahman_8", "Presensismkn2kld123*", "u859704623_aplikasi_absen");
+$conn = new mysqli("localhost", "u859704623_fatur8", "Presensismkn2kld123*", "u859704623_aplikasi_absen");
 ?>
 
 <!DOCTYPE html>
@@ -310,9 +310,9 @@ $kategori = [
                                 $tglCari = $tanggal->format('Y-m-d');
 
                                 $sqlIzinSakit = "SELECT status FROM pengajuan_izin 
-                                                                 WHERE nisn = '$nisn' 
-                                                                 AND status_approved = 1 
-                                                                 AND tgl_izin = '$tglCari'";
+                                                                                 WHERE nisn = '$nisn' 
+                                                                                 AND status_approved = 1 
+                                                                                 AND tgl_izin = '$tglCari'";
 
                                 $result = $conn->query($sqlIzinSakit);
                                 if ($result) {
@@ -331,8 +331,8 @@ $kategori = [
                             $isBolos = false;
                             if (!$conn->connect_error) {
                                 $sqlPresensi = "SELECT jam_in, jam_out FROM presensi 
-                                                    WHERE nisn = '$nisn' 
-                                                    AND tgl_presensi = '$tglCari'";
+                                                                    WHERE nisn = '$nisn' 
+                                                                    AND tgl_presensi = '$tglCari'";
                                 $result = $conn->query($sqlPresensi);
                                 if ($result && $row = $result->fetch_assoc()) {
                                     $jam_in = $row['jam_in'];
@@ -353,8 +353,8 @@ $kategori = [
                             $isHadir = false;
                             if (!$conn->connect_error) {
                                 $sqlPresensi = "SELECT jam_in FROM presensi 
-                                                                WHERE nisn = '$nisn' 
-                                                                AND tgl_presensi = '$tglCari'";
+                                                                                WHERE nisn = '$nisn' 
+                                                                                AND tgl_presensi = '$tglCari'";
                                 $result = $conn->query($sqlPresensi);
                                 if ($result && $row = $result->fetch_assoc()) {
                                     if (!empty($row['jam_in'])) {
@@ -372,7 +372,7 @@ $kategori = [
                             }
                         }
                     }
-                                ?>
+                                                ?>
 
                                     @foreach ($bulanSemester as $bulan)
                                         <td style='text-align: center;'>{{ $rekapBulan[$bulan]['hadir'] }}</td>
@@ -400,7 +400,7 @@ $kategori = [
                     // Predikat pelanggaran dihitung dari Alfa + Bolos digabung,
                     // supaya bobotnya tetap sama seperti sebelum kolom Bolos dipisah
                     $totalPelanggaran = $totalAlfa + $totalBolos;
-                                ?>
+                                                ?>
 
                                     <td style='text-align: center;'><?= $totalHadir ?></td>
                                     <td style='text-align: center;'><?= $totalAlfa ?></td>
