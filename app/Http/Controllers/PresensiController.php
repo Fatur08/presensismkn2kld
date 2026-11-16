@@ -6,6 +6,7 @@ use App\Models\Pengajuanizin;
 use App\Models\Presensi;
 use App\Models\Murid;
 use App\Models\Jurusan;
+use App\Http\Controllers\FaceTokenController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -87,7 +88,11 @@ class PresensiController extends Controller
 
     public function store(Request $request)
     {
-        $nisn = str_pad((string) Auth::guard('murid')->user()->nisn, 10, '0', STR_PAD_LEFT);
+        $face = FaceTokenController::consume($request->input('token'));
+        $nisn = $face['nisn'];     // dulu $request->nisn
+        $absen = $face['absen'];    // dulu $request->absen ("masuk" / "pulang")
+        $lokasi = $face['lokasi'];   // dulu $request->lokasi
+        //$nisn = str_pad((string) Auth::guard('murid')->user()->nisn, 10, '0', STR_PAD_LEFT);
 
         $murid = DB::table('murid')->where('nisn', $nisn)->first(); // Ambil data murid berdasarkan NISN
 

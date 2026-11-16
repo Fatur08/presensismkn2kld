@@ -37,11 +37,11 @@ return [
 */
 
 return [
-    'paths' => ['api/*', 'get-image/*', 'storage/*'],
+    'paths' => ['api/*', 'get-image/*', 'storage/*', 'api/face/*'],
     //'paths' => ['api/', 'sanctum/csrf-cookie', 'storage/app/public/uploads/murid/*'],
     // 'paths' => ['api/*', 'storage/uploads/murid/*'], // Tambahkan path yang ingin diizinkan
     'allowed_methods' => ['*'],
-    'allowed_origins' => ['*'], // Bisa diganti dengan ['http://localhost:9000'] untuk lebih aman
+    'allowed_origins' => ['*', 'https://subdomain2.nirwanahotelkalianda.com'], // Bisa diganti dengan ['http://localhost:9000'] untuk lebih aman
     'allowed_origins_patterns' => [],
     'allowed_headers' => ['*'],
     'exposed_headers' => [],

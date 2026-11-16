@@ -192,7 +192,18 @@
                         success: function (responseJarak) {
                             if (responseJarak.status === "dalam_jangkauan") {
                                 // Jika dalam radius, lanjutkan absensi
-                                window.location.href = `https://subdomain2.nirwanahotelkalianda.com?name=${encodeURIComponent(name)}&nisn=${encodeURIComponent(nisn)}&photo=${photo}&lokasi=${lokasi}&absen_masuk=${absen_masuk}&absen_pulang=${absen_pulang}`;
+                                $.ajax({
+                                    url: "{{ route('face.token') }}",
+                                    type: "POST",
+                                    data: {
+                                        _token: "{{ csrf_token() }}",
+                                        lokasi: lokasi,
+                                        absen_masuk: absen_masuk,
+                                        absen_pulang: absen_pulang
+                                    },
+                                    success: function (res) { window.location.href = res.url; },
+                                    error: function () { alert("Gagal memulai verifikasi wajah."); }
+                                });
                             } else {
                                 Swal.fire({
                                     icon: 'error',
@@ -217,55 +228,40 @@
 
 
         document.addEventListener("DOMContentLoaded", function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const nisn = urlParams.get('nisn');
-            const absen = urlParams.get('absen'); // Bisa "masuk" atau "pulang"
-            const lokasi = urlParams.get('lokasi');
+            const token = new URLSearchParams(window.location.search).get('token');
+            if (!token) return;
 
-            const trueNisn = "{{ str_pad((string) Auth::guard('murid')->user()->nisn, 10, '0', STR_PAD_LEFT) }}";
+            history.replaceState({}, '', '/presensi/create'); // sembunyikan token dari URL
 
-            console.log(trueNisn === nisn);
-            console.log(absen === 'masuk' || absen === 'pulang');
-
-            if ((absen === 'masuk' || absen === 'pulang') && nisn === trueNisn) {
-                //console.log('harusnya running ajax')
-                let dataAbsen = {
-                    _token: "{{ csrf_token() }}",
-                    nisn: nisn,
-                    absen: absen, // Kirim status absen (masuk/pulang)
-                    lokasi: lokasi
-                };
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/presensi/store',
-                    data: dataAbsen,
-                    cache: false,
-                    success: function (respond) {
-                        var status = respond.split("|");
-                        if (status[0] == "success") {
-                            if (status[2] == "in") {
-                                notifikasi_in.play();
-                            } else {
-                                notifikasi_out.play();
-                            }
-                            Swal.fire({
-                                title: 'Berhasil !',
-                                text: status[1],
-                                icon: 'success'
-                            });
-                            setTimeout(() => location.href = '/dashboard', 15000);
+            $.ajax({
+                type: 'POST',
+                url: '/presensi/store',
+                data: { _token: "{{ csrf_token() }}", token: token },
+                cache: false,
+                success: function (respond) {
+                    var status = respond.split("|");
+                    if (status[0] == "success") {
+                        if (status[2] == "in") {
+                            notifikasi_in.play();
+                        } else {
+                            notifikasi_out.play();
                         }
-                    },
-                    error: function () {
                         Swal.fire({
-                            title: 'Error!',
-                            text: 'Terjadi kesalahan saat mengirim data.',
-                            icon: 'error'
+                            title: 'Berhasil !',
+                            text: status[1],
+                            icon: 'success'
                         });
+                        setTimeout(() => location.href = '/dashboard', 15000);
                     }
-                });
-            }
+                },
+                error: function () {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Terjadi kesalahan saat mengirim data.',
+                        icon: 'error'
+                    });
+                }
+            });
         });
 
     </script>

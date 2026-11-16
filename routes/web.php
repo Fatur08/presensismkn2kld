@@ -7,6 +7,7 @@ use App\Http\Controllers\KonfigurasiController;
 use App\Http\Controllers\MuridController;
 use App\Http\Controllers\PoinController;
 use App\Http\Controllers\PresensiController;
+use App\Http\Controllers\FaceTokenController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GambarController;
 use Illuminate\Support\Facades\Http;
@@ -162,3 +163,5 @@ Route::get('/get-image/{filename}', function ($filename) {
         'Content-Type' => mime_content_type($path),
     ]);
 });
+
+Route::middleware('auth:murid')->post('/presensi/face-token', [FaceTokenController::class, 'issue'])->name('face.token');

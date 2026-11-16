@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FaceTokenController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +17,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::prefix('face')->group(function () {
+    Route::get('session', [FaceTokenController::class, 'session']);
+    Route::get('reference', [FaceTokenController::class, 'reference']);
+    Route::post('verify', [FaceTokenController::class, 'verify']);
 });
