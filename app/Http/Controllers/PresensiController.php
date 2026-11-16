@@ -116,8 +116,8 @@ class PresensiController extends Controller
         $latitudekantor = $lok[0];
         //dd($latitudekantor);
         $longitudekantor = $lok[1];
-        $lokasi = $request->lokasi;
-        $absen = $request->absen;
+        //$lokasi = $request->lokasi;
+        //$absen = $request->absen;
         $lokasiuser = explode(',', $lokasi);
         $latitudeuser = $lokasiuser[0];
         //dd($latitudeuser);
